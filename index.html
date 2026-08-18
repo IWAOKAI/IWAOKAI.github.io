@@ -117,10 +117,24 @@ nav a:hover { color:var(--gold); }
   border:1px solid var(--gold); color:var(--gold);
   font-family:var(--mincho); font-size:19px; letter-spacing:.3em; text-indent:.3em;
 }
-.hero .lead {
-  margin:36px auto 0; max-width:560px; font-size:15px; color:#b8b09c; letter-spacing:.06em;
+.hero .facts {
+  margin:44px auto 0; max-width:860px;
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:0;
 }
-.hero .lead b { color:var(--washi); font-weight:600; }
+.hero .fact { padding:6px 18px; border-left:1px solid rgba(201,169,97,.35); }
+.hero .fact:first-child { border-left:none; }
+.hero .fact .age {
+  font-family:var(--mincho); font-size:22px; font-weight:600; color:var(--gold); letter-spacing:.1em;
+}
+.hero .fact .age::before {
+  content:''; display:inline-block; width:7px; height:7px; background:var(--shu);
+  transform:rotate(45deg); margin-right:9px; vertical-align:2px;
+}
+.hero .fact .what { font-size:13px; color:#cfc7b2; margin-top:8px; line-height:1.7; letter-spacing:.04em; }
+@media (max-width:760px){
+  .hero .facts { grid-template-columns:repeat(2, 1fr); row-gap:26px; }
+  .hero .fact:nth-child(3) { border-left:none; }
+}
 
 /* ---- 共通見出し ---- */
 .sec-head { text-align:center; margin-bottom:56px; }
@@ -155,16 +169,16 @@ nav a:hover { color:var(--gold); }
 
 /* ---- 来歴 ---- */
 #career { background:var(--sumi2); padding:96px 0 110px; }
-.cgrid { display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; }
-@media (max-width:760px){ .cgrid { grid-template-columns:1fr; } }
-.ccard {
-  border:1px solid rgba(201,169,97,.35); background:rgba(245,240,227,.03);
-  padding:30px 26px 26px; position:relative;
+.timeline { max-width:640px; margin:0 auto; position:relative; padding-left:34px; }
+.timeline::before { content:''; position:absolute; left:8px; top:6px; bottom:6px; width:1px; background:linear-gradient(var(--gold), rgba(201,169,97,.15)); }
+.tl-item { position:relative; margin-bottom:40px; }
+.tl-item:last-child { margin-bottom:0; }
+.tl-item::before {
+  content:''; position:absolute; left:-30px; top:9px; width:9px; height:9px;
+  background:var(--gold); transform:rotate(45deg);
 }
-.ccard::before { content:''; position:absolute; top:-1px; left:-1px; right:-1px; height:3px; background:var(--gold); }
-.ccard .step { font-size:11px; letter-spacing:.35em; color:var(--shu); font-weight:600; }
-.ccard h3 { font-family:var(--mincho); font-size:20px; font-weight:600; letter-spacing:.08em; color:var(--washi); margin-top:10px; line-height:1.5; }
-.ccard p { font-size:13.5px; color:#a89f8b; margin-top:10px; }
+.tl-item h3 { font-family:var(--mincho); font-size:21px; font-weight:600; letter-spacing:.12em; color:var(--washi); }
+.tl-item p { font-size:14px; color:#a89f8b; margin-top:6px; }
 
 /* ---- 依頼 ---- */
 #work { background:var(--washi); color:var(--ink); padding:96px 0 110px; text-align:center; }
@@ -204,8 +218,12 @@ footer .f-copy { font-size:11px; color:#7a725f; margin-top:10px; letter-spacing:
     <h1 id="site-name"></h1>
     <div class="romaji" id="site-romaji"></div>
     <div class="role" id="site-title"></div>
-    <p class="lead">19歳で南米ギアナの<b>外人部隊</b>、25歳で高野山の<b>宮大工</b>、52歳で<b>MENSA会員</b>。<br>
-    木を組んでいた手で、いまはAIとアプリを組む。</p>
+    <div class="facts">
+      <div class="fact"><div class="age">19歳</div><div class="what">フランス外人部隊<br>(南米ギアナ)</div></div>
+      <div class="fact"><div class="age">25歳</div><div class="what">高野山の宮大工</div></div>
+      <div class="fact"><div class="age">52歳</div><div class="what">MENSA会員</div></div>
+      <div class="fact"><div class="age">現在</div><div class="what">木を組んでいた手で、<br>AIとアプリを組む</div></div>
+    </div>
   </div>
 </header>
 
@@ -229,7 +247,7 @@ footer .f-copy { font-size:11px; color:#7a725f; margin-top:10px; letter-spacing:
       <h2>来歴</h2>
       <div class="rule"></div>
     </div>
-    <div class="cgrid" id="timeline"></div>
+    <div class="timeline" id="timeline"></div>
   </div>
 </section>
 
@@ -280,8 +298,8 @@ document.getElementById("app-grid").innerHTML = APPS.map(a => `
       : `<span class="btn disabled">リンク準備中</span>`}
   </div>`).join("");
 
-document.getElementById("timeline").innerHTML = CAREER.map((c, i) => `
-  <div class="ccard"><div class="step">${String(i+1).padStart(2,"0")}</div><h3>${c.t}</h3>${c.d ? `<p>${c.d}</p>` : ""}</div>`).join("");
+document.getElementById("timeline").innerHTML = CAREER.map(c => `
+  <div class="tl-item"><h3>${c.t}</h3>${c.d ? `<p>${c.d}</p>` : ""}</div>`).join("");
 </script>
 </body>
 </html>
