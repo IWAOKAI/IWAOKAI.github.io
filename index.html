@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>イワオ | AIアプリ開発者</title>
+<meta name="description" content="MENSA会員・宮大工(高野山)・フランス外人部隊(南米ギアナ)。異色の経歴を持つAIアプリ開発者イワオの開発アプリ一覧。">
+<meta property="og:title" content="イワオ | AIアプリ開発者">
+<meta property="og:description" content="MENSA会員・宮大工(高野山)・フランス外人部隊(南米ギアナ)。AIでアプリを作る。">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23a63a22'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23f5f0e3' font-family='serif' font-weight='bold'%3E匠%3C/text%3E%3C/svg%3E">
+
+<script>
+/* ============================================================
+   ここだけ編集すればサイトを更新できます(HTMLの知識は不要)
+   ------------------------------------------------------------
+   ・アプリを追加する : APPS の配列に { } のかたまりを1つ足す
+   ・リンクを貼る     : url に App Store 等のURLを "" の中に入れる
+   ・url が空("")のときは自動で「準備中」ボタンになります
+   ・status は "公開中" / "審査中" / "開発中" など自由な文字列
+   ============================================================ */
+const SITE = {
+  name:   "イワオ",            // 表示名(漢字にするならここを変更)
+  romaji: "IWAO",
+  title:  "AIアプリ開発者",
+  email:  "iwaokaiwo@gmail.com",
+  x_url:  "",                  // X(Twitter)のURL。空なら非表示
+};
+
+const APPS = [
+  {
+    name: "宅建 一問一答",
+    tag:  "資格学習",
+    status: "公開中",
+    desc: "宅地建物取引士試験の一問一答トレーニング。スキマ時間の反復で合格力を積み上げる。",
+    url:  "",   // ← App StoreのURLをここに
+  },
+  {
+    name: "カバラ・タロット",
+    tag:  "占い",
+    status: "公開中",
+    desc: "カバラの生命の樹とタロットを組み合わせた本格リーディングアプリ。",
+    url:  "",
+  },
+  {
+    name: "発音矯正",
+    tag:  "語学",
+    status: "審査中",
+    desc: "AIがあなたの発音を判定し、ネイティブに伝わる音へ矯正するトレーニングアプリ。",
+    url:  "",
+  },
+  {
+    name: "ブロック崩し",
+    tag:  "ゲーム",
+    status: "公開中",
+    desc: "シンプルで手触りの良いクラシックアーケードゲーム。",
+    url:  "",
+  },
+];
+
+const CAREER = [
+  { t: "埼玉県立浦和高校 サッカー部 卒業", d: "" },
+  { t: "フランス外人部隊(南米ギアナ)", d: "19歳で入隊。国籍も言語も異なる者たちの中で、規律と実行力を身につける。" },
+  { t: "宮大工(高野山)",         d: "25歳で入門。高野山の社寺建築の世界で木と向き合い、ものづくりの基礎を叩き込まれる。" },
+  { t: "MENSA会員",              d: "52歳で入会。人口上位2%のIQを持つ者が集う国際団体。" },
+  { t: "AIアプリ開発者",         d: "AIを相棒に企画から開発・リリースまでを一人で行う。開発アプリ4本。" },
+];
+</script>
+
+<style>
+:root {
+  --sumi: #211f1a;        /* 墨 */
+  --sumi2: #2b2823;
+  --washi: #f5f0e3;       /* 和紙 */
+  --washi2: #ece5d3;
+  --gold: #c9a961;        /* 金 */
+  --gold-dim: #8a7a55;
+  --shu: #a63a22;         /* 朱 */
+  --ink: #262319;
+  --ink-soft: #5c543f;
+  --mincho: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  --gothic: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--sumi); color:var(--washi); font-family:var(--gothic); line-height:1.8; }
+
+/* ---- 麻の葉パターン(SVGを背景として使用) ---- */
+.pat { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+section, header.hero, footer { position:relative; overflow:hidden; }
+.inner { position:relative; max-width:960px; margin:0 auto; padding:0 24px; }
+
+/* ---- ナビ ---- */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  display:flex; justify-content:center; gap:36px;
+  padding:14px 16px; background:rgba(33,31,26,.88); backdrop-filter:blur(6px);
+  border-bottom:1px solid rgba(201,169,97,.25);
+}
+nav a { color:var(--washi); text-decoration:none; font-size:13.5px; letter-spacing:.25em; }
+nav a:hover { color:var(--gold); }
+
+/* ---- ヒーロー ---- */
+.hero { background:var(--sumi); text-align:center; padding:130px 20px 90px; }
+.hero .seal {
+  width:56px; height:56px; margin:0 auto 28px; background:var(--shu); border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--mincho); font-size:32px; color:var(--washi); font-weight:600;
+}
+.hero h1 {
+  font-family:var(--mincho); font-size:clamp(38px, 7vw, 64px); font-weight:600;
+  letter-spacing:.3em; text-indent:.3em; color:var(--washi);
+}
+.hero .romaji { font-size:13px; letter-spacing:.6em; text-indent:.6em; color:var(--gold-dim); margin-top:10px; }
+.hero .role {
+  display:inline-block; margin-top:30px; padding:10px 34px;
+  border:1px solid var(--gold); color:var(--gold);
+  font-family:var(--mincho); font-size:19px; letter-spacing:.3em; text-indent:.3em;
+}
+.hero .lead {
+  margin:36px auto 0; max-width:560px; font-size:15px; color:#b8b09c; letter-spacing:.06em;
+}
+.hero .lead b { color:var(--washi); font-weight:600; }
+
+/* ---- 共通見出し ---- */
+.sec-head { text-align:center; margin-bottom:56px; }
+.sec-head .en { font-size:11px; letter-spacing:.5em; text-indent:.5em; color:var(--shu); font-weight:600; }
+.sec-head h2 {
+  font-family:var(--mincho); font-size:30px; font-weight:600; letter-spacing:.3em; text-indent:.3em; margin-top:10px;
+}
+.sec-head .rule { width:56px; height:2px; background:var(--gold); margin:22px auto 0; }
+
+/* ---- アプリ ---- */
+#apps { background:var(--washi); color:var(--ink); padding:96px 0 110px; }
+#apps .sec-head h2 { color:var(--ink); }
+.grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:28px; }
+@media (max-width:720px){ .grid { grid-template-columns:1fr; } }
+.card {
+  background:#fffdf7; border:1px solid #dcd3bc; padding:34px 32px 30px; position:relative;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--shu); }
+.card:hover { transform:translateY(-4px); box-shadow:0 14px 34px rgba(38,35,25,.14); }
+.card .top { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.card .tag { font-size:11px; letter-spacing:.2em; color:var(--gold-dim); border:1px solid #cfc5a9; padding:3px 10px; }
+.card .status { font-size:11px; letter-spacing:.15em; color:var(--shu); font-weight:600; }
+.card h3 { font-family:var(--mincho); font-size:23px; font-weight:600; letter-spacing:.08em; margin-bottom:12px; }
+.card p { font-size:14px; color:var(--ink-soft); min-height:72px; }
+.card .btn {
+  display:inline-block; margin-top:18px; padding:10px 26px; font-size:13px; letter-spacing:.15em;
+  text-decoration:none; border:1.5px solid var(--ink); color:var(--ink); transition:.2s;
+}
+.card .btn:hover { background:var(--ink); color:var(--washi); }
+.card .btn.disabled { border-color:#c2b89e; color:#a89d80; pointer-events:none; }
+
+/* ---- 来歴 ---- */
+#career { background:var(--sumi2); padding:96px 0 110px; }
+.timeline { max-width:640px; margin:0 auto; position:relative; padding-left:34px; }
+.timeline::before { content:''; position:absolute; left:8px; top:6px; bottom:6px; width:1px; background:linear-gradient(var(--gold), rgba(201,169,97,.15)); }
+.tl-item { position:relative; margin-bottom:40px; }
+.tl-item:last-child { margin-bottom:0; }
+.tl-item::before {
+  content:''; position:absolute; left:-30px; top:9px; width:9px; height:9px;
+  background:var(--gold); transform:rotate(45deg);
+}
+.tl-item h3 { font-family:var(--mincho); font-size:21px; font-weight:600; letter-spacing:.12em; color:var(--washi); }
+.tl-item p { font-size:14px; color:#a89f8b; margin-top:6px; }
+
+/* ---- 依頼 ---- */
+#work { background:var(--washi); color:var(--ink); padding:96px 0 110px; text-align:center; }
+#work .sec-head h2 { color:var(--ink); }
+#work .copy { max-width:600px; margin:0 auto; font-size:15px; color:var(--ink-soft); }
+#work .copy b { color:var(--ink); }
+.cta {
+  display:inline-block; margin-top:40px; padding:16px 52px;
+  background:var(--shu); color:var(--washi); text-decoration:none;
+  font-family:var(--mincho); font-size:17px; letter-spacing:.25em; text-indent:.25em;
+  transition:.2s;
+}
+.cta:hover { background:#8c2f1b; }
+.sub-contact { margin-top:22px; font-size:13px; color:var(--ink-soft); }
+.sub-contact a { color:var(--shu); text-decoration:none; }
+
+/* ---- フッター ---- */
+footer { background:var(--sumi); text-align:center; padding:44px 20px; border-top:1px solid rgba(201,169,97,.25); }
+footer .f-name { font-family:var(--mincho); letter-spacing:.4em; text-indent:.4em; font-size:15px; }
+footer .f-copy { font-size:11px; color:#7a725f; margin-top:10px; letter-spacing:.1em; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute"><defs><pattern id="asaLight" width="58.00" height="100.46" patternUnits="userSpaceOnUse"><g stroke="#8a7a55" stroke-opacity="0.1" stroke-width="1" fill="none"><line x1="0.00" y1="0.00" x2="58.00" y2="0.00"/><line x1="0.00" y1="0.00" x2="29.00" y2="16.74"/><line x1="58.00" y1="0.00" x2="29.00" y2="50.23"/><line x1="58.00" y1="0.00" x2="29.00" y2="16.74"/><line x1="29.00" y1="50.23" x2="0.00" y2="0.00"/><line x1="29.00" y1="50.23" x2="29.00" y2="16.74"/><line x1="-29.00" y1="50.23" x2="29.00" y2="50.23"/><line x1="-29.00" y1="50.23" x2="0.00" y2="33.49"/><line x1="29.00" y1="50.23" x2="0.00" y2="0.00"/><line x1="29.00" y1="50.23" x2="0.00" y2="33.49"/><line x1="0.00" y1="0.00" x2="-29.00" y2="50.23"/><line x1="0.00" y1="0.00" x2="0.00" y2="33.49"/><line x1="29.00" y1="50.23" x2="87.00" y2="50.23"/><line x1="29.00" y1="50.23" x2="58.00" y2="33.49"/><line x1="87.00" y1="50.23" x2="58.00" y2="0.00"/><line x1="87.00" y1="50.23" x2="58.00" y2="33.49"/><line x1="58.00" y1="0.00" x2="29.00" y2="50.23"/><line x1="58.00" y1="0.00" x2="58.00" y2="33.49"/><line x1="-29.00" y1="50.23" x2="29.00" y2="50.23"/><line x1="-29.00" y1="50.23" x2="0.00" y2="66.97"/><line x1="29.00" y1="50.23" x2="0.00" y2="100.46"/><line x1="29.00" y1="50.23" x2="0.00" y2="66.97"/><line x1="0.00" y1="100.46" x2="-29.00" y2="50.23"/><line x1="0.00" y1="100.46" x2="0.00" y2="66.97"/><line x1="29.00" y1="50.23" x2="87.00" y2="50.23"/><line x1="29.00" y1="50.23" x2="58.00" y2="66.97"/><line x1="87.00" y1="50.23" x2="58.00" y2="100.46"/><line x1="87.00" y1="50.23" x2="58.00" y2="66.97"/><line x1="58.00" y1="100.46" x2="29.00" y2="50.23"/><line x1="58.00" y1="100.46" x2="58.00" y2="66.97"/><line x1="0.00" y1="100.46" x2="58.00" y2="100.46"/><line x1="0.00" y1="100.46" x2="29.00" y2="83.72"/><line x1="58.00" y1="100.46" x2="29.00" y2="50.23"/><line x1="58.00" y1="100.46" x2="29.00" y2="83.72"/><line x1="29.00" y1="50.23" x2="0.00" y2="100.46"/><line x1="29.00" y1="50.23" x2="29.00" y2="83.72"/></g></pattern><pattern id="asaDark" width="58.00" height="100.46" patternUnits="userSpaceOnUse"><g stroke="#c9a961" stroke-opacity="0.07" stroke-width="1" fill="none"><line x1="0.00" y1="0.00" x2="58.00" y2="0.00"/><line x1="0.00" y1="0.00" x2="29.00" y2="16.74"/><line x1="58.00" y1="0.00" x2="29.00" y2="50.23"/><line x1="58.00" y1="0.00" x2="29.00" y2="16.74"/><line x1="29.00" y1="50.23" x2="0.00" y2="0.00"/><line x1="29.00" y1="50.23" x2="29.00" y2="16.74"/><line x1="-29.00" y1="50.23" x2="29.00" y2="50.23"/><line x1="-29.00" y1="50.23" x2="0.00" y2="33.49"/><line x1="29.00" y1="50.23" x2="0.00" y2="0.00"/><line x1="29.00" y1="50.23" x2="0.00" y2="33.49"/><line x1="0.00" y1="0.00" x2="-29.00" y2="50.23"/><line x1="0.00" y1="0.00" x2="0.00" y2="33.49"/><line x1="29.00" y1="50.23" x2="87.00" y2="50.23"/><line x1="29.00" y1="50.23" x2="58.00" y2="33.49"/><line x1="87.00" y1="50.23" x2="58.00" y2="0.00"/><line x1="87.00" y1="50.23" x2="58.00" y2="33.49"/><line x1="58.00" y1="0.00" x2="29.00" y2="50.23"/><line x1="58.00" y1="0.00" x2="58.00" y2="33.49"/><line x1="-29.00" y1="50.23" x2="29.00" y2="50.23"/><line x1="-29.00" y1="50.23" x2="0.00" y2="66.97"/><line x1="29.00" y1="50.23" x2="0.00" y2="100.46"/><line x1="29.00" y1="50.23" x2="0.00" y2="66.97"/><line x1="0.00" y1="100.46" x2="-29.00" y2="50.23"/><line x1="0.00" y1="100.46" x2="0.00" y2="66.97"/><line x1="29.00" y1="50.23" x2="87.00" y2="50.23"/><line x1="29.00" y1="50.23" x2="58.00" y2="66.97"/><line x1="87.00" y1="50.23" x2="58.00" y2="100.46"/><line x1="87.00" y1="50.23" x2="58.00" y2="66.97"/><line x1="58.00" y1="100.46" x2="29.00" y2="50.23"/><line x1="58.00" y1="100.46" x2="58.00" y2="66.97"/><line x1="0.00" y1="100.46" x2="58.00" y2="100.46"/><line x1="0.00" y1="100.46" x2="29.00" y2="83.72"/><line x1="58.00" y1="100.46" x2="29.00" y2="50.23"/><line x1="58.00" y1="100.46" x2="29.00" y2="83.72"/><line x1="29.00" y1="50.23" x2="0.00" y2="100.46"/><line x1="29.00" y1="50.23" x2="29.00" y2="83.72"/></g></pattern></defs></svg>
+
+<nav>
+  <a href="#apps">アプリ</a>
+  <a href="#career">来歴</a>
+  <a href="#work">制作依頼</a>
+</nav>
+
+<header class="hero">
+  <svg class="pat"><rect width="100%" height="100%" fill="url(#asaDark)"/></svg>
+  <div class="inner">
+    <div class="seal">匠</div>
+    <h1 id="site-name"></h1>
+    <div class="romaji" id="site-romaji"></div>
+    <div class="role" id="site-title"></div>
+    <p class="lead">19歳で南米ギアナの<b>外人部隊</b>、25歳で高野山の<b>宮大工</b>、52歳で<b>MENSA会員</b>。<br>
+    木を組んでいた手で、いまはAIとアプリを組む。</p>
+  </div>
+</header>
+
+<section id="apps">
+  <svg class="pat"><rect width="100%" height="100%" fill="url(#asaLight)"/></svg>
+  <div class="inner">
+    <div class="sec-head">
+      <div class="en">APPS</div>
+      <h2>開発アプリ</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="grid" id="app-grid"></div>
+  </div>
+</section>
+
+<section id="career">
+  <svg class="pat"><rect width="100%" height="100%" fill="url(#asaDark)"/></svg>
+  <div class="inner">
+    <div class="sec-head">
+      <div class="en">CAREER</div>
+      <h2>来歴</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<section id="work">
+  <svg class="pat"><rect width="100%" height="100%" fill="url(#asaLight)"/></svg>
+  <div class="inner">
+    <div class="sec-head">
+      <div class="en">CONTACT</div>
+      <h2>制作依頼</h2>
+      <div class="rule"></div>
+    </div>
+    <p class="copy">企画からリリースまで、AIを使った高速開発で<b>あなたのアプリも作ります</b>。<br>
+    アプリ開発のご相談、お仕事のご依頼はメールでお気軽にどうぞ。</p>
+    <a class="cta" id="mail-cta" href="#">依頼・相談する</a>
+    <div class="sub-contact" id="sub-contact"></div>
+  </div>
+</section>
+
+<footer>
+  <svg class="pat"><rect width="100%" height="100%" fill="url(#asaDark)"/></svg>
+  <div style="position:relative">
+    <div class="f-name" id="f-name"></div>
+    <div class="f-copy" id="f-copy"></div>
+  </div>
+</footer>
+
+<script>
+/* ---- 描画(ここから下は触らなくてOK) ---- */
+document.getElementById("site-name").textContent = SITE.name;
+document.getElementById("site-romaji").textContent = SITE.romaji.split("").join(" ");
+document.getElementById("site-title").textContent = SITE.title;
+document.getElementById("f-name").textContent = SITE.name;
+document.getElementById("f-copy").textContent = "© " + new Date().getFullYear() + " " + SITE.romaji + " — built with AI";
+document.getElementById("mail-cta").href = "mailto:" + SITE.email;
+document.title = SITE.name + " | " + SITE.title;
+
+const sub = document.getElementById("sub-contact");
+sub.innerHTML = '<a href="mailto:' + SITE.email + '">' + SITE.email + "</a>" +
+  (SITE.x_url ? ' &nbsp;/&nbsp; <a href="' + SITE.x_url + '" target="_blank" rel="noopener">X (Twitter)</a>' : "");
+
+document.getElementById("app-grid").innerHTML = APPS.map(a => `
+  <div class="card">
+    <div class="top"><span class="tag">${a.tag}</span><span class="status">${a.status}</span></div>
+    <h3>${a.name}</h3>
+    <p>${a.desc}</p>
+    ${a.url
+      ? `<a class="btn" href="${a.url}" target="_blank" rel="noopener">ストアで見る</a>`
+      : `<span class="btn disabled">リンク準備中</span>`}
+  </div>`).join("");
+
+document.getElementById("timeline").innerHTML = CAREER.map(c => `
+  <div class="tl-item"><h3>${c.t}</h3>${c.d ? `<p>${c.d}</p>` : ""}</div>`).join("");
+</script>
+</body>
+</html>
