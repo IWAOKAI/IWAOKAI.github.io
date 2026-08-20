@@ -136,7 +136,7 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
   <div class="n1" id="hFirst">150<small>兆円</small></div>
   <div class="ar">↓</div>
   <div class="l2" id="hLabel">12年目には</div>
-  <div class="n2" id="hLast">12.9<small>兆円</small></div>
+  <div class="n2" id="hLast">732<small>億円</small></div>
   <div class="note" id="hNote"></div>
 </div>
 
@@ -179,26 +179,18 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
 </section>
 
 <section class="card">
-  <h2><span class="dot"></span>年ごとの数字</h2>
-  <table>
-    <thead><tr><th>年</th><th>新しく必要<br>な予算</th><th>再利用</th><th>ひとり<br>ひと月</th></tr></thead>
-    <tbody id="tb"></tbody>
-  </table>
-</section>
-
-<section class="card">
   <h2><span class="dot"></span>設定を変える</h2>
   <div class="ctrl">
     <label for="S">毎年の予算<span class="val" id="Sv">150 兆円</span></label>
     <input type="number" id="S" value="150" min="1" step="10" inputmode="decimal">
   </div>
   <div class="ctrl">
-    <label>1年に減る割合<span class="val" id="dv">20 %</span></label>
+    <label>1年に減る割合<span class="val" id="dv">50 %</span></label>
     <div class="chips">
-      <button class="chip on" data-d="20">つじ健太郎 案　20%</button>
+      <button class="chip" data-d="20">つじ健太郎 案　20%</button>
       <button class="chip" data-d="10">ゆるやか　10%</button>
       <button class="chip" data-d="30">30%</button>
-      <button class="chip" data-d="50">半減期通貨　50%</button>
+      <button class="chip on" data-d="50">半減期通貨　50%</button>
     </div>
     <div class="hint" id="dHint"></div>
   </div>
@@ -208,8 +200,8 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
   <div class="pt">
     <h3>💡 なぜ、へっていくのでしょう</h3>
     <p>半減期通貨は、時間がたつと少しずつ価値がへります。<b>へったぶんは国庫にもどってきます。</b><br><br>
-    もどってきたお金は、そのまま来年の予算に使えます。だから1年目は満額の150兆円が要りますが、2年目は30兆円がもどっているので、新しく必要なのは120兆円。3年目は54兆円がもどるので96兆円。——<b>年を追うごとに、自前の財源が育っていく</b>のです。<br><br>
-    12年目には、新しく必要な予算は<b><span id="ptLast">12.9兆円</span></b>。1年目の<span id="ptPct">8.6</span>%まで小さくなります。それでも国民ひとりが受けとる額は、変わらず毎月10万円のままです。</p>
+    もどってきたお金は、そのまま来年の予算に使えます。だから1年目は満額の150兆円が要りますが、2年目は75兆円がもどっているので、新しく必要なのは75兆円。3年目は112.5兆円がもどるので37.5兆円。——<b>年を追うごとに、自前の財源が育っていく</b>のです。<br><br>
+    12年目には、新しく必要な予算は<b><span id="ptLast">732億円</span></b>。1年目の<span id="ptPct">0.0</span>%まで小さくなります。それでも国民ひとりが受けとる額は、変わらず毎月10万円のままです。</p>
   </div>
 </section>
 
@@ -228,7 +220,7 @@ const fmt=(n,x=1)=>n.toLocaleString('ja-JP',{minimumFractionDigits:x,maximumFrac
 const yen=v=> v>=1?fmt(v,1)+'<small>兆円</small>':fmt(v*10000,0)+'<small>億円</small>';
 const shortY=v=> v>=1?fmt(v,1)+'兆':fmt(v*10000,0)+'億';
 
-let S=150, d=0.20, H=12, cur=1, playing=false, timer=null;
+let S=150, d=0.50, H=12, cur=1, playing=false, timer=null;
 
 function calc(){
   const rows=[]; let B=0;
@@ -275,10 +267,6 @@ function render(){
 
   $('sNew').innerHTML=yen(r.neu);
   $('sRec').innerHTML=yen(r.rec);
-
-  $('tb').innerHTML=rows.map(x=>`<tr class="${x.y===cur?'cur':''}">
-    <td>${x.y}年</td><td>${shortY(x.neu)}円</td><td>${fmt(x.rec,1)}兆</td>
-    <td>${Math.round(perMonthYen(x.neu)).toLocaleString('ja-JP')}円</td></tr>`).join('');
 
   const perM=Math.round(S*1e12/POP/12);
   $('cPop').textContent='1億2500万人';
