@@ -112,9 +112,14 @@ nav a:hover { color:var(--gold); }
 .hero { background:var(--sumi); text-align:center; padding:130px 20px 90px; }
 .hero .seal {
   width:56px; height:56px; margin:0 auto 28px; background:var(--shu); border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--mincho); font-size:32px; color:var(--washi); font-weight:600;
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
+.hero .seal .kanji {
+  font-family:var(--mincho); font-size:32px; color:var(--washi); font-weight:600;
+  opacity:0; transform:translateY(10px);
+  transition:opacity .5s ease, transform .5s cubic-bezier(.34,1.56,.64,1);
+}
+.hero .seal.revealed .kanji { opacity:1; transform:translateY(0); }
 .hero h1 {
   font-family:var(--mincho); font-size:clamp(38px, 7vw, 64px); font-weight:600;
   letter-spacing:.3em; text-indent:.3em; color:var(--washi);
@@ -225,7 +230,7 @@ footer .f-copy { font-size:11px; color:#7a725f; margin-top:10px; letter-spacing:
 <header class="hero">
   <svg class="pat"><rect width="100%" height="100%" fill="url(#asaDark)"/></svg>
   <div class="inner">
-    <div class="seal"></div>
+    <div class="seal" id="seal"><span class="kanji">匠</span></div>
     <h1 id="site-name"></h1>
     <div class="romaji" id="site-romaji"></div>
     <div class="role" id="site-title"></div>
@@ -313,6 +318,10 @@ document.getElementById("app-grid").innerHTML = APPS.map(a => {
 
 document.getElementById("timeline").innerHTML = CAREER.map(c => `
   <div class="tl-item"><h3>${c.t}</h3>${c.d ? `<p>${c.d}</p>` : ""}</div>`).join("");
+
+document.getElementById("seal").addEventListener("click", function(){
+  this.classList.toggle("revealed");
+});
 </script>
 </body>
 </html>
