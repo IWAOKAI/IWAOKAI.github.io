@@ -135,7 +135,7 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
   <div class="l1">1年目に新しく必要な予算</div>
   <div class="n1" id="hFirst">150<small>兆円</small></div>
   <div class="ar">↓</div>
-  <div class="l2" id="hLabel">12年目には</div>
+  <div class="l2" id="hLabel">12年後には</div>
   <div class="n2" id="hLast">732<small>億円</small></div>
   <div class="note" id="hNote"></div>
 </div>
@@ -261,9 +261,9 @@ function render(){
 
   const r=rows[cur-1], first=rows[0], last=rows[H-1];
   $('hFirst').innerHTML=yen(first.neu);
-  $('hLabel').textContent=cur+'年目には';
-  $('hLast').innerHTML=yen(r.neu);
-  $('hNote').innerHTML=`1年目の <b>${fmt(r.neu/S*100,1)}%</b><br>それでも配る額は毎月10万円のまま`;
+  $('hLabel').textContent=H+'年後には';
+  $('hLast').innerHTML=yen(last.neu);
+  $('hNote').innerHTML=`1年目の <b>${fmt(last.neu/S*100,1)}%</b><br>それでも配る額は毎月10万円のまま`;
 
   $('sNew').innerHTML=yen(r.neu);
   $('sRec').innerHTML=yen(r.rec);
