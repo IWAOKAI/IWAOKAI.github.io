@@ -147,7 +147,8 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
     <div class="big">× <em id="cPop">1億2500万人</em></div>
     <div class="big">× 12か月</div>
     <div class="eq" id="cEq">＝ 1年で 150兆円</div>
-    <div class="sm">日本の人口 1億2500万人ぶん。ひとりあたり年120万円です。</div>
+    <div class="sm">日本の人口 1億2500万人ぶん。</div>
+    <div class="sm">ひとりあたり年120万円です。</div>
   </div>
 </section>
 
@@ -163,8 +164,6 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
   <div class="stats">
     <div class="st pk"><div class="k">この年に<br>新しく必要な予算</div><div class="v" id="sNew"></div></div>
     <div class="st mt"><div class="k">減価で<br>戻ってきた額</div><div class="v" id="sRec"></div></div>
-    <div class="st gp"><div class="k">ひとりあたり<br>ひと月の負担</div><div class="v" id="sPer"></div></div>
-    <div class="st gy"><div class="k">1年目とくらべて</div><div class="v" id="sRatio"></div></div>
   </div>
 
   <div class="btns">
@@ -198,8 +197,8 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
     <div class="chips">
       <button class="chip on" data-d="20">つじ健太郎 案　20%</button>
       <button class="chip" data-d="10">ゆるやか　10%</button>
-      <button class="chip" data-d="30">はやめ　30%</button>
-      <button class="chip" data-d="50">とても強い　50%</button>
+      <button class="chip" data-d="30">30%</button>
+      <button class="chip" data-d="50">半減期通貨　50%</button>
     </div>
     <div class="hint" id="dHint"></div>
   </div>
@@ -276,8 +275,6 @@ function render(){
 
   $('sNew').innerHTML=yen(r.neu);
   $('sRec').innerHTML=yen(r.rec);
-  $('sPer').innerHTML=Math.round(perMonthYen(r.neu)).toLocaleString('ja-JP')+'<small>円</small>';
-  $('sRatio').innerHTML=fmt(r.neu/S*100,1)+'<small>%</small>';
 
   $('tb').innerHTML=rows.map(x=>`<tr class="${x.y===cur?'cur':''}">
     <td>${x.y}年</td><td>${shortY(x.neu)}円</td><td>${fmt(x.rec,1)}兆</td>
