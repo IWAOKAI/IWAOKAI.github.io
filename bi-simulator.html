@@ -2,516 +2,319 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BI×減価通貨シミュレーター | 甲斐 巌夫</title>
-<meta name="description" content="ベーシックインカムを減価通貨(デマレージ)で給付したら、必要予算はどう推移するか。人口・給付額・減価率・年数を動かして試せる政策思考実験ツール。">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>半減期通貨 必要予算シミュレーター | 甲斐 巌夫</title>
+<meta name="description" content="ベーシックインカムを半減期通貨（減価通貨）で給付したら、必要な予算は何年でどこまで圧縮されるか。年を進めながら体感できるシミュレーター。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23a63a22'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23f5f0e3' font-family='serif' font-weight='bold'%3E匠%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Kiwi+Maru:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    color-scheme: light;
-    --surface-0:      #f9f9f7;
-    --surface-1:      #fcfcfb;
-    --surface-card:   #ffffff;
-    --text-primary:   #0b0b0b;
-    --text-secondary: #52514e;
-    --text-muted:     #898781;
-    --grid:           #e1e0d9;
-    --baseline:       #c3c2b7;
-    --border:         rgba(11,11,11,0.10);
-    --series-1:       #2a78d6;   /* 新規予算 */
-    --series-1-wash:  rgba(42,120,214,.10);
-    --series-2:       #eb6834;   /* 還流(節約) */
-    --brand-shu:      #a63a22;
-    --brand-gold:     #c9a961;
-    --brand-sumi:     #211f1a;
-  }
-  [data-theme="dark"] {
-    color-scheme: dark;
-    --surface-0:      #0d0d0d;
-    --surface-1:      #1a1a19;
-    --surface-card:   #201f1c;
-    --text-primary:   #ffffff;
-    --text-secondary: #c3c2b7;
-    --text-muted:     #898781;
-    --grid:           #2c2c2a;
-    --baseline:       #383835;
-    --border:         rgba(255,255,255,0.10);
-    --series-1:       #3987e5;
-    --series-1-wash:  rgba(57,135,229,.14);
-    --series-2:       #d95926;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body {
-    background:var(--surface-0); color:var(--text-primary);
-    font-family: system-ui, -apple-system, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-    line-height:1.6; padding-bottom:64px;
-  }
-  a { color:inherit; }
+:root{--bg:#F3EEFF;--card:#fff;--ink:#2E2247;--ink2:#6F6392;--pink:#FF5C9E;--soda:#3DB8DE;
+  --mint:#159C6E;--grape:#6B48F0;--line:#E4DBFA;--gray:#B7ACD2}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:radial-gradient(circle at 12% 6%,#FFE9F3 0 20%,transparent 20.5%),
+  radial-gradient(circle at 90% 3%,#DFF7FF 0 16%,transparent 16.5%),var(--bg);
+  color:var(--ink);font-family:'M PLUS Rounded 1c',sans-serif;font-size:17px;line-height:1.8;
+  padding:20px 14px 48px;-webkit-text-size-adjust:100%}
+.wrap{max-width:640px;margin:0 auto}
 
-  header {
-    background:var(--brand-sumi); color:#f5f0e3;
-    padding:16px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px;
-    position:sticky; top:0; z-index:20; border-bottom:1px solid rgba(201,169,97,.25);
-  }
-  header .brand { display:flex; align-items:center; gap:10px; text-decoration:none; color:#f5f0e3; }
-  header .seal { width:28px; height:28px; background:var(--brand-shu); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; }
-  header .brand-text { font-size:13px; letter-spacing:.08em; }
-  header .brand-text small { display:block; font-size:10.5px; color:#b3a98f; letter-spacing:.05em; margin-top:2px; }
-  header .back { font-size:12.5px; color:#cfc7b2; text-decoration:none; letter-spacing:.05em; white-space:nowrap; }
-  @media (max-width:520px){
-    header { flex-wrap:wrap; row-gap:10px; }
-    header .brand-text { font-size:12px; }
-    header .back { display:none; }
-  }
-  header .back:hover { color:var(--brand-gold); }
-  #theme-toggle {
-    border:1px solid rgba(201,169,97,.4); background:transparent; color:#cfc7b2;
-    font-size:12px; padding:6px 12px; border-radius:20px; cursor:pointer; letter-spacing:.04em;
-  }
-  #theme-toggle:hover { border-color:var(--brand-gold); color:var(--brand-gold); }
+.backnav{text-align:center;margin-bottom:14px}
+.backnav a{font-size:14px;font-weight:800;color:var(--ink2);text-decoration:none;
+  display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;transition:background .15s}
+.backnav a:hover{background:#EAE3FF;color:var(--grape)}
 
-  .wrap { max-width:1040px; margin:0 auto; padding:0 20px; }
+header{text-align:center;margin-bottom:18px}
+.badge{display:inline-block;background:var(--grape);color:#fff;font-weight:800;font-size:15px;
+  padding:8px 20px;border-radius:999px;box-shadow:0 4px 0 #4E2FC7}
+h1{font-family:'Kiwi Maru',serif;font-size:clamp(26px,7vw,40px);margin-top:14px;line-height:1.4}
+h1 b{color:var(--pink);font-weight:500}
+.lede{font-size:16px;color:var(--ink2);margin-top:10px;font-weight:700;line-height:1.85}
 
-  .hero { padding:40px 0 8px; }
-  .hero .kicker { font-size:11.5px; letter-spacing:.3em; color:var(--brand-shu); font-weight:700; }
-  .hero h1 { font-size:clamp(22px,4vw,30px); font-weight:700; margin-top:10px; letter-spacing:.01em; }
-  .hero p { color:var(--text-secondary); margin-top:10px; max-width:640px; font-size:14.5px; }
+.card{background:var(--card);border-radius:24px;padding:20px 18px 22px;margin-bottom:16px;box-shadow:0 5px 0 var(--line)}
+.card h2{font-size:20px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:9px;line-height:1.5}
+.card h2 .dot{width:14px;height:14px;border-radius:50%;background:var(--soda);flex:0 0 auto}
 
-  .panel {
-    background:var(--surface-card); border:1px solid var(--border); border-radius:12px;
-    padding:24px; margin-top:28px;
-  }
-  .panel h2 { font-size:14px; letter-spacing:.06em; color:var(--text-secondary); font-weight:700; margin-bottom:18px; text-transform:uppercase; }
+/* ヒーロー */
+.hero{border-radius:24px;padding:24px 18px;color:#fff;text-align:center;margin-bottom:16px;
+  background:linear-gradient(135deg,#6B48F0,#FF5C9E);box-shadow:0 5px 0 #B8437F}
+.hero .l1{font-size:17px;font-weight:800;line-height:1.7}
+.hero .n1{font-family:'Kiwi Maru',serif;font-size:clamp(30px,8.6vw,46px);line-height:1.2;margin:2px 0 10px;
+  font-variant-numeric:tabular-nums}
+.hero .n1 small{font-size:.45em}
+.hero .ar{font-size:26px;line-height:1}
+.hero .l2{font-size:19px;font-weight:800;margin-top:8px}
+.hero .n2{font-family:'Kiwi Maru',serif;font-size:clamp(44px,14vw,74px);line-height:1.15;margin:2px 0;
+  font-variant-numeric:tabular-nums}
+.hero .n2 small{font-size:.34em}
+.hero .note{font-size:16px;font-weight:800;background:rgba(255,255,255,.24);border-radius:16px;
+  padding:9px 14px;display:inline-block;margin-top:10px;line-height:1.65}
 
-  /* controls */
-  .controls { display:grid; grid-template-columns:1fr 1fr; gap:22px 28px; }
-  @media (max-width:640px){ .controls { grid-template-columns:1fr; } }
-  .ctrl label { display:flex; justify-content:space-between; font-size:13.5px; font-weight:600; margin-bottom:8px; }
-  .ctrl label .val { color:var(--series-1); font-variant-numeric:tabular-nums; }
-  .ctrl input[type=range] {
-    width:100%; accent-color:var(--series-1); height:4px; cursor:pointer;
-  }
-  .ctrl .minmax { display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-top:4px; }
-  .mode-toggle { display:flex; gap:0; border:1px solid var(--border); border-radius:8px; overflow:hidden; width:fit-content; margin-top:6px; }
-  .mode-toggle button {
-    border:none; background:var(--surface-1); color:var(--text-secondary); font-size:13px;
-    padding:8px 18px; cursor:pointer; letter-spacing:.03em;
-  }
-  .mode-toggle button.active { background:var(--series-1); color:#fff; font-weight:700; }
+/* 内訳 */
+.calc{background:#FBF8FF;border-radius:18px;padding:16px 14px;text-align:center;line-height:2.1}
+.calc .big{font-size:clamp(19px,5.2vw,26px);font-weight:800;font-variant-numeric:tabular-nums}
+.calc .big em{font-style:normal;color:var(--grape)}
+.calc .eq{font-size:clamp(20px,5.6vw,28px);font-weight:800;color:var(--pink);margin-top:4px}
+.calc .sm{font-size:15px;font-weight:700;color:var(--ink2);margin-top:6px}
 
-  /* tiles */
-  .tiles { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:28px; }
-  @media (max-width:760px){ .tiles { grid-template-columns:repeat(2,1fr); } }
-  .tile { background:var(--surface-card); border:1px solid var(--border); border-radius:12px; padding:18px 20px; }
-  .tile .label { font-size:12px; color:var(--text-muted); letter-spacing:.03em; }
-  .tile .value { font-size:26px; font-weight:700; margin-top:8px; font-variant-numeric:normal; }
-  .tile .value .unit { font-size:14px; font-weight:600; color:var(--text-secondary); margin-left:2px; }
-  .tile .sub { font-size:12px; color:var(--text-muted); margin-top:6px; }
-  .tile.accent .value { color:var(--series-1); }
-  .tile.accent2 .value { color:var(--series-2); }
+/* 縦グラフ */
+.bars{display:flex;align-items:flex-end;gap:4px;height:230px;padding-top:26px}
+.col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;position:relative}
+.stack{width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;
+  border-radius:7px 7px 0 0;overflow:hidden;background:#F1EBFF}
+.seg{width:100%;transition:height .55s cubic-bezier(.34,1.3,.64,1)}
+.seg.neu{background:linear-gradient(#FF86B9,#FF5C9E)}
+.seg.rec{background:linear-gradient(#4FE0B4,#159C6E)}
+.col .yl{font-size:13px;font-weight:800;color:var(--ink2);margin-top:6px}
+.col.cur .yl{color:var(--pink);font-size:15px}
+.col .tip{position:absolute;top:-24px;font-size:13px;font-weight:800;color:var(--pink);white-space:nowrap;
+  opacity:0;transition:opacity .4s}
+.col.cur .tip{opacity:1}
+.col.off .stack{opacity:.2}
+.axis{text-align:center;font-size:14px;font-weight:800;color:var(--ink2);margin-top:4px}
 
-  /* chart */
-  .chart-head { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
-  .legend { display:flex; gap:18px; font-size:12.5px; color:var(--text-secondary); }
-  .legend .item { display:flex; align-items:center; gap:7px; }
-  .legend .key { width:16px; height:2px; border-radius:1px; display:inline-block; }
-  .legend .key.bar { width:10px; height:10px; border-radius:2px; }
-  .chart-wrap { position:relative; margin-top:10px; }
-  svg.chart { width:100%; height:auto; display:block; overflow:visible; }
-  .gridline { stroke:var(--grid); stroke-width:1; }
-  .axislabel { fill:var(--text-muted); font-size:10.5px; font-family:inherit; }
-  .bar-mark { fill:var(--series-1); }
-  .line-mark { fill:none; stroke:var(--series-2); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
-  .dot-mark { fill:var(--series-2); stroke:var(--surface-card); stroke-width:2; }
-  .crosshair { stroke:var(--baseline); stroke-width:1; stroke-dasharray:3 3; opacity:0; pointer-events:none; }
-  .hit { fill:transparent; cursor:pointer; }
+.legend{display:flex;gap:18px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.lg{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;color:var(--ink2)}
+.lg i{width:18px;height:18px;border-radius:5px;display:inline-block;flex:0 0 auto}
 
-  .tooltip {
-    position:absolute; pointer-events:none; background:var(--brand-sumi); color:#f5f0e3;
-    border-radius:8px; padding:10px 14px; font-size:12.5px; line-height:1.7; opacity:0;
-    transform:translate(-50%,-100%); transition:opacity .1s; white-space:nowrap; z-index:10;
-    box-shadow:0 8px 24px rgba(0,0,0,.25);
-  }
-  .tooltip .t-year { color:var(--brand-gold); font-weight:700; margin-bottom:2px; letter-spacing:.03em; }
-  .tooltip .t-row { display:flex; align-items:center; gap:7px; }
-  .tooltip .t-key { width:10px; height:2px; display:inline-block; border-radius:1px; }
-  .tooltip .t-val { font-weight:700; margin-left:auto; padding-left:14px; font-variant-numeric:tabular-nums; }
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px}
+.st{background:#FBF8FF;border-radius:16px;padding:14px 12px}
+.st .k{font-size:14px;font-weight:800;color:var(--ink2);line-height:1.5}
+.st .v{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:3px;line-height:1.35}
+.st .v small{font-size:14px;font-weight:700;color:var(--ink2);margin-left:2px}
+.st.pk .v{color:var(--pink)}.st.mt .v{color:var(--mint)}.st.gp .v{color:var(--grape)}.st.gy .v{color:var(--gray)}
 
-  /* table */
-  table { width:100%; min-width:560px; border-collapse:collapse; margin-top:8px; font-size:13px; }
-  th, td { text-align:right; padding:9px 10px; border-bottom:1px solid var(--border); font-variant-numeric:tabular-nums; }
-  th:first-child, td:first-child { text-align:left; font-variant-numeric:normal; }
-  th { color:var(--text-muted); font-weight:600; font-size:11.5px; letter-spacing:.03em; text-transform:uppercase; }
-  tbody tr:hover { background:var(--surface-1); }
-  .table-scroll { overflow-x:auto; margin-top:6px; }
+.btns{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+button{font-family:inherit;font-weight:800;font-size:18px;border:none;cursor:pointer;
+  padding:16px 14px;border-radius:16px;color:#fff;flex:1;min-width:120px;transition:transform .08s;line-height:1.4}
+button:active{transform:translateY(3px)}
+.b-play{background:var(--grape);box-shadow:0 5px 0 #4E2FC7}
+.b-next{background:var(--pink);box-shadow:0 5px 0 #CC3B78}
+.b-reset{background:#A99AD0;box-shadow:0 5px 0 #8A7BB5;flex:0 0 auto;min-width:100px}
+button:focus-visible{outline:4px solid var(--soda);outline-offset:2px}
 
-  .notes { font-size:12.5px; color:var(--text-muted); line-height:1.9; }
-  .notes li { margin-bottom:6px; margin-left:18px; }
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{padding:11px 6px;text-align:right;border-bottom:2px solid #EDE6FF}
+th{font-size:14px;color:var(--ink2);font-weight:800;line-height:1.5}
+td{font-weight:800;font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+tr.cur td{background:#FFEFF6;color:var(--pink)}
 
-  footer.page-footer { text-align:center; padding:40px 20px 10px; color:var(--text-muted); font-size:12px; }
-  footer.page-footer a { color:var(--brand-shu); text-decoration:none; }
+.ctrl{margin-bottom:18px}.ctrl:last-child{margin-bottom:0}
+.ctrl label{display:flex;justify-content:space-between;align-items:baseline;font-size:16px;font-weight:800;color:var(--ink2);margin-bottom:9px}
+.ctrl .val{font-size:20px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+input[type=number]{width:100%;font-family:inherit;font-weight:800;font-size:20px;padding:13px 15px;
+  border:3px solid var(--line);border-radius:16px;color:var(--ink);background:#FBF8FF}
+input:focus{outline:3px solid var(--soda);outline-offset:1px}
+.chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:11px}
+.chip{background:#FBF8FF;border:3px solid var(--line);color:var(--ink2);font-family:inherit;font-size:15px;
+  font-weight:800;padding:11px 15px;border-radius:999px;cursor:pointer;flex:0 0 auto;box-shadow:none;line-height:1.4}
+.chip.on{background:var(--grape);border-color:var(--grape);color:#fff}
+.hint{font-size:15px;color:var(--ink2);margin-top:10px;font-weight:700;line-height:1.8}
+
+.tsuji{background:#EEE9FF;border:3px solid #C9B8FF;border-radius:18px;padding:16px 15px;margin-top:18px}
+.tsuji h3{font-size:17px;font-weight:800;color:var(--grape);margin-bottom:7px}
+.tsuji p{font-size:15.5px;font-weight:700;line-height:1.85;color:var(--ink)}
+
+.pt{background:#FFF3F8;border:3px dashed #FFB3D2;border-radius:20px;padding:18px 16px}
+.pt h3{font-size:18px;font-weight:800;color:var(--pink);margin-bottom:10px}
+.pt p{font-size:16px;font-weight:700;line-height:1.95}
+footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:0 4px}
 </style>
 </head>
 <body>
+<div class="wrap">
+
+<div class="backnav"><a href="./">← アプリ一覧に戻る</a></div>
 
 <header>
-  <a class="brand" href="./">
-    <span class="seal">匠</span>
-    <span class="brand-text">甲斐 巌夫<small>AIアプリ開発者</small></span>
-  </a>
-  <div style="display:flex; align-items:center; gap:16px;">
-    <a class="back" href="./">← アプリ一覧に戻る</a>
-    <button id="theme-toggle" type="button">ダークモード</button>
-  </div>
+  <span class="badge">半減期通貨シミュレーター</span>
+  <h1>必要な予算は<br><b>年々へっていきます</b></h1>
+  <p class="lede">国民ひとりに毎月10万円。<br>1年で150兆円——でも、それが必要なのは最初だけです。</p>
 </header>
 
-<div class="wrap">
-  <div class="hero">
-    <div class="kicker">POLICY SIMULATOR</div>
-    <h1>BI × 減価通貨シミュレーター</h1>
-    <p>全国民にベーシックインカムを配り、通貨を周期ごとに一定率で減価させると何が起きるか。減価分を政府に還流させて翌期の給付原資に充てることで、新規に必要な予算がどこまで圧縮されるかを試算します。数値を動かすとリアルタイムに再計算されます。</p>
-  </div>
-
-  <div class="panel">
-    <h2>パラメータ</h2>
-    <div class="controls">
-      <div class="ctrl">
-        <label>人口 <span class="val" id="v-pop"></span></label>
-        <input type="range" id="s-pop" min="50000000" max="200000000" step="1000000" value="150000000">
-        <div class="minmax"><span>5,000万人</span><span>2億人</span></div>
-      </div>
-      <div class="ctrl">
-        <label>月額給付 <span class="val" id="v-monthly"></span></label>
-        <input type="range" id="s-monthly" min="10000" max="300000" step="10000" value="100000">
-        <div class="minmax"><span>1万円</span><span>30万円</span></div>
-      </div>
-      <div class="ctrl">
-        <label>減価率(周期あたり) <span class="val" id="v-decay"></span></label>
-        <input type="range" id="s-decay" min="0" max="50" step="1" value="20">
-        <div class="minmax"><span>0%</span><span>50%</span></div>
-      </div>
-      <div class="ctrl">
-        <label>試算年数 <span class="val" id="v-years"></span></label>
-        <input type="range" id="s-years" min="2" max="20" step="1" value="10">
-        <div class="minmax"><span>2年</span><span>20年</span></div>
-      </div>
-      <div class="ctrl">
-        <label>減価の周期</label>
-        <div class="mode-toggle">
-          <button type="button" id="mode-annual" class="active">年次</button>
-          <button type="button" id="mode-monthly">月次</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="tiles">
-    <div class="tile accent">
-      <div class="label">初年度 必要予算</div>
-      <div class="value" id="t-y1">—</div>
-      <div class="sub">給付総額(額面)と同額</div>
-    </div>
-    <div class="tile accent">
-      <div class="label">2年度 必要予算</div>
-      <div class="value" id="t-y2">—</div>
-      <div class="sub" id="t-y2sub">—</div>
-    </div>
-    <div class="tile accent2">
-      <div class="label" id="t-cum-label">累計圧縮効果</div>
-      <div class="value" id="t-cum">—</div>
-      <div class="sub" id="t-cum-sub">—</div>
-    </div>
-    <div class="tile">
-      <div class="label">半減期</div>
-      <div class="value" id="t-half">—</div>
-      <div class="sub">通貨の額面価値が半分になるまで</div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <div class="chart-head">
-      <h2 style="margin-bottom:0;">予算の推移</h2>
-      <div class="legend">
-        <span class="item"><span class="key bar" style="background:var(--series-1)"></span>新規予算(実際の支出)</span>
-        <span class="item"><span class="key" style="background:var(--series-2)"></span>還流による節約額</span>
-      </div>
-    </div>
-    <div class="chart-wrap" id="chart-wrap">
-      <svg class="chart" id="chart" viewBox="0 0 960 360" preserveAspectRatio="xMidYMid meet"></svg>
-      <div class="tooltip" id="tooltip"></div>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>年次データ</h2>
-    <div class="table-scroll">
-      <table>
-        <thead><tr>
-          <th>年度</th><th>新規予算</th><th>還流(節約)額</th><th>給付総額(不変)</th><th>圧縮率</th><th>累計新規予算</th>
-        </tr></thead>
-        <tbody id="table-body"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h2>モデルの前提と限界</h2>
-    <ul class="notes">
-      <li>額面ベースの単純化モデルです。インフレ・実質購買力の変動、財源(税)側の設計、行動変容(駆け込み消費・貯蓄回避など)は考慮していません。</li>
-      <li>毎期の給付総額(額面) = 人口 × 月額給付 × 12 で一定と仮定し、前期の減価還流分だけ新規予算を圧縮できるものとして試算しています。</li>
-      <li>月次モードは同じ減価率を月単位の周期に適用するため、還流サイクルが速く、年次モードより自給化が急速に進みます。</li>
-      <li>思考実験・政策シミュレーションのためのツールであり、実際の財政・金融政策の予測や提言を目的としたものではありません。</li>
-    </ul>
-  </div>
+<div class="hero">
+  <div class="l1">1年目に新しく必要な予算</div>
+  <div class="n1" id="hFirst">150<small>兆円</small></div>
+  <div class="ar">↓</div>
+  <div class="l2" id="hLabel">12年目には</div>
+  <div class="n2" id="hLast">12.9<small>兆円</small></div>
+  <div class="note" id="hNote"></div>
 </div>
 
-<footer class="page-footer">
-  <a href="./">← 甲斐 巌夫のアプリ一覧に戻る</a>
+<section class="card">
+  <h2><span class="dot"></span>150兆円って、なんの数字？</h2>
+  <div class="calc">
+    <div class="big">ひとり <em>毎月 10万円</em></div>
+    <div class="big">× <em id="cPop">1億2500万人</em></div>
+    <div class="big">× 12か月</div>
+    <div class="eq" id="cEq">＝ 1年で 150兆円</div>
+    <div class="sm">日本の人口 1億2500万人ぶん。ひとりあたり年120万円です。</div>
+  </div>
+</section>
+
+<section class="card">
+  <h2><span class="dot"></span>12年間の必要予算</h2>
+  <div class="bars" id="bars"></div>
+  <div class="axis">（年）</div>
+  <div class="legend">
+    <span class="lg"><i style="background:var(--pink)"></i>新しく必要な予算</span>
+    <span class="lg"><i style="background:var(--mint)"></i>戻ってきたお金の再利用</span>
+  </div>
+
+  <div class="stats">
+    <div class="st pk"><div class="k">この年に<br>新しく必要な予算</div><div class="v" id="sNew"></div></div>
+    <div class="st mt"><div class="k">減価で<br>戻ってきた額</div><div class="v" id="sRec"></div></div>
+    <div class="st gp"><div class="k">ひとりあたり<br>ひと月の負担</div><div class="v" id="sPer"></div></div>
+    <div class="st gy"><div class="k">1年目とくらべて</div><div class="v" id="sRatio"></div></div>
+  </div>
+
+  <div class="btns">
+    <button class="b-play" id="btnPlay">▶ 年を進める</button>
+    <button class="b-next" id="btnNext">＋1年</button>
+    <button class="b-reset" id="btnReset">↺ 最初へ</button>
+  </div>
+
+  <div class="tsuji">
+    <h3>◆ 減価率のこと（つじ健太郎 案）</h3>
+    <p>ここで使っている「1年に<span id="tsA">20</span>%ずつ減るお金」という設定は、<b>つじ健太郎 案</b>にもとづくものです。半減期にすると約<span id="tsB">3.1</span>年。下のボタンで他の設定とくらべられます。</p>
+  </div>
+</section>
+
+<section class="card">
+  <h2><span class="dot"></span>年ごとの数字</h2>
+  <table>
+    <thead><tr><th>年</th><th>新しく必要<br>な予算</th><th>再利用</th><th>ひとり<br>ひと月</th></tr></thead>
+    <tbody id="tb"></tbody>
+  </table>
+</section>
+
+<section class="card">
+  <h2><span class="dot"></span>設定を変える</h2>
+  <div class="ctrl">
+    <label for="S">毎年の予算<span class="val" id="Sv">150 兆円</span></label>
+    <input type="number" id="S" value="150" min="1" step="10" inputmode="decimal">
+  </div>
+  <div class="ctrl">
+    <label>1年に減る割合<span class="val" id="dv">20 %</span></label>
+    <div class="chips">
+      <button class="chip on" data-d="20">つじ健太郎 案　20%</button>
+      <button class="chip" data-d="10">ゆるやか　10%</button>
+      <button class="chip" data-d="30">はやめ　30%</button>
+      <button class="chip" data-d="50">とても強い　50%</button>
+    </div>
+    <div class="hint" id="dHint"></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="pt">
+    <h3>💡 なぜ、へっていくのでしょう</h3>
+    <p>半減期通貨は、時間がたつと少しずつ価値がへります。<b>へったぶんは国庫にもどってきます。</b><br><br>
+    もどってきたお金は、そのまま来年の予算に使えます。だから1年目は満額の150兆円が要りますが、2年目は30兆円がもどっているので、新しく必要なのは120兆円。3年目は54兆円がもどるので96兆円。——<b>年を追うごとに、自前の財源が育っていく</b>のです。<br><br>
+    12年目には、新しく必要な予算は<b><span id="ptLast">12.9兆円</span></b>。1年目の<span id="ptPct">8.6</span>%まで小さくなります。それでも国民ひとりが受けとる額は、変わらず毎月10万円のままです。</p>
+  </div>
+</section>
+
+<footer>
+  計算のしかた：ｎ年目に減価でもどる額 ＝ 減る割合 × 前の年の終わりの流通残高。新しく必要な予算 ＝ 毎年の予算 − もどってきた額。新しく必要な予算は毎年 (1−減る割合) 倍になり、流通残高は「毎年の予算 ÷ 減る割合」に落ちついていきます。<br>
+  ご注意：必要な予算が小さくなるのは、世の中に出まわるお金がたまっていき、その減価が予算をささえるようになるためです。負担がなくなるわけではなく、<b>お金を持っている人の減価負担</b>に置きかわります。輸入や海外への流出は計算に入れていません。
 </footer>
+
+</div>
 
 <script>
 (function(){
-  "use strict";
+const $=id=>document.getElementById(id);
+const POP=125000000;
+const fmt=(n,x=1)=>n.toLocaleString('ja-JP',{minimumFractionDigits:x,maximumFractionDigits:x});
+const yen=v=> v>=1?fmt(v,1)+'<small>兆円</small>':fmt(v*10000,0)+'<small>億円</small>';
+const shortY=v=> v>=1?fmt(v,1)+'兆':fmt(v*10000,0)+'億';
 
-  // ---------- theme ----------
-  var root = document.documentElement;
-  var themeBtn = document.getElementById('theme-toggle');
-  function applyTheme(t){
-    if (t === 'dark') { root.setAttribute('data-theme','dark'); themeBtn.textContent = 'ライトモード'; }
-    else { root.removeAttribute('data-theme'); themeBtn.textContent = 'ダークモード'; }
+let S=150, d=0.20, H=12, cur=1, playing=false, timer=null;
+
+function calc(){
+  const rows=[]; let B=0;
+  for(let y=1;y<=H;y++){
+    const rec=Math.min(S,d*B);
+    const neu=Math.max(0,S-rec);
+    B=B-d*B+S;
+    rows.push({y,rec,neu});
   }
-  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(prefersDark ? 'dark' : 'light');
-  themeBtn.addEventListener('click', function(){
-    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-    render();
+  return {rows, hl:Math.log(2)/Math.log(1/(1-d))};
+}
+function perMonthYen(cho){ return cho*1e12/POP/12; }
+
+function build(){
+  const box=$('bars'); box.innerHTML='';
+  for(let y=1;y<=H;y++){
+    const c=document.createElement('div');
+    c.className='col off';
+    c.innerHTML=`<div class="tip"></div><div class="stack">
+      <div class="seg neu" style="height:0%"></div><div class="seg rec" style="height:0%"></div>
+    </div><div class="yl">${y}</div>`;
+    box.appendChild(c);
+  }
+}
+
+function render(){
+  const {rows,hl}=calc();
+  const cols=[...document.querySelectorAll('.col')];
+  rows.forEach((r,i)=>{
+    const c=cols[i]; if(!c) return;
+    const on=i<cur;
+    c.classList.toggle('off',!on);
+    c.classList.toggle('cur',i===cur-1);
+    c.querySelector('.seg.neu').style.height=on?(r.neu/S*100)+'%':'0%';
+    c.querySelector('.seg.rec').style.height=on?(r.rec/S*100)+'%':'0%';
+    c.querySelector('.tip').textContent=shortY(r.neu);
   });
 
-  // ---------- state ----------
-  var els = {
-    pop: document.getElementById('s-pop'),
-    monthly: document.getElementById('s-monthly'),
-    decay: document.getElementById('s-decay'),
-    years: document.getElementById('s-years'),
-  };
-  var mode = 'annual';
-  document.getElementById('mode-annual').addEventListener('click', function(){ setMode('annual'); });
-  document.getElementById('mode-monthly').addEventListener('click', function(){ setMode('monthly'); });
-  function setMode(m){
-    mode = m;
-    document.getElementById('mode-annual').classList.toggle('active', m==='annual');
-    document.getElementById('mode-monthly').classList.toggle('active', m==='monthly');
-    render();
-  }
+  const r=rows[cur-1], first=rows[0], last=rows[H-1];
+  $('hFirst').innerHTML=yen(first.neu);
+  $('hLabel').textContent=cur+'年目には';
+  $('hLast').innerHTML=yen(r.neu);
+  $('hNote').innerHTML=`1年目の <b>${fmt(r.neu/S*100,1)}%</b><br>それでも配る額は毎月10万円のまま`;
 
-  // ---------- formatting ----------
-  function fmtYen(v){
-    var abs = Math.abs(v);
-    if (abs >= 1e12) return (v/1e12).toLocaleString('ja-JP',{maximumFractionDigits:1,minimumFractionDigits:1}) + '兆円';
-    if (abs >= 1e8)  return (v/1e8).toLocaleString('ja-JP',{maximumFractionDigits:1,minimumFractionDigits:1}) + '億円';
-    if (abs >= 1e4)  return (v/1e4).toLocaleString('ja-JP',{maximumFractionDigits:0}) + '万円';
-    return Math.round(v).toLocaleString('ja-JP') + '円';
-  }
-  function fmtYenShort(v){
-    var abs = Math.abs(v);
-    if (abs >= 1e12) return (v/1e12).toLocaleString('ja-JP',{maximumFractionDigits:1,minimumFractionDigits:1});
-    if (abs >= 1e8)  return (v/1e8).toLocaleString('ja-JP',{maximumFractionDigits:1,minimumFractionDigits:1});
-    return Math.round(v/1e4).toLocaleString('ja-JP');
-  }
-  function fmtPct(v){ return (v*100).toLocaleString('ja-JP',{maximumFractionDigits:1,minimumFractionDigits:1}) + '%'; }
-  function fmtInt(v){ return Math.round(v).toLocaleString('ja-JP'); }
+  $('sNew').innerHTML=yen(r.neu);
+  $('sRec').innerHTML=yen(r.rec);
+  $('sPer').innerHTML=Math.round(perMonthYen(r.neu)).toLocaleString('ja-JP')+'<small>円</small>';
+  $('sRatio').innerHTML=fmt(r.neu/S*100,1)+'<small>%</small>';
 
-  // ---------- model ----------
-  function calc(pop, monthly, d, years, mode){
-    var faceAnnual = pop * monthly * 12;
-    var rows = [];
-    if (mode === 'annual'){
-      for (var y=1; y<=years; y++){
-        var nb = faceAnnual * Math.pow(1-d, y-1);
-        rows.push({ year:y, newBudget:nb, faceTotal:faceAnnual, savings:faceAnnual-nb });
-      }
-    } else {
-      var faceMonthly = pop * monthly;
-      for (var y2=1; y2<=years; y2++){
-        var sum = 0;
-        for (var mm=1; mm<=12; mm++){
-          var m = (y2-1)*12 + mm;
-          sum += faceMonthly * Math.pow(1-d, m-1);
-        }
-        rows.push({ year:y2, newBudget:sum, faceTotal:faceAnnual, savings:faceAnnual-sum });
-      }
-    }
-    var cum = 0, cumFace = 0;
-    rows.forEach(function(r){ cum += r.newBudget; cumFace += r.faceTotal; r.cumBudget = cum; r.cumFace = cumFace; r.cumSavings = cumFace - cum; r.compressionPct = r.savings / r.faceTotal; });
-    var halfLife = d > 0 ? Math.log(0.5)/Math.log(1-d) : null;
-    return { rows:rows, halfLife:halfLife, faceAnnual:faceAnnual };
-  }
+  $('tb').innerHTML=rows.map(x=>`<tr class="${x.y===cur?'cur':''}">
+    <td>${x.y}年</td><td>${shortY(x.neu)}円</td><td>${fmt(x.rec,1)}兆</td>
+    <td>${Math.round(perMonthYen(x.neu)).toLocaleString('ja-JP')}円</td></tr>`).join('');
 
-  // ---------- render ----------
-  var svgNS = 'http://www.w3.org/2000/svg';
-  function el(tag, attrs){
-    var e = document.createElementNS(svgNS, tag);
-    for (var k in attrs) e.setAttribute(k, attrs[k]);
-    return e;
-  }
+  const perM=Math.round(S*1e12/POP/12);
+  $('cPop').textContent='1億2500万人';
+  $('cEq').textContent='＝ 1年で '+fmt(S,0)+'兆円';
+  $('Sv').textContent=fmt(S,0)+' 兆円';
+  $('dv').textContent=Math.round(d*100)+' %';
+  $('dHint').innerHTML=`1年に ${Math.round(d*100)}% 減る ＝ 半減期およそ <b>${fmt(hl,1)}年</b>。`
+    +`新しく必要な予算は、毎年 <b>${Math.round((1-d)*100)}%</b> の大きさになっていきます。`;
+  $('tsA').textContent=Math.round(d*100);
+  $('tsB').textContent=fmt(hl,1);
+  $('ptLast').textContent=shortY(last.neu)+'円';
+  $('ptPct').textContent=fmt(last.neu/S*100,1);
+}
 
-  var tooltip = document.getElementById('tooltip');
-  var chartWrap = document.getElementById('chart-wrap');
+function step(){ if(cur<H){cur++;render();} else stop(); }
+function stop(){ playing=false; clearInterval(timer); $('btnPlay').textContent='▶ 年を進める'; }
 
-  function render(){
-    var pop = +els.pop.value, monthly = +els.monthly.value, decay = +els.decay.value/100, years = +els.years.value;
-    document.getElementById('v-pop').textContent = (pop/1e8).toLocaleString('ja-JP',{maximumFractionDigits:2}) + '億人';
-    document.getElementById('v-monthly').textContent = fmtYen(monthly).replace('万円','万円').replace(/円$/, monthly>=10000?'':'円');
-    document.getElementById('v-monthly').textContent = monthly>=10000 ? (monthly/10000)+'万円' : monthly.toLocaleString('ja-JP')+'円';
-    document.getElementById('v-decay').textContent = Math.round(decay*100) + '%';
-    document.getElementById('v-years').textContent = years + '年';
+$('btnPlay').addEventListener('click',()=>{
+  if(playing){stop();return;}
+  if(cur>=H){cur=1;render();}
+  playing=true; $('btnPlay').textContent='⏸ とめる';
+  timer=setInterval(step,950);
+});
+$('btnNext').addEventListener('click',()=>{stop();step();});
+$('btnReset').addEventListener('click',()=>{stop();cur=1;render();});
+$('S').addEventListener('input',e=>{S=Math.max(1,+e.target.value||1);stop();cur=1;render();});
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  d=+c.dataset.d/100;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));
+  stop();cur=1;render();
+}));
 
-    var res = calc(pop, monthly, decay, years, mode);
-    var rows = res.rows;
-
-    // tiles
-    document.getElementById('t-y1').innerHTML = fmtYenShort(rows[0].newBudget) + '<span class="unit">' + unitLabel(rows[0].newBudget) + '</span>';
-    if (rows.length > 1){
-      document.getElementById('t-y2').innerHTML = fmtYenShort(rows[1].newBudget) + '<span class="unit">' + unitLabel(rows[1].newBudget) + '</span>';
-      document.getElementById('t-y2sub').textContent = '初年度比 ' + fmtPct(1 - rows[1].newBudget/rows[0].newBudget) + ' 圧縮';
-    } else {
-      document.getElementById('t-y2').textContent = '—';
-      document.getElementById('t-y2sub').textContent = '試算年数を2年以上にしてください';
-    }
-    var last = rows[rows.length-1];
-    document.getElementById('t-cum-label').textContent = years + '年間の累計圧縮効果';
-    document.getElementById('t-cum').innerHTML = fmtYenShort(last.cumSavings) + '<span class="unit">' + unitLabel(last.cumSavings) + '</span>';
-    document.getElementById('t-cum-sub').textContent = '累計給付総額の ' + fmtPct(last.cumFace>0 ? last.cumSavings/last.cumFace : 0) + ' を新規発行なしで賄えた計算';
-    document.getElementById('t-half').textContent = res.halfLife ? res.halfLife.toLocaleString('ja-JP',{maximumFractionDigits:1}) + '年' : '—(減価なし)';
-
-    renderChart(rows);
-    renderTable(rows);
-  }
-  function unitLabel(v){
-    var abs = Math.abs(v);
-    if (abs >= 1e12) return '兆円';
-    if (abs >= 1e8) return '億円';
-    return '万円';
-  }
-
-  function renderChart(rows){
-    var svg = document.getElementById('chart');
-    svg.innerHTML = '';
-    var W = 960, H = 360;
-    var padL = 56, padR = 16, padT = 16, padB = 34;
-    var plotW = W - padL - padR, plotH = H - padT - padB;
-    var n = rows.length;
-    var maxVal = Math.max.apply(null, rows.map(function(r){ return r.faceTotal; })) * 1.08;
-    var colW = plotW / n;
-    var barW = Math.min(24, colW * 0.5);
-
-    function yScale(v){ return padT + plotH - (v/maxVal)*plotH; }
-    function xCenter(i){ return padL + colW*i + colW/2; }
-
-    // gridlines + y ticks
-    var ticks = 4;
-    for (var t=0; t<=ticks; t++){
-      var val = maxVal * t/ticks;
-      var y = yScale(val);
-      svg.appendChild(el('line', { class:'gridline', x1:padL, x2:W-padR, y1:y, y2:y }));
-      var lab = el('text', { class:'axislabel', x:padL-8, y:y+3, 'text-anchor':'end' });
-      lab.textContent = fmtYenShort(val) + unitLabel(maxVal||1);
-      svg.appendChild(lab);
-    }
-    // baseline
-    svg.appendChild(el('line', { x1:padL, x2:W-padR, y1:yScale(0), y2:yScale(0), stroke:'var(--baseline)', 'stroke-width':1 }));
-
-    // x labels (sparse if many years)
-    var xLabelStep = n > 14 ? 2 : 1;
-    rows.forEach(function(r, i){
-      if (i % xLabelStep !== 0 && i !== n-1) return;
-      var lab = el('text', { class:'axislabel', x:xCenter(i), y:H-padB+18, 'text-anchor':'middle' });
-      lab.textContent = r.year + '年';
-      svg.appendChild(lab);
-    });
-
-    // bars (新規予算)
-    rows.forEach(function(r, i){
-      var x = xCenter(i) - barW/2;
-      var yTop = yScale(r.newBudget);
-      var h = yScale(0) - yTop;
-      if (h < 1) h = 1;
-      var rect = el('rect', {
-        class:'bar-mark hit-bar', x:x, y:yTop, width:barW, height:h, rx:4, ry:4,
-        'data-i': i
-      });
-      svg.appendChild(rect);
-    });
-
-    // line (savings)
-    var pts = rows.map(function(r,i){ return xCenter(i) + ',' + yScale(r.savings); }).join(' ');
-    svg.appendChild(el('polyline', { class:'line-mark', points:pts }));
-    rows.forEach(function(r,i){
-      if (i===0 || i===n-1 || n<=8){
-        svg.appendChild(el('circle', { class:'dot-mark', cx:xCenter(i), cy:yScale(r.savings), r:4 }));
-      }
-    });
-
-    // crosshair
-    var crosshair = el('line', { class:'crosshair', x1:0, x2:0, y1:padT, y2:H-padB });
-    svg.appendChild(crosshair);
-
-    // hit columns for hover
-    rows.forEach(function(r, i){
-      var hit = el('rect', { class:'hit', x:padL+colW*i, y:padT, width:colW, height:plotH, 'data-i':i });
-      hit.addEventListener('pointerenter', function(){ showTip(i); });
-      hit.addEventListener('pointermove', function(){ showTip(i); });
-      hit.addEventListener('pointerleave', hideTip);
-      hit.addEventListener('focus', function(){ showTip(i); });
-      hit.addEventListener('blur', hideTip);
-      hit.setAttribute('tabindex','0');
-      svg.appendChild(hit);
-    });
-
-    function showTip(i){
-      var r = rows[i];
-      crosshair.setAttribute('x1', xCenter(i)); crosshair.setAttribute('x2', xCenter(i)); crosshair.style.opacity = 1;
-      tooltip.innerHTML =
-        '<div class="t-year">' + r.year + '年目</div>' +
-        '<div class="t-row"><span class="t-key" style="background:var(--series-1)"></span>新規予算<span class="t-val">' + fmtYen(r.newBudget) + '</span></div>' +
-        '<div class="t-row"><span class="t-key" style="background:var(--series-2)"></span>還流(節約)額<span class="t-val">' + fmtYen(r.savings) + '</span></div>' +
-        '<div class="t-row"><span class="t-key" style="background:var(--text-muted)"></span>給付総額<span class="t-val">' + fmtYen(r.faceTotal) + '</span></div>';
-      var pct = i/(rows.length-1||1);
-      var wrapRect = chartWrap.getBoundingClientRect();
-      var px = (xCenter(i)/W) * wrapRect.width;
-      var py = (yScale(r.newBudget)/H) * wrapRect.height;
-      tooltip.style.left = px + 'px';
-      tooltip.style.top = Math.max(py-10, 20) + 'px';
-      tooltip.style.opacity = 1;
-    }
-    function hideTip(){ tooltip.style.opacity = 0; crosshair.style.opacity = 0; }
-  }
-
-  function renderTable(rows){
-    var tbody = document.getElementById('table-body');
-    tbody.innerHTML = '';
-    rows.forEach(function(r){
-      var tr = document.createElement('tr');
-      [
-        r.year + '年目',
-        fmtYen(r.newBudget),
-        fmtYen(r.savings),
-        fmtYen(r.faceTotal),
-        fmtPct(r.compressionPct),
-        fmtYen(r.cumBudget)
-      ].forEach(function(txt){
-        var td = document.createElement('td');
-        td.textContent = txt;
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-    });
-  }
-
-  Object.keys(els).forEach(function(k){ els[k].addEventListener('input', render); });
-  window.addEventListener('resize', render);
-  render();
+build(); render();
 })();
 </script>
 </body>
