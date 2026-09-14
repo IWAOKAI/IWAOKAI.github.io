@@ -131,7 +131,52 @@ body{
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 .opts.locked .opt{cursor:default}
 
-.ctrl{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.ctrl{display:flex;justify-content:space-between;gap:8px;margin-top:18px;flex-wrap:wrap}
+
+/* ===== explanation ===== */
+.expl{
+  margin-top:16px;background:var(--paper);border-radius:var(--r);padding:16px 15px;
+  box-shadow:0 8px 24px rgba(90,70,120,.10);border:2px solid var(--ok);
+  animation:slideUp .28s ease both;
+}
+.expl.bad{border-color:var(--ng)}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.ehead{font-weight:800;font-size:17px;color:var(--ok);margin-bottom:4px}
+.expl.bad .ehead{color:var(--ng)}
+.esub{font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:11px}
+.elist{margin:0;padding:0;list-style:none}
+.elist li{
+  font-size:13.5px;line-height:1.85;color:#43455c;font-weight:700;
+  background:#f7f6fb;border-radius:12px;padding:9px 12px;margin-bottom:7px;
+}
+.elist li b{color:var(--ink);background:#ffeec2;border-radius:5px;padding:0 4px}
+.etail{font-size:12px;color:#8d90a6;line-height:1.7;margin:2px 0 0}
+.expl .btn{display:block;width:100%;margin-top:13px}
+
+/* ===== review ===== */
+.revhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.revhead h2{margin:0;font-size:19px}
+.revfilter{font-size:12px;font-weight:800;color:var(--ink2);background:#fff;border:2px solid #e6e1ef;border-radius:999px;padding:7px 14px;cursor:pointer;font-family:var(--font)}
+.revfilter.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ritem{background:var(--paper);border-radius:16px;margin-bottom:8px;overflow:hidden;box-shadow:0 3px 10px rgba(90,70,120,.07)}
+.rbtn{
+  width:100%;display:flex;align-items:center;gap:9px;padding:12px 14px;background:none;border:none;
+  cursor:pointer;font-family:var(--font);text-align:left;
+}
+.rbtn .rq{font-weight:800;font-size:13.5px;width:3.4em;flex:none}
+.rbtn .rt{font-size:10.5px;font-weight:800;color:#fff;border-radius:999px;padding:3px 9px;flex:none}
+.rbtn .rm{margin-left:auto;font-size:16px;font-weight:800;flex:none}
+.rbtn .rm.o{color:var(--ok)} .rbtn .rm.x{color:var(--ng)}
+.rbody{padding:0 14px 14px;display:none}
+.ritem.open .rbody{display:block}
+.rmini{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:210px;margin:0 auto 12px}
+.rmini .mcell{border-radius:7px}
+.rpick{display:flex;gap:10px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.rpick figure{margin:0;text-align:center}
+.rpick .pc{width:56px;height:56px;border:2px solid var(--line);border-radius:12px;background:#fbfbfd;padding:3px}
+.rpick .pc.o{border-color:var(--ok);background:#eafaf3}
+.rpick .pc.x{border-color:var(--ng);background:#fdeef1}
+.rpick figcaption{font-size:10.5px;font-weight:800;color:var(--ink2);margin-top:4px}
 
 /* ===== result ===== */
 .rescard{background:var(--paper);border-radius:var(--r);padding:22px 18px;box-shadow:0 8px 24px rgba(90,70,120,.10);text-align:center}
@@ -212,10 +257,28 @@ body{
     </div>
     <p class="ask">？ に入るのは どれ？</p>
     <div class="opts" id="opts"></div>
+    <div class="expl" id="expl" hidden>
+      <div class="ehead" id="eHead">せいかい！</div>
+      <div class="esub" id="eSub"></div>
+      <ul class="elist" id="eList"></ul>
+      <p class="etail" id="eTail"></p>
+      <button class="btn" id="btnNext">つぎへ →</button>
+    </div>
     <div class="ctrl">
       <button class="btn ghost small" id="btnQuit">やめる</button>
+      <button class="btn ghost small" id="btnExpl">💡 解説 ON</button>
       <button class="btn ghost small" id="btnSound">🔊 音 ON</button>
     </div>
+  </section>
+
+  <!-- ========== REVIEW ========== -->
+  <section id="scReview" class="screen">
+    <div class="revhead">
+      <h2>解説</h2>
+      <button class="revfilter" id="btnOnlyWrong">まちがえた問題だけ</button>
+    </div>
+    <div id="reviewList"></div>
+    <button class="btn" id="btnReviewBack" style="display:block;width:100%;margin-top:14px">結果にもどる</button>
   </section>
 
   <!-- ========== RESULT ========== -->
@@ -237,6 +300,7 @@ body{
         ※ このスコアはIQ値ではありません。図形推理（マトリックス課題）の正答傾向を、難易度で重みづけして点数化したものです。
       </div>
       <div class="resbtns">
+        <button class="btn blue" id="btnReview">💡 全50問の解説を見る</button>
         <button class="btn" id="btnAgain">もう一度（同じ50問）</button>
         <button class="btn blue" id="btnNewSet">新しい50問に挑戦</button>
         <button class="btn ghost small" id="btnHome">タイトルへ</button>
@@ -519,6 +583,72 @@ function buildAll(seed){
 }
 
 /* ============================================================
+   4b. explanations — generated from the question's own rule data
+   ============================================================ */
+const ATTRJA = { shape:'かたち', fill:'ぬり方', count:'数', rot:'むき', color:'色', size:'大きさ' };
+const VALJA = {
+  shape:['まる','四角','三角','ひし形','六角形','星','十字','矢じるし'],
+  fill :['ぬりつぶし','線だけ','半分ぬり','しゃせん'],
+  color:['黒','青','赤'],
+  size :['小さい','ふつう','大きい'],
+  rot  :['0°','90°','180°','270°']
+};
+function valJA(attr,v){
+  if(attr==='count') return v+'こ';
+  return VALJA[attr][v];
+}
+function B(s){ return '<b>'+s+'</b>'; }
+
+function ruleJA(attr, rule, grid){
+  const a = ATTRJA[attr];
+  const r3 = [grid[2][0][attr], grid[2][1][attr], grid[2][2][attr]];   // bottom row
+  const c3 = [grid[0][2][attr], grid[1][2][attr], grid[2][2][attr]];   // right column
+  const ans = B(valJA(attr, grid[2][2][attr]));
+  switch(rule){
+    case 'rowConst':
+      return a+'は、よこ1行のなかでは ぜんぶ同じ。行がかわると変わります。3行目は '+valJA(attr,r3[0])+' なので、こたえも '+ans+'。';
+    case 'colConst':
+      return a+'は、たて1列のなかでは ぜんぶ同じ。列がかわると変わります。3列目は '+valJA(attr,c3[0])+' なので、こたえも '+ans+'。';
+    case 'latin':
+    case 'latinAnti':
+      return a+'は3しゅるいが、どの行にも どの列にも 1回ずつ出てきます。3行目にはすでに '
+        +valJA(attr,r3[0])+' と '+valJA(attr,r3[1])+' があるので、のこりは '+ans+'。';
+    case 'progRow':
+      return a+'は、よこに進むと1つずつ変わります。3行目は '
+        +valJA(attr,r3[0])+' → '+valJA(attr,r3[1])+' → '+ans+'。';
+    case 'progCol':
+      return a+'は、たてに進むと1つずつ変わります。3列目は '
+        +valJA(attr,c3[0])+' → '+valJA(attr,c3[1])+' → '+ans+'。';
+    case 'sumRow':
+      if(attr==='count')
+        return '数は「1列目 ＋ 2列目 ＝ 3列目」。3行目は '+r3[0]+' ＋ '+r3[1]+' ＝ '+B(r3[2]+'こ')+'。';
+      if(attr==='rot')
+        return 'むきは「1列目 ＋ 2列目 ＝ 3列目」。3行目は '+(r3[0]*90)+'° ＋ '+(r3[1]*90)+'° ＝ '
+          +B((r3[2]*90)+'°')+'（360°をこえたら1回転して もどります）。';
+      return a+'は「1列目 ＋ 2列目 ＝ 3列目」。こたえは '+ans+'。';
+    case 'sumCol':
+      return a+'は「1行目 ＋ 2行目 ＝ 3行目」。こたえは '+ans+'。';
+  }
+  return a+'のきまり：こたえは '+ans+'。';
+}
+
+function explain(q){
+  const lines = q.varying.map(function(a){ return ruleJA(a, q.rules[a], q.grid); });
+  const fixed = ATTRS.filter(function(a){
+    if(q.varying.indexOf(a)>=0) return false;
+    if(a==='count' && q.grid[2][2].count===1) return false;   // "1個" is not worth mentioning
+    if(a==='rot'   && q.grid[2][2].rot===0)   return false;
+    if(a==='size'  && q.grid[2][2].size===1)  return false;
+    if(a==='color' && q.grid[2][2].color===0) return false;
+    return true;
+  }).map(function(a){ return ATTRJA[a]; });
+  const tail = fixed.length
+    ? 'それ以外（'+fixed.join('・')+'）は 9マスすべて同じなので、こたえも同じです。'
+    : 'それ以外は 9マスすべて同じです。';
+  return { n:q.varying.length, lines:lines, tail:tail };
+}
+
+/* ============================================================
    5. game state
    ============================================================ */
 const STD_SEED = 20260914;
@@ -531,15 +661,15 @@ const TIER_BANDS = [
   {name:'最難関',   tiers:[7]}
 ];
 
-let QS=[], idx=0, results=[], locked=false, seed=STD_SEED;
-let t0=0, elapsed=0, timer=null, soundOn=true, audio=null;
+let QS=[], idx=0, results=[], picks=[], locked=false, seed=STD_SEED;
+let t0=0, elapsed=0, timer=null, soundOn=true, explOn=true, audio=null, onlyWrong=false;
 
 function maxScore(){ return QS.reduce(function(s,q){ return s+q.tier; },0); }
 
 /* ---- persistence (degrades silently if storage is unavailable) ---- */
 function save(){
   try{
-    localStorage.setItem(SAVE_KEY, JSON.stringify({seed:seed, idx:idx, results:results, elapsed:elapsed+(Date.now()-t0)}));
+    localStorage.setItem(SAVE_KEY, JSON.stringify({seed:seed, idx:idx, results:results, picks:picks, elapsed:elapsed+(Date.now()-t0)}));
   }catch(e){}
 }
 function loadSave(){
@@ -574,7 +704,7 @@ function beep(ok){
 
 /* ---- screens ---- */
 function show(id){
-  ['scStart','scHow','scPlay','scResult'].forEach(function(s){ $(s).classList.toggle('on', s===id); });
+  ['scStart','scHow','scPlay','scResult','scReview'].forEach(function(s){ $(s).classList.toggle('on', s===id); });
   window.scrollTo(0,0);
 }
 function fmtTime(ms){
@@ -618,6 +748,7 @@ function answer(i){
   const q=QS[idx];
   const ok = (i===q.correct);
   results[idx]=ok;
+  picks[idx]=i;
 
   const btns=document.querySelectorAll('.opt');
   $('opts').classList.add('locked');
@@ -630,11 +761,30 @@ function answer(i){
   beep(ok);
   save();
 
+  if(explOn){ showExpl(q, ok); }
+  else { setTimeout(nextQ, ok?640:1050); }
+}
+
+function showExpl(q, ok){
+  const ex = explain(q);
+  const box = $('expl');
+  box.hidden = false;
+  box.classList.toggle('bad', !ok);
+  $('eHead').textContent = ok ? 'せいかい！' : 'ざんねん…';
+  $('eSub').textContent  = 'この問題のきまりは ' + ex.n + 'つ';
+  $('eList').innerHTML   = ex.lines.map(function(t){ return '<li>'+t+'</li>'; }).join('');
+  $('eTail').textContent = ex.tail;
   setTimeout(function(){
-    idx++;
-    if(idx>=QS.length) finish();
-    else { renderQ(); save(); }
-  }, ok?640:1050);
+    try{ box.scrollIntoView({behavior:'smooth', block:'nearest'}); }catch(e){}
+  }, 60);
+}
+function hideExpl(){ const b=$('expl'); b.hidden=true; b.classList.remove('bad'); }
+
+function nextQ(){
+  hideExpl();
+  idx++;
+  if(idx>=QS.length) finish();
+  else { renderQ(); save(); window.scrollTo({top:0,behavior:'smooth'}); }
 }
 
 /* ---- start / finish ---- */
@@ -644,10 +794,12 @@ function startGame(newSeed, resumeData){
   if(resumeData){
     idx = resumeData.idx;
     results = resumeData.results || [];
+    picks   = resumeData.picks || [];
     elapsed = resumeData.elapsed || 0;
   }else{
-    idx=0; results=[]; elapsed=0;
+    idx=0; results=[]; picks=[]; elapsed=0;
   }
+  hideExpl();
   t0=Date.now();
   if(timer) clearInterval(timer);
   timer=setInterval(tick,500); tick();
@@ -697,7 +849,73 @@ function finish(){
   show('scResult');
 }
 
+/* ---- review (all 50 explanations) ---- */
+function renderReview(){
+  const list=$('reviewList');
+  let html='';
+  QS.forEach(function(q,i){
+    const ok = !!results[i];
+    if(onlyWrong && ok) return;
+    html += '<div class="ritem" data-i="'+i+'">'
+      + '<button class="rbtn" type="button">'
+      +   '<span class="rq">Q'+(i+1)+'</span>'
+      +   '<span class="rt" style="background:'+TIERCOL[q.tier]+'">'+TIERNAME[q.tier]+'</span>'
+      +   '<span class="rm '+(ok?'o':'x')+'">'+(ok?'○':'✕')+'</span>'
+      + '</button>'
+      + '<div class="rbody"></div>'
+      + '</div>';
+  });
+  if(!html) html = '<div class="ritem"><div style="padding:18px;text-align:center;font-weight:800;color:#8d90a6;font-size:13px">まちがえた問題はありません 🎉</div></div>';
+  list.innerHTML = html;
+
+  list.querySelectorAll('.ritem[data-i]').forEach(function(item){
+    item.querySelector('.rbtn').addEventListener('click',function(){
+      const open = item.classList.toggle('open');
+      const body = item.querySelector('.rbody');
+      if(open && !body.dataset.built){
+        body.innerHTML = reviewBody(QS[+item.dataset.i], +item.dataset.i);
+        body.dataset.built='1';
+      }
+    });
+  });
+}
+function reviewBody(q,i){
+  // 3x3 with the answer already filled in
+  let mini='<div class="rmini">';
+  for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+    const isAns = (r===2&&c===2);
+    mini += '<div class="mcell'+(isAns?' q filled':'')+'">'+cellSVG(q.grid[r][c])+'</div>';
+  }
+  mini+='</div>';
+
+  const pick = picks[i];
+  let pickHtml='';
+  if(typeof pick==='number' && pick!==q.correct){
+    pickHtml = '<div class="rpick">'
+      + '<figure><div class="pc x">'+cellSVG(q.opts[pick])+'</div><figcaption>えらんだ答え</figcaption></figure>'
+      + '<figure><div class="pc o">'+cellSVG(q.grid[2][2])+'</div><figcaption>正解</figcaption></figure>'
+      + '</div>';
+  }
+  const ex=explain(q);
+  return mini + pickHtml
+    + '<div class="esub">この問題のきまりは '+ex.n+'つ</div>'
+    + '<ul class="elist">'+ex.lines.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'
+    + '<p class="etail">'+ex.tail+'</p>';
+}
+
 /* ---- wiring ---- */
+$('btnNext').addEventListener('click', nextQ);
+$('btnExpl').addEventListener('click',function(){
+  explOn=!explOn;
+  this.textContent = explOn ? '💡 解説 ON' : '💡 解説 OFF';
+});
+$('btnReview').addEventListener('click',function(){ renderReview(); show('scReview'); });
+$('btnReviewBack').addEventListener('click',function(){ show('scResult'); });
+$('btnOnlyWrong').addEventListener('click',function(){
+  onlyWrong=!onlyWrong;
+  this.classList.toggle('on',onlyWrong);
+  renderReview();
+});
 $('btnStart').addEventListener('click',function(){ clearSave(); startGame(STD_SEED,null); });
 $('btnHow').addEventListener('click',function(){ show('scHow'); });
 $('btnHowBack').addEventListener('click',function(){ show('scStart'); });
@@ -726,7 +944,7 @@ function refreshResume(){
 refreshResume();
 
 /* expose for automated verification */
-window.__TBIQ = { buildAll:buildAll, key:key, specList:specList, STD_SEED:STD_SEED };
+window.__TBIQ = { buildAll:buildAll, key:key, specList:specList, STD_SEED:STD_SEED, explain:explain };
 
 })();
 </script>
