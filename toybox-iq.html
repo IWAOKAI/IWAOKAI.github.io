@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>TOY BOX IQ | 甲斐 巌夫</title>
-<meta name="description" content="おもちゃ箱を開けるように、図形のきまりを見つけて「つぎのかたち」を当てる全50問の図形推理パズル。">
+<meta name="description" content="おもちゃ箱を開けるように、図形のきまりを見つけて「つぎのかたち」を当てる全50問の図形推理パズル。全問に解説つき。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23ffb02e'/><rect x='13' y='28' width='38' height='24' rx='5' fill='%23fff8ec'/><rect x='10' y='17' width='44' height='12' rx='5' fill='%23ff6b8a'/><circle cx='32' cy='41' r='6' fill='%234aa8ff'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,6 @@ body{
 }
 .wrap{max-width:560px;margin:0 auto;padding:14px 14px 52px}
 
-/* back nav */
 .backnav{text-align:center;margin-bottom:12px}
 .backnav a{
   display:inline-block;font-size:13px;font-weight:700;color:var(--ink2);
@@ -42,12 +41,10 @@ body{
 }
 .backnav a:hover{color:var(--ink);background:#fff}
 
-/* screens */
 .screen{display:none;animation:fadeIn .28s ease both}
 .screen.on{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* buttons */
 .btn{
   font-family:var(--font);font-weight:800;border:none;cursor:pointer;
   border-radius:999px;color:#fff;background:var(--pink);
@@ -78,7 +75,6 @@ body{
 .resume{margin-top:14px;background:rgba(255,255,255,.8);border-radius:18px;padding:12px 14px}
 .resume p{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--ink2)}
 
-/* how */
 .howcard{background:var(--paper);border-radius:var(--r);padding:20px 18px;box-shadow:0 8px 24px rgba(90,70,120,.10)}
 .howcard h2{margin:0 0 12px;font-size:19px}
 .howcard ol{margin:0;padding-left:1.25em;line-height:1.95;font-size:14.5px;color:#43455c}
@@ -92,17 +88,11 @@ body{
 .bar{flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.85);overflow:hidden}
 .bar>div{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--orange),var(--pink));transition:width .3s ease}
 .time{font-size:13px;font-weight:700;color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
-.tierTag{
-  display:inline-block;font-size:11.5px;font-weight:800;color:#fff;
-  padding:4px 12px;border-radius:999px;margin-bottom:8px;background:var(--mint);
-}
+.tierTag{display:inline-block;font-size:11.5px;font-weight:800;color:#fff;padding:4px 12px;border-radius:999px;margin-bottom:8px;background:var(--mint)}
 
-/* the puzzle panel — deliberately plain */
+/* the puzzle panel — deliberately plain, black & white only */
 .panel{background:var(--paper);border-radius:var(--r);padding:16px;box-shadow:0 8px 24px rgba(90,70,120,.10)}
-.matrix{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
-  max-width:330px;margin:0 auto;
-}
+.matrix{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:330px;margin:0 auto}
 .mcell{
   position:relative;aspect-ratio:1/1;background:#fbfbfd;
   border:1.5px solid var(--line);border-radius:10px;
@@ -122,61 +112,13 @@ body{
   box-shadow:0 4px 0 #e6e1ef;transition:transform .08s ease,box-shadow .08s ease;
 }
 .opt:active{transform:translateY(3px);box-shadow:0 1px 0 #e6e1ef}
-.opt .onum{
-  position:absolute;top:3px;left:5px;font-size:10px;font-weight:800;color:#c9c5d6;
-}
+.opt .onum{position:absolute;top:3px;left:5px;font-size:10px;font-weight:800;color:#c9c5d6}
 .opt.ok{border-color:var(--ok);background:#eafaf3;box-shadow:0 4px 0 #9fdcc4;animation:pop2 .35s ease}
 .opt.ng{border-color:var(--ng);background:#fdeef1;box-shadow:0 4px 0 #f3b4c0;animation:shake .35s ease}
 .opt.show{border-color:var(--ok);background:#eafaf3;box-shadow:0 4px 0 #9fdcc4}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 .opts.locked .opt{cursor:default}
-
-.ctrl{display:flex;justify-content:space-between;gap:8px;margin-top:18px;flex-wrap:wrap}
-
-/* ===== explanation ===== */
-.expl{
-  margin-top:16px;background:var(--paper);border-radius:var(--r);padding:16px 15px;
-  box-shadow:0 8px 24px rgba(90,70,120,.10);border:2px solid var(--ok);
-  animation:slideUp .28s ease both;
-}
-.expl.bad{border-color:var(--ng)}
-@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-.ehead{font-weight:800;font-size:17px;color:var(--ok);margin-bottom:4px}
-.expl.bad .ehead{color:var(--ng)}
-.esub{font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:11px}
-.elist{margin:0;padding:0;list-style:none}
-.elist li{
-  font-size:13.5px;line-height:1.85;color:#43455c;font-weight:700;
-  background:#f7f6fb;border-radius:12px;padding:9px 12px;margin-bottom:7px;
-}
-.elist li b{color:var(--ink);background:#ffeec2;border-radius:5px;padding:0 4px}
-.etail{font-size:12px;color:#8d90a6;line-height:1.7;margin:2px 0 0}
-.expl .btn{display:block;width:100%;margin-top:13px}
-
-/* ===== review ===== */
-.revhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.revhead h2{margin:0;font-size:19px}
-.revfilter{font-size:12px;font-weight:800;color:var(--ink2);background:#fff;border:2px solid #e6e1ef;border-radius:999px;padding:7px 14px;cursor:pointer;font-family:var(--font)}
-.revfilter.on{background:var(--blue);color:#fff;border-color:var(--blue)}
-.ritem{background:var(--paper);border-radius:16px;margin-bottom:8px;overflow:hidden;box-shadow:0 3px 10px rgba(90,70,120,.07)}
-.rbtn{
-  width:100%;display:flex;align-items:center;gap:9px;padding:12px 14px;background:none;border:none;
-  cursor:pointer;font-family:var(--font);text-align:left;
-}
-.rbtn .rq{font-weight:800;font-size:13.5px;width:3.4em;flex:none}
-.rbtn .rt{font-size:10.5px;font-weight:800;color:#fff;border-radius:999px;padding:3px 9px;flex:none}
-.rbtn .rm{margin-left:auto;font-size:16px;font-weight:800;flex:none}
-.rbtn .rm.o{color:var(--ok)} .rbtn .rm.x{color:var(--ng)}
-.rbody{padding:0 14px 14px;display:none}
-.ritem.open .rbody{display:block}
-.rmini{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:210px;margin:0 auto 12px}
-.rmini .mcell{border-radius:7px}
-.rpick{display:flex;gap:10px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
-.rpick figure{margin:0;text-align:center}
-.rpick .pc{width:56px;height:56px;border:2px solid var(--line);border-radius:12px;background:#fbfbfd;padding:3px}
-.rpick .pc.o{border-color:var(--ok);background:#eafaf3}
-.rpick .pc.x{border-color:var(--ng);background:#fdeef1}
-.rpick figcaption{font-size:10.5px;font-weight:800;color:var(--ink2);margin-top:4px}
+.ctrl{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
 
 /* ===== result ===== */
 .rescard{background:var(--paper);border-radius:var(--r);padding:22px 18px;box-shadow:0 8px 24px rgba(90,70,120,.10);text-align:center}
@@ -197,6 +139,34 @@ body{
 .trow .tv{font-size:11.5px;font-weight:800;color:var(--ink2);width:3.4em;text-align:right;flex:none;font-variant-numeric:tabular-nums}
 .disc{margin-top:18px;font-size:11.5px;line-height:1.75;color:#8d90a6;background:#f7f6fb;border-radius:14px;padding:11px 13px;text-align:left}
 .resbtns{margin-top:18px;display:grid;gap:10px}
+
+/* ===== explanations ===== */
+.expl{margin-top:20px;text-align:left}
+.chk{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--ink2);margin:12px 0}
+.chk input{width:16px;height:16px}
+.ex{border:1.5px solid var(--line);border-radius:16px;padding:12px;margin-bottom:12px;background:#fff}
+.ex.ng{border-color:#f7c3cd}
+.exHead{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:10px}
+.exHead .tierTag{margin:0;font-size:10.5px;padding:3px 9px}
+.exHead .mark{margin-left:auto;font-size:15px;font-weight:800}
+.exHead .mark.ok{color:var(--ok)}
+.exHead .mark.ng{color:var(--ng)}
+.exBody{display:grid;grid-template-columns:138px 1fr;gap:12px;align-items:start}
+@media(max-width:430px){.exBody{grid-template-columns:1fr}.exMat{max-width:200px}}
+.exMat{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.exMat .mcell{border-radius:6px}
+.exMat .mcell.ans{background:#eafaf3;border:1.5px solid var(--ok)}
+.exText{font-size:12.5px;line-height:1.75;color:#43455c}
+.exText .lab{font-weight:800;color:var(--ink);margin-bottom:2px}
+.exText ul{margin:2px 0 8px;padding-left:1.2em}
+.exText li{margin-bottom:4px}
+.exText .const{color:#8d90a6;font-size:11.5px}
+.exAns{display:flex;gap:16px;align-items:flex-start;margin-top:8px}
+.exAns .f{width:46px;height:46px;border:1.5px solid var(--line);border-radius:8px;background:#fbfbfd;overflow:hidden}
+.exAns .f.ok{border-color:var(--ok);background:#eafaf3}
+.exAns .f.ng{border-color:var(--ng);background:#fdeef1}
+.exAns .lb{font-size:10.5px;font-weight:800;color:var(--ink2);text-align:center;margin-top:3px}
+.exEmpty{font-size:13px;font-weight:700;color:var(--ok);text-align:center;padding:12px}
 </style>
 </head>
 <body>
@@ -225,7 +195,7 @@ body{
       <p>とちゅうのゲームがあります（Q<span id="resumeQ">1</span>）</p>
       <button class="btn blue small" id="btnResume">つづきから</button>
     </div>
-    <p class="meta">全50問・図形推理／制限時間なし</p>
+    <p class="meta">全50問・図形推理／制限時間なし／全問解説つき</p>
   </section>
 
   <!-- ========== HOW ========== -->
@@ -236,8 +206,9 @@ body{
         <li>3×3のマスに、かたちが ならんでいます。</li>
         <li>たて・よこに かならず「きまり」があります。</li>
         <li>右下の <b>？</b> に入るかたちを、下の8つから えらびます。</li>
-        <li>きまりは「かたち」「ぬり方」「数」「むき」「色」「大きさ」のどれか、またはその組み合わせ。</li>
+        <li>きまりは「かたち」「ぬり方」「数」「むき」「大きさ」のどれか、またはその組み合わせ。</li>
         <li>Q1から だんだん むずかしくなり、Q48〜50は最難関です。</li>
+        <li>おわったあと、全問の解説が見られます。</li>
       </ol>
       <div class="tip">ヒント：まず「1行目 → 2行目」で何が変わったかを見ると、きまりが見つけやすいです。</div>
       <div class="resbtns"><button class="btn" id="btnHowBack">とじる</button></div>
@@ -252,33 +223,13 @@ body{
       <div class="time" id="time">0:00</div>
     </div>
     <div class="tierTag" id="tierTag">やさしい</div>
-    <div class="panel">
-      <div class="matrix" id="matrix"></div>
-    </div>
+    <div class="panel"><div class="matrix" id="matrix"></div></div>
     <p class="ask">？ に入るのは どれ？</p>
     <div class="opts" id="opts"></div>
-    <div class="expl" id="expl" hidden>
-      <div class="ehead" id="eHead">せいかい！</div>
-      <div class="esub" id="eSub"></div>
-      <ul class="elist" id="eList"></ul>
-      <p class="etail" id="eTail"></p>
-      <button class="btn" id="btnNext">つぎへ →</button>
-    </div>
     <div class="ctrl">
       <button class="btn ghost small" id="btnQuit">やめる</button>
-      <button class="btn ghost small" id="btnExpl">💡 解説 ON</button>
       <button class="btn ghost small" id="btnSound">🔊 音 ON</button>
     </div>
-  </section>
-
-  <!-- ========== REVIEW ========== -->
-  <section id="scReview" class="screen">
-    <div class="revhead">
-      <h2>解説</h2>
-      <button class="revfilter" id="btnOnlyWrong">まちがえた問題だけ</button>
-    </div>
-    <div id="reviewList"></div>
-    <button class="btn" id="btnReviewBack" style="display:block;width:100%;margin-top:14px">結果にもどる</button>
   </section>
 
   <!-- ========== RESULT ========== -->
@@ -296,11 +247,19 @@ body{
         <h3>難易度べつの正解</h3>
         <div id="rTiers"></div>
       </div>
+
+      <div class="expl">
+        <button class="btn blue small" id="btnExpl" style="width:100%">全50問の解説を見る</button>
+        <div id="explBox" hidden>
+          <label class="chk"><input type="checkbox" id="onlyWrong" checked> まちがえた問題だけ表示</label>
+          <div id="explList"></div>
+        </div>
+      </div>
+
       <div class="disc">
         ※ このスコアはIQ値ではありません。図形推理（マトリックス課題）の正答傾向を、難易度で重みづけして点数化したものです。
       </div>
       <div class="resbtns">
-        <button class="btn blue" id="btnReview">💡 全50問の解説を見る</button>
         <button class="btn" id="btnAgain">もう一度（同じ50問）</button>
         <button class="btn blue" id="btnNewSet">新しい50問に挑戦</button>
         <button class="btn ghost small" id="btnHome">タイトルへ</button>
@@ -334,38 +293,36 @@ function pickOne(rng,arr){ return arr[Math.floor(rng()*arr.length)]; }
 function $(id){ return document.getElementById(id); }
 
 /* ============================================================
-   1. figure vocabulary
+   1. figure vocabulary  (black & white only)
    ============================================================ */
+const INK = '#2f3142';
 const SHAPES = ['circle','square','triangle','diamond','hexagon','star','cross','arrow'];
+const SHAPE_JA = ['丸','四角','三角','ひし形','六角形','星','十字','矢印'];
 const FILLS  = ['solid','open','half','hatch'];
-const COLORS = ['#2f3142','#3d6fd6','#e0526c'];
+const FILL_JA = ['ぬりつぶし','線だけ','半分ぬり','しましま'];
 const SIZES  = [0.74,1,1.24];
+const SIZE_JA = ['小','中','大'];
+const ROT_JA = ['上向き','右向き','下向き','左向き'];
 const ROTSAFE = [2,7];               // triangle / arrow : rotation is clearly visible
 
 const DOM = {
   shape:[0,1,2,3,4,5,6,7],
   fill :[0,1,2,3],
-  color:[0,1,2],
   size :[0,1,2],
-  rot  :[0,1,2,3],                   // 0/90/180/270 deg
+  rot  :[0,1,2,3],                   // 0/90/180/270 deg clockwise
   count:[1,2,3,4]
 };
-const ATTRS = ['shape','fill','count','rot','color','size'];
+const ATTRS = ['shape','fill','count','rot','size'];
+const ATTR_JA = {shape:'かたち',fill:'ぬり方',count:'数',rot:'むき',size:'大きさ'};
 
-/* --- build shared <defs> for half / hatch fills --- */
 (function buildDefs(){
-  const defs = $('svgdefs').firstChild;
-  let s='';
-  COLORS.forEach(function(c,i){
-    s += '<linearGradient id="hg'+i+'" x1="0" y1="0" x2="1" y2="0">'
-       +   '<stop offset="50%" stop-color="'+c+'"/>'
-       +   '<stop offset="50%" stop-color="'+c+'" stop-opacity="0"/>'
-       + '</linearGradient>';
-    s += '<pattern id="hp'+i+'" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
-       +   '<line x1="0" y1="0" x2="0" y2="9" stroke="'+c+'" stroke-width="4"/>'
-       + '</pattern>';
-  });
-  defs.innerHTML = s;
+  $('svgdefs').firstChild.innerHTML =
+    '<linearGradient id="hg" x1="0" y1="0" x2="1" y2="0">'
+    + '<stop offset="50%" stop-color="'+INK+'"/><stop offset="50%" stop-color="'+INK+'" stop-opacity="0"/>'
+    + '</linearGradient>'
+    + '<pattern id="hp" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
+    + '<line x1="0" y1="0" x2="0" y2="9" stroke="'+INK+'" stroke-width="4"/>'
+    + '</pattern>';
 })();
 
 function ring(cx,cy,r,n,start){
@@ -390,38 +347,34 @@ function shapeD(shape,cx,cy,r){
   }
   return '';
 }
-function fillAttrs(fillIdx,colorIdx){
-  const c=COLORS[colorIdx];
+function fillAttrs(fillIdx){
   switch(FILLS[fillIdx]){
-    case 'solid': return 'fill="'+c+'" stroke="none"';
-    case 'open':  return 'fill="none" stroke="'+c+'" stroke-width="7" stroke-linejoin="round"';
-    case 'half':  return 'fill="url(#hg'+colorIdx+')" stroke="'+c+'" stroke-width="5" stroke-linejoin="round"';
-    case 'hatch': return 'fill="url(#hp'+colorIdx+')" stroke="'+c+'" stroke-width="5" stroke-linejoin="round"';
+    case 'solid': return 'fill="'+INK+'" stroke="none"';
+    case 'open':  return 'fill="none" stroke="'+INK+'" stroke-width="7" stroke-linejoin="round"';
+    case 'half':  return 'fill="url(#hg)" stroke="'+INK+'" stroke-width="5" stroke-linejoin="round"';
+    case 'hatch': return 'fill="url(#hp)" stroke="'+INK+'" stroke-width="5" stroke-linejoin="round"';
   }
   return '';
 }
-const LAYOUT = {
-  1:[[50,50]],
-  2:[[28,50],[72,50]],
-  3:[[50,26],[27,70],[73,70]],
-  4:[[29,29],[71,29],[29,71],[71,71]]
-};
-const BASER = {1:33,2:21,3:21,4:20};
+const LAYOUT = {1:[[50,50]],2:[[28,50],[72,50]],3:[[50,26],[27,70],[73,70]],4:[[29,29],[71,29],[29,71],[71,71]]};
+const BASER  = {1:33,2:21,3:21,4:20};
 
 function cellSVG(cell){
-  const pos = LAYOUT[cell.count], r = BASER[cell.count]*SIZES[cell.size];
-  const fa = fillAttrs(cell.fill,cell.color), deg = cell.rot*90;
+  const pos=LAYOUT[cell.count], r=BASER[cell.count]*SIZES[cell.size];
+  const fa=fillAttrs(cell.fill), deg=cell.rot*90;
   let inner='';
   for(let i=0;i<pos.length;i++){
     const x=pos[i][0], y=pos[i][1];
-    inner += '<g transform="rotate('+deg+' '+x+' '+y+')"><path d="'+shapeD(SHAPES[cell.shape],x,y,r)+'" '+fa+'/></g>';
+    inner+='<g transform="rotate('+deg+' '+x+' '+y+')"><path d="'+shapeD(SHAPES[cell.shape],x,y,r)+'" '+fa+'/></g>';
   }
   return '<svg class="fig" viewBox="0 0 100 100" aria-hidden="true">'+inner+'</svg>';
 }
-function key(c){ return c.shape+'|'+c.fill+'|'+c.count+'|'+c.rot+'|'+c.color+'|'+c.size; }
+function key(c){ return c.shape+'|'+c.fill+'|'+c.count+'|'+c.rot+'|'+c.size; }
+function clone(c){ const o={}; ATTRS.forEach(function(k){ o[k]=c[k]; }); return o; }
+function normalize(c){ if(c.count>=3 && c.size===2) c.size=1; return c; }
 
 /* ============================================================
-   2. rule engine  — every rule returns a 3x3 grid of values
+   2. rule engine — every rule returns a 3x3 grid of values
    ============================================================ */
 function transpose(g){ return [0,1,2].map(function(r){ return [0,1,2].map(function(c){ return g[c][r]; }); }); }
 
@@ -438,7 +391,11 @@ const RULE = {
     if(attr==='count'){
       return [0,1,2].map(function(){ const b=1+Math.floor(rng()*2); return [b,b+1,b+2]; });
     }
-    const d=DOM[attr], n=d.length;
+    if(attr==='size'){                       // never wraps: S→M→L or L→M→S
+      const up = rng()<0.5;
+      return [0,1,2].map(function(){ return up?[0,1,2]:[2,1,0]; });
+    }
+    const d=DOM[attr], n=d.length;           // rot: cyclic +90°
     return [0,1,2].map(function(){ const b=Math.floor(rng()*n); return [0,1,2].map(function(c){ return d[(b+c)%n]; }); });
   },
   progCol:function(rng,attr){ return transpose(RULE.progRow(rng,attr)); },
@@ -456,7 +413,10 @@ const RULE = {
 };
 
 /* ============================================================
-   3. the 50-question difficulty ladder
+   3. the 50-question difficulty ladder (black & white)
+      design constraints:
+        - rot track  → shape is fixed to triangle/arrow (rotation must be visible)
+        - size track → never combined with a count track (3-4 figures can't grow)
    ============================================================ */
 const TIERNAME = {1:'やさしい',2:'かんたん',3:'ふつう',4:'むずかしい',5:'とても むずかしい',6:'超難問',7:'最難関'};
 const TIERCOL  = {1:'#3ec9a7',2:'#3ec9a7',3:'#4aa8ff',4:'#9b7bff',5:'#ffb02e',6:'#ff6b8a',7:'#e0304f'};
@@ -469,18 +429,13 @@ const PLAN = [
   { n:5, tier:3, tracks:[['shape',['rowConst','latin']],['fill',['colConst','latinAnti']]] },
   { n:5, tier:3, tracks:[['count',['progRow','progCol','latin']],['shape',['rowConst','colConst','latin']]] },
   { n:5, tier:4, tracks:[['rot'  ,['progRow','progCol','latin']],['fill',['latin','colConst']]] },
-  { n:5, tier:4, tracks:[['color',['latin','rowConst']],['shape',['latin','colConst']],['count',['progRow','rowConst']]] },
+  { n:5, tier:4, tracks:[['shape',['latin','colConst']],['fill',['latin','rowConst']],['size',['progRow','rowConst']]] },
   { n:5, tier:5, tracks:[['shape',['latin']],['fill',['latinAnti']],['count',['progRow','progCol']]] },
-  { n:4, tier:5, tracks:[['count',['sumRow']],['fill',['latin','colConst']],['color',['latinAnti']]] },
+  { n:4, tier:5, tracks:[['count',['sumRow']],['fill',['latin','colConst']],['shape',['latinAnti','rowConst']]] },
   { n:4, tier:6, tracks:[['rot'  ,['sumRow','progRow']],['fill',['latin']],['size',['progRow','latinAnti']]] },
-  { n:3, tier:7, tracks:[['count',['sumRow']],['rot',['sumRow']],['fill',['latinAnti']],['color',['latin']]] }
+  { n:3, tier:7, tracks:[['count',['sumRow']],['rot',['sumRow','sumCol']],['fill',['latinAnti']]] }
 ];
-
-function specList(){
-  const out=[];
-  PLAN.forEach(function(p){ for(let i=0;i<p.n;i++) out.push(p); });
-  return out;                      // length 50
-}
+function specList(){ const out=[]; PLAN.forEach(function(p){ for(let i=0;i<p.n;i++) out.push(p); }); return out; }
 
 /* ============================================================
    4. question generation
@@ -489,84 +444,57 @@ function genQuestion(rng, spec){
   const attrs = spec.tracks.map(function(t){ return t[0]; });
   const hasRot = attrs.indexOf('rot')>=0;
 
-  // constants for every attribute that is not a varying track
   const base={};
   if(attrs.indexOf('shape')<0) base.shape = hasRot ? pickOne(rng,ROTSAFE) : pickOne(rng,DOM.shape);
   if(attrs.indexOf('fill') <0) base.fill  = pickOne(rng,DOM.fill);
   if(attrs.indexOf('count')<0) base.count = 1+Math.floor(rng()*2);
   if(attrs.indexOf('rot')  <0) base.rot   = 0;
-  if(attrs.indexOf('color')<0) base.color = 0;
   if(attrs.indexOf('size') <0) base.size  = 1;
 
-  // varying tracks
-  const grids={}, usedRule={};
+  const grids={}, tracks=[];
   spec.tracks.forEach(function(t){
     const attr=t[0], rule=pickOne(rng,t[1]);
-    usedRule[attr]=rule;
+    tracks.push({attr:attr, rule:rule});
     grids[attr]=RULE[rule](rng,attr);
   });
 
-  // assemble 3x3
   const grid=[];
   for(let r=0;r<3;r++){
     const row=[];
     for(let c=0;c<3;c++){
       const cell={};
       ATTRS.forEach(function(a){ cell[a] = (a in grids) ? grids[a][r][c] : base[a]; });
-      // keep multi-element figures readable
-      if(cell.count>=3 && cell.size===2) cell.size=1;
-      row.push(cell);
+      row.push(normalize(cell));
     }
     grid.push(row);
   }
 
   const built = buildOptions(rng, grid, attrs, spec.tier);
-  return { grid:grid, opts:built.opts, correct:built.correct, tier:spec.tier, rules:usedRule, varying:attrs };
+  return { grid:grid, opts:built.opts, correct:built.correct, tier:spec.tier, tracks:tracks, varying:attrs };
 }
 
 function buildOptions(rng, grid, varying, tier){
   const ans = grid[2][2];
   const seen = {}; seen[key(ans)] = true;
 
-  // near-misses: change exactly one of the ATTRIBUTES THAT FOLLOW A RULE
   const near=[];
   varying.forEach(function(a){
-    DOM[a].forEach(function(v){
-      if(v===ans[a]) return;
-      const c={}; ATTRS.forEach(function(k){ c[k]=ans[k]; }); c[a]=v;
-      if(c.count>=3 && c.size===2) c.size=1;
-      near.push(c);
-    });
+    DOM[a].forEach(function(v){ if(v===ans[a]) return; const c=clone(ans); c[a]=v; near.push(normalize(c)); });
   });
-  // plausible neighbours already on the board
-  const neigh=[grid[2][1],grid[1][2],grid[1][1],grid[0][2],grid[2][0]].map(function(c){
-    const o={}; ATTRS.forEach(function(k){ o[k]=c[k]; }); return o;
-  });
-  // fallback: perturb a constant attribute
+  const neigh=[grid[2][1],grid[1][2],grid[1][1],grid[0][2],grid[2][0]].map(clone);
   const far=[];
   ATTRS.forEach(function(a){
     if(varying.indexOf(a)>=0) return;
-    DOM[a].forEach(function(v){
-      if(v===ans[a]) return;
-      const c={}; ATTRS.forEach(function(k){ c[k]=ans[k]; }); c[a]=v;
-      if(c.count>=3 && c.size===2) c.size=1;
-      far.push(c);
-    });
+    DOM[a].forEach(function(v){ if(v===ans[a]) return; const c=clone(ans); c[a]=v; far.push(normalize(c)); });
   });
 
   let pool;
-  if(tier>=5){
-    // hard items: every distractor should be a true near-miss
-    pool = shuffle(rng,near).concat(shuffle(rng,neigh), shuffle(rng,far));
-  }else{
-    pool = shuffle(rng,neigh).slice(0,2).concat(shuffle(rng,near), shuffle(rng,far));
-  }
+  if(tier>=5) pool = shuffle(rng,near).concat(shuffle(rng,neigh), shuffle(rng,far));
+  else        pool = shuffle(rng,neigh).slice(0,2).concat(shuffle(rng,near), shuffle(rng,far));
 
   const out=[];
   for(let i=0;i<pool.length && out.length<7;i++){
-    const k=key(pool[i]);
-    if(seen[k]) continue;
-    seen[k]=true; out.push(pool[i]);
+    const k=key(pool[i]); if(seen[k]) continue; seen[k]=true; out.push(pool[i]);
   }
   const opts = shuffle(rng,[ans].concat(out));
   let correct=-1;
@@ -575,84 +503,71 @@ function buildOptions(rng, grid, varying, tier){
 }
 
 function buildAll(seed){
-  const rng = mulberry32(seed);
-  const specs = specList();
-  const qs = [];
+  const rng=mulberry32(seed), specs=specList(), qs=[];
   for(let i=0;i<specs.length;i++) qs.push(genQuestion(rng, specs[i]));
   return qs;
 }
 
 /* ============================================================
-   4b. explanations — generated from the question's own rule data
+   5. explanations
    ============================================================ */
-const ATTRJA = { shape:'かたち', fill:'ぬり方', count:'数', rot:'むき', color:'色', size:'大きさ' };
-const VALJA = {
-  shape:['まる','四角','三角','ひし形','六角形','星','十字','矢じるし'],
-  fill :['ぬりつぶし','線だけ','半分ぬり','しゃせん'],
-  color:['黒','青','赤'],
-  size :['小さい','ふつう','大きい'],
-  rot  :['0°','90°','180°','270°']
-};
-function valJA(attr,v){
-  if(attr==='count') return v+'こ';
-  return VALJA[attr][v];
-}
-function B(s){ return '<b>'+s+'</b>'; }
-
-function ruleJA(attr, rule, grid){
-  const a = ATTRJA[attr];
-  const r3 = [grid[2][0][attr], grid[2][1][attr], grid[2][2][attr]];   // bottom row
-  const c3 = [grid[0][2][attr], grid[1][2][attr], grid[2][2][attr]];   // right column
-  const ans = B(valJA(attr, grid[2][2][attr]));
-  switch(rule){
-    case 'rowConst':
-      return a+'は、よこ1行のなかでは ぜんぶ同じ。行がかわると変わります。3行目は '+valJA(attr,r3[0])+' なので、こたえも '+ans+'。';
-    case 'colConst':
-      return a+'は、たて1列のなかでは ぜんぶ同じ。列がかわると変わります。3列目は '+valJA(attr,c3[0])+' なので、こたえも '+ans+'。';
-    case 'latin':
-    case 'latinAnti':
-      return a+'は3しゅるいが、どの行にも どの列にも 1回ずつ出てきます。3行目にはすでに '
-        +valJA(attr,r3[0])+' と '+valJA(attr,r3[1])+' があるので、のこりは '+ans+'。';
-    case 'progRow':
-      return a+'は、よこに進むと1つずつ変わります。3行目は '
-        +valJA(attr,r3[0])+' → '+valJA(attr,r3[1])+' → '+ans+'。';
-    case 'progCol':
-      return a+'は、たてに進むと1つずつ変わります。3列目は '
-        +valJA(attr,c3[0])+' → '+valJA(attr,c3[1])+' → '+ans+'。';
-    case 'sumRow':
-      if(attr==='count')
-        return '数は「1列目 ＋ 2列目 ＝ 3列目」。3行目は '+r3[0]+' ＋ '+r3[1]+' ＝ '+B(r3[2]+'こ')+'。';
-      if(attr==='rot')
-        return 'むきは「1列目 ＋ 2列目 ＝ 3列目」。3行目は '+(r3[0]*90)+'° ＋ '+(r3[1]*90)+'° ＝ '
-          +B((r3[2]*90)+'°')+'（360°をこえたら1回転して もどります）。';
-      return a+'は「1列目 ＋ 2列目 ＝ 3列目」。こたえは '+ans+'。';
-    case 'sumCol':
-      return a+'は「1行目 ＋ 2行目 ＝ 3行目」。こたえは '+ans+'。';
+function valJa(attr,v){
+  switch(attr){
+    case 'shape': return SHAPE_JA[v];
+    case 'fill':  return FILL_JA[v];
+    case 'count': return v+'個';
+    case 'rot':   return ROT_JA[v];
+    case 'size':  return SIZE_JA[v];
   }
-  return a+'のきまり：こたえは '+ans+'。';
+  return String(v);
 }
-
+function progWord(a,x,y){
+  if(a==='count') return '1つずつ増える';
+  if(a==='rot')   return '時計回りに90°ずつ回る';
+  if(a==='size')  return (y>x) ? '1段階ずつ大きくなる' : '1段階ずつ小さくなる';
+  return '1つずつ変わる';
+}
+function sumWord(a,tgt,p1,p2,x,y,z){
+  if(a==='count') return '数は「'+tgt+' ＝ '+p1+' ＋ '+p2+'」。？は '+x+' ＋ '+y+' ＝ <b>'+z+'個</b>。';
+  if(a==='rot'){
+    const tot=(x+y)*90;
+    const s = tot>=360 ? tot+'° → '+(z*90)+'°（360°で一周）' : tot+'°';
+    return 'むきは「'+tgt+' ＝ '+p1+'の回転 ＋ '+p2+'の回転」。？は '+(x*90)+'° ＋ '+(y*90)+'° ＝ '+s+' → <b>'+ROT_JA[z]+'</b>。';
+  }
+  return ATTR_JA[a]+'は '+tgt+' ＝ '+p1+' ＋ '+p2+'。';
+}
 function explain(q){
-  const lines = q.varying.map(function(a){ return ruleJA(a, q.rules[a], q.grid); });
-  const fixed = ATTRS.filter(function(a){
-    if(q.varying.indexOf(a)>=0) return false;
-    if(a==='count' && q.grid[2][2].count===1) return false;   // "1個" is not worth mentioning
-    if(a==='rot'   && q.grid[2][2].rot===0)   return false;
-    if(a==='size'  && q.grid[2][2].size===1)  return false;
-    if(a==='color' && q.grid[2][2].color===0) return false;
-    return true;
-  }).map(function(a){ return ATTRJA[a]; });
-  const tail = fixed.length
-    ? 'それ以外（'+fixed.join('・')+'）は 9マスすべて同じなので、こたえも同じです。'
-    : 'それ以外は 9マスすべて同じです。';
-  return { n:q.varying.length, lines:lines, tail:tail };
+  const g=q.grid, lines=[];
+  q.tracks.forEach(function(t){
+    const a=t.attr, A=ATTR_JA[a];
+    const v=function(r,c){ return g[r][c][a]; };
+    const J=function(x){ return valJa(a,x); };
+    switch(t.rule){
+      case 'rowConst':
+        lines.push(A+'は<b>横の行ごとに同じ</b>（上から '+J(v(0,0))+'・'+J(v(1,0))+'・'+J(v(2,0))+'）。？の行は <b>'+J(v(2,2))+'</b>。'); break;
+      case 'colConst':
+        lines.push(A+'は<b>たての列ごとに同じ</b>（左から '+J(v(0,0))+'・'+J(v(0,1))+'・'+J(v(0,2))+'）。？の列は <b>'+J(v(2,2))+'</b>。'); break;
+      case 'latin': case 'latinAnti':
+        lines.push(A+'は<b>どの行・どの列にも '+J(v(0,0))+'・'+J(v(0,1))+'・'+J(v(0,2))+' が1つずつ</b>。？の行にまだ無いのは <b>'+J(v(2,2))+'</b>。'); break;
+      case 'progRow':
+        lines.push(A+'は<b>右へ行くほど'+progWord(a,v(2,0),v(2,1))+'</b>。？は <b>'+J(v(2,2))+'</b>。'); break;
+      case 'progCol':
+        lines.push(A+'は<b>下へ行くほど'+progWord(a,v(0,2),v(1,2))+'</b>。？は <b>'+J(v(2,2))+'</b>。'); break;
+      case 'sumRow':
+        lines.push(sumWord(a,'3列目','1列目','2列目',v(2,0),v(2,1),v(2,2))); break;
+      case 'sumCol':
+        lines.push(sumWord(a,'3行目','1行目','2行目',v(0,2),v(1,2),v(2,2))); break;
+    }
+  });
+  const consts = ATTRS.filter(function(a){ return q.varying.indexOf(a)<0; }).map(function(a){ return ATTR_JA[a]; });
+  return { lines:lines, consts:consts };
 }
 
 /* ============================================================
-   5. game state
+   6. game state
    ============================================================ */
 const STD_SEED = 20260914;
-const SAVE_KEY = 'toyboxiq_v1';
+const SAVE_KEY = 'toyboxiq_v2';
 const TIER_BANDS = [
   {name:'やさしい', tiers:[1,2]},
   {name:'ふつう',   tiers:[3]},
@@ -661,21 +576,17 @@ const TIER_BANDS = [
   {name:'最難関',   tiers:[7]}
 ];
 
-let QS=[], idx=0, results=[], picks=[], locked=false, seed=STD_SEED;
-let t0=0, elapsed=0, timer=null, soundOn=true, explOn=true, audio=null, onlyWrong=false;
+let QS=[], idx=0, results=[], chosen=[], locked=false, seed=STD_SEED;
+let t0=0, elapsed=0, timer=null, soundOn=true, audio=null;
 
 function maxScore(){ return QS.reduce(function(s,q){ return s+q.tier; },0); }
 
-/* ---- persistence (degrades silently if storage is unavailable) ---- */
 function save(){
-  try{
-    localStorage.setItem(SAVE_KEY, JSON.stringify({seed:seed, idx:idx, results:results, picks:picks, elapsed:elapsed+(Date.now()-t0)}));
-  }catch(e){}
+  try{ localStorage.setItem(SAVE_KEY, JSON.stringify({seed:seed, idx:idx, results:results, chosen:chosen, elapsed:elapsed+(Date.now()-t0)})); }catch(e){}
 }
 function loadSave(){
   try{
-    const raw=localStorage.getItem(SAVE_KEY);
-    if(!raw) return null;
+    const raw=localStorage.getItem(SAVE_KEY); if(!raw) return null;
     const d=JSON.parse(raw);
     if(typeof d.idx!=='number' || d.idx<=0 || d.idx>=50) return null;
     return d;
@@ -683,11 +594,10 @@ function loadSave(){
 }
 function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
 
-/* ---- sound ---- */
 function beep(ok){
   if(!soundOn) return;
   try{
-    if(!audio) audio = new (window.AudioContext||window.webkitAudioContext)();
+    if(!audio) audio=new (window.AudioContext||window.webkitAudioContext)();
     const notes = ok ? [660,990] : [300,220];
     notes.forEach(function(f,i){
       const o=audio.createOscillator(), g=audio.createGain();
@@ -702,25 +612,18 @@ function beep(ok){
   }catch(e){}
 }
 
-/* ---- screens ---- */
 function show(id){
-  ['scStart','scHow','scPlay','scResult','scReview'].forEach(function(s){ $(s).classList.toggle('on', s===id); });
+  ['scStart','scHow','scPlay','scResult'].forEach(function(s){ $(s).classList.toggle('on', s===id); });
   window.scrollTo(0,0);
 }
-function fmtTime(ms){
-  const s=Math.floor(ms/1000);
-  return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
-}
-function tick(){ $('time').textContent = fmtTime(elapsed+(Date.now()-t0)); }
+function fmtTime(ms){ const s=Math.floor(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function tick(){ $('time').textContent=fmtTime(elapsed+(Date.now()-t0)); }
 
-/* ---- render one question ---- */
 function renderQ(){
   const q=QS[idx];
-  $('qNo').textContent = idx+1;
-  $('barFill').style.width = (idx/QS.length*100)+'%';
-  const tag=$('tierTag');
-  tag.textContent = TIERNAME[q.tier];
-  tag.style.background = TIERCOL[q.tier];
+  $('qNo').textContent=idx+1;
+  $('barFill').style.width=(idx/QS.length*100)+'%';
+  const tag=$('tierTag'); tag.textContent=TIERNAME[q.tier]; tag.style.background=TIERCOL[q.tier];
 
   const m=$('matrix'); m.innerHTML='';
   for(let r=0;r<3;r++)for(let c=0;c<3;c++){
@@ -729,12 +632,10 @@ function renderQ(){
     else { d.className='mcell'; d.innerHTML=cellSVG(q.grid[r][c]); }
     m.appendChild(d);
   }
-
   const o=$('opts'); o.innerHTML=''; o.classList.remove('locked');
   q.opts.forEach(function(cell,i){
     const b=document.createElement('button');
-    b.className='opt'; b.type='button';
-    b.setAttribute('aria-label','選択肢 '+(i+1));
+    b.className='opt'; b.type='button'; b.setAttribute('aria-label','選択肢 '+(i+1));
     b.innerHTML=cellSVG(cell)+'<span class="onum">'+(i+1)+'</span>';
     b.addEventListener('click',function(){ answer(i); });
     o.appendChild(b);
@@ -743,87 +644,46 @@ function renderQ(){
 }
 
 function answer(i){
-  if(locked) return;
-  locked=true;
-  const q=QS[idx];
-  const ok = (i===q.correct);
-  results[idx]=ok;
-  picks[idx]=i;
+  if(locked) return; locked=true;
+  const q=QS[idx], ok=(i===q.correct);
+  results[idx]=ok; chosen[idx]=i;
 
   const btns=document.querySelectorAll('.opt');
   $('opts').classList.add('locked');
   btns[i].classList.add(ok?'ok':'ng');
   if(!ok && btns[q.correct]) btns[q.correct].classList.add('show');
+  const qc=$('qCell'); if(qc){ qc.classList.add('filled'); qc.innerHTML=cellSVG(q.grid[2][2]); }
 
-  const qc=$('qCell');
-  if(qc){ qc.classList.add('filled'); qc.innerHTML=cellSVG(q.grid[2][2]); }
-
-  beep(ok);
-  save();
-
-  if(explOn){ showExpl(q, ok); }
-  else { setTimeout(nextQ, ok?640:1050); }
-}
-
-function showExpl(q, ok){
-  const ex = explain(q);
-  const box = $('expl');
-  box.hidden = false;
-  box.classList.toggle('bad', !ok);
-  $('eHead').textContent = ok ? 'せいかい！' : 'ざんねん…';
-  $('eSub').textContent  = 'この問題のきまりは ' + ex.n + 'つ';
-  $('eList').innerHTML   = ex.lines.map(function(t){ return '<li>'+t+'</li>'; }).join('');
-  $('eTail').textContent = ex.tail;
+  beep(ok); save();
   setTimeout(function(){
-    try{ box.scrollIntoView({behavior:'smooth', block:'nearest'}); }catch(e){}
-  }, 60);
-}
-function hideExpl(){ const b=$('expl'); b.hidden=true; b.classList.remove('bad'); }
-
-function nextQ(){
-  hideExpl();
-  idx++;
-  if(idx>=QS.length) finish();
-  else { renderQ(); save(); window.scrollTo({top:0,behavior:'smooth'}); }
+    idx++;
+    if(idx>=QS.length) finish(); else { renderQ(); save(); }
+  }, ok?640:1050);
 }
 
-/* ---- start / finish ---- */
 function startGame(newSeed, resumeData){
-  seed = newSeed;
-  QS = buildAll(seed);
-  if(resumeData){
-    idx = resumeData.idx;
-    results = resumeData.results || [];
-    picks   = resumeData.picks || [];
-    elapsed = resumeData.elapsed || 0;
-  }else{
-    idx=0; results=[]; picks=[]; elapsed=0;
-  }
-  hideExpl();
+  seed=newSeed; QS=buildAll(seed);
+  if(resumeData){ idx=resumeData.idx; results=resumeData.results||[]; chosen=resumeData.chosen||[]; elapsed=resumeData.elapsed||0; }
+  else { idx=0; results=[]; chosen=[]; elapsed=0; }
   t0=Date.now();
   if(timer) clearInterval(timer);
   timer=setInterval(tick,500); tick();
-  show('scPlay');
-  renderQ();
-  // unlock the audio context on the first user gesture
+  show('scPlay'); renderQ();
   try{ if(!audio) audio=new (window.AudioContext||window.webkitAudioContext)(); if(audio.state==='suspended') audio.resume(); }catch(e){}
 }
 
 function finish(){
   if(timer){ clearInterval(timer); timer=null; }
-  const total = elapsed+(Date.now()-t0);
+  const total=elapsed+(Date.now()-t0);
   clearSave();
 
   let score=0, correct=0;
   QS.forEach(function(q,i){ if(results[i]){ score+=q.tier; correct++; } });
-  const max=maxScore();
   const rate=Math.round(correct/QS.length*100);
 
-  $('rScore').textContent=score;
-  $('rMax').textContent=max;
+  $('rScore').textContent=score; $('rMax').textContent=maxScore();
   $('rCorrect').textContent=correct+'/'+QS.length;
-  $('rRate').textContent=rate+'%';
-  $('rTime').textContent=fmtTime(total);
+  $('rRate').textContent=rate+'%'; $('rTime').textContent=fmtTime(total);
 
   let badge='みならい';
   if(rate>=95) badge='おもちゃ箱マスター';
@@ -835,116 +695,73 @@ function finish(){
   let html='';
   TIER_BANDS.forEach(function(band){
     let n=0,c=0;
-    QS.forEach(function(q,i){
-      if(band.tiers.indexOf(q.tier)<0) return;
-      n++; if(results[i]) c++;
-    });
-    const pct = n? Math.round(c/n*100):0;
-    html += '<div class="trow"><div class="tn">'+band.name+'</div>'
-          + '<div class="tb"><div style="width:'+pct+'%"></div></div>'
-          + '<div class="tv">'+c+'/'+n+'</div></div>';
+    QS.forEach(function(q,i){ if(band.tiers.indexOf(q.tier)<0) return; n++; if(results[i]) c++; });
+    const pct=n?Math.round(c/n*100):0;
+    html+='<div class="trow"><div class="tn">'+band.name+'</div><div class="tb"><div style="width:'+pct+'%"></div></div><div class="tv">'+c+'/'+n+'</div></div>';
   });
   $('rTiers').innerHTML=html;
 
+  $('explBox').hidden=true; $('explList').innerHTML='';
+  $('btnExpl').textContent='全50問の解説を見る';
   show('scResult');
 }
 
-/* ---- review (all 50 explanations) ---- */
-function renderReview(){
-  const list=$('reviewList');
-  let html='';
+function renderExpl(){
+  const onlyWrong=$('onlyWrong').checked;
+  let html='', shown=0;
   QS.forEach(function(q,i){
-    const ok = !!results[i];
+    const ok=!!results[i];
     if(onlyWrong && ok) return;
-    html += '<div class="ritem" data-i="'+i+'">'
-      + '<button class="rbtn" type="button">'
-      +   '<span class="rq">Q'+(i+1)+'</span>'
-      +   '<span class="rt" style="background:'+TIERCOL[q.tier]+'">'+TIERNAME[q.tier]+'</span>'
-      +   '<span class="rm '+(ok?'o':'x')+'">'+(ok?'○':'✕')+'</span>'
-      + '</button>'
-      + '<div class="rbody"></div>'
-      + '</div>';
+    shown++;
+    const ex=explain(q);
+    let mat='';
+    for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+      const isAns=(r===2&&c===2);
+      mat+='<div class="mcell'+(isAns?' ans':'')+'">'+cellSVG(q.grid[r][c])+'</div>';
+    }
+    const my = (typeof chosen[i]==='number') ? q.opts[chosen[i]] : null;
+    html+='<div class="ex '+(ok?'ok':'ng')+'">'
+      +'<div class="exHead">Q'+(i+1)+' <span class="tierTag" style="background:'+TIERCOL[q.tier]+'">'+TIERNAME[q.tier]+'</span>'
+      +'<span class="mark '+(ok?'ok':'ng')+'">'+(ok?'○ 正解':'✕ まちがい')+'</span></div>'
+      +'<div class="exBody"><div class="exMat">'+mat+'</div>'
+      +'<div class="exText"><div class="lab">きまり</div><ul>'
+      + ex.lines.map(function(l){ return '<li>'+l+'</li>'; }).join('')
+      +'</ul>'
+      + (ex.consts.length ? '<div class="const">ほかの要素（'+ex.consts.join('・')+'）は全部同じ。</div>' : '')
+      +'<div class="exAns">'
+      +  '<div><div class="f ok">'+cellSVG(q.grid[2][2])+'</div><div class="lb">正解 '+(q.correct+1)+'</div></div>'
+      +  (my && !ok ? '<div><div class="f ng">'+cellSVG(my)+'</div><div class="lb">あなた '+(chosen[i]+1)+'</div></div>' : '')
+      +'</div></div></div></div>';
   });
-  if(!html) html = '<div class="ritem"><div style="padding:18px;text-align:center;font-weight:800;color:#8d90a6;font-size:13px">まちがえた問題はありません 🎉</div></div>';
-  list.innerHTML = html;
-
-  list.querySelectorAll('.ritem[data-i]').forEach(function(item){
-    item.querySelector('.rbtn').addEventListener('click',function(){
-      const open = item.classList.toggle('open');
-      const body = item.querySelector('.rbody');
-      if(open && !body.dataset.built){
-        body.innerHTML = reviewBody(QS[+item.dataset.i], +item.dataset.i);
-        body.dataset.built='1';
-      }
-    });
-  });
-}
-function reviewBody(q,i){
-  // 3x3 with the answer already filled in
-  let mini='<div class="rmini">';
-  for(let r=0;r<3;r++)for(let c=0;c<3;c++){
-    const isAns = (r===2&&c===2);
-    mini += '<div class="mcell'+(isAns?' q filled':'')+'">'+cellSVG(q.grid[r][c])+'</div>';
-  }
-  mini+='</div>';
-
-  const pick = picks[i];
-  let pickHtml='';
-  if(typeof pick==='number' && pick!==q.correct){
-    pickHtml = '<div class="rpick">'
-      + '<figure><div class="pc x">'+cellSVG(q.opts[pick])+'</div><figcaption>えらんだ答え</figcaption></figure>'
-      + '<figure><div class="pc o">'+cellSVG(q.grid[2][2])+'</div><figcaption>正解</figcaption></figure>'
-      + '</div>';
-  }
-  const ex=explain(q);
-  return mini + pickHtml
-    + '<div class="esub">この問題のきまりは '+ex.n+'つ</div>'
-    + '<ul class="elist">'+ex.lines.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'
-    + '<p class="etail">'+ex.tail+'</p>';
+  if(!shown) html='<div class="exEmpty">まちがえた問題はありません。全問正解！</div>';
+  $('explList').innerHTML=html;
 }
 
 /* ---- wiring ---- */
-$('btnNext').addEventListener('click', nextQ);
-$('btnExpl').addEventListener('click',function(){
-  explOn=!explOn;
-  this.textContent = explOn ? '💡 解説 ON' : '💡 解説 OFF';
-});
-$('btnReview').addEventListener('click',function(){ renderReview(); show('scReview'); });
-$('btnReviewBack').addEventListener('click',function(){ show('scResult'); });
-$('btnOnlyWrong').addEventListener('click',function(){
-  onlyWrong=!onlyWrong;
-  this.classList.toggle('on',onlyWrong);
-  renderReview();
-});
 $('btnStart').addEventListener('click',function(){ clearSave(); startGame(STD_SEED,null); });
 $('btnHow').addEventListener('click',function(){ show('scHow'); });
 $('btnHowBack').addEventListener('click',function(){ show('scStart'); });
-$('btnResume').addEventListener('click',function(){
-  const d=loadSave();
-  if(d) startGame(d.seed||STD_SEED,d); else startGame(STD_SEED,null);
-});
-$('btnQuit').addEventListener('click',function(){
-  save();
-  if(timer){ clearInterval(timer); timer=null; }
-  refreshResume(); show('scStart');
-});
-$('btnSound').addEventListener('click',function(){
-  soundOn=!soundOn;
-  this.textContent = soundOn ? '🔊 音 ON' : '🔇 音 OFF';
-});
+$('btnResume').addEventListener('click',function(){ const d=loadSave(); if(d) startGame(d.seed||STD_SEED,d); else startGame(STD_SEED,null); });
+$('btnQuit').addEventListener('click',function(){ save(); if(timer){ clearInterval(timer); timer=null; } refreshResume(); show('scStart'); });
+$('btnSound').addEventListener('click',function(){ soundOn=!soundOn; this.textContent = soundOn ? '🔊 音 ON' : '🔇 音 OFF'; });
 $('btnAgain').addEventListener('click',function(){ startGame(seed,null); });
 $('btnNewSet').addEventListener('click',function(){ startGame(Math.floor(Math.random()*1e9),null); });
 $('btnHome').addEventListener('click',function(){ refreshResume(); show('scStart'); });
+$('btnExpl').addEventListener('click',function(){
+  const box=$('explBox');
+  box.hidden=!box.hidden;
+  this.textContent = box.hidden ? '全50問の解説を見る' : '解説をとじる';
+  if(!box.hidden) renderExpl();
+});
+$('onlyWrong').addEventListener('change',renderExpl);
 
 function refreshResume(){
   const d=loadSave();
-  if(d){ $('resume').hidden=false; $('resumeQ').textContent=d.idx+1; }
-  else  { $('resume').hidden=true; }
+  if(d){ $('resume').hidden=false; $('resumeQ').textContent=d.idx+1; } else { $('resume').hidden=true; }
 }
 refreshResume();
 
-/* expose for automated verification */
-window.__TBIQ = { buildAll:buildAll, key:key, specList:specList, STD_SEED:STD_SEED, explain:explain };
+window.__TBIQ = { buildAll:buildAll, key:key, specList:specList, explain:explain, STD_SEED:STD_SEED };
 
 })();
 </script>
