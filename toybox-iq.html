@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TOY BOX IQ | 甲斐 巌夫</title>
+<meta name="description" content="おもちゃ箱を開けるように、図形のきまりを見つけて「つぎのかたち」を当てる全50問の図形推理パズル。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23ffb02e'/><rect x='13' y='28' width='38' height='24' rx='5' fill='%23fff8ec'/><rect x='10' y='17' width='44' height='12' rx='5' fill='%23ff6b8a'/><circle cx='32' cy='41' r='6' fill='%234aa8ff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2f3142; --ink2:#6b6e85; --line:#e3e2ee;
+  --paper:#ffffff;
+  --orange:#ffb02e; --pink:#ff6b8a; --blue:#4aa8ff; --mint:#3ec9a7; --purple:#9b7bff;
+  --ok:#22b07d; --ng:#f2506b;
+  --r:22px;
+  --font:"M PLUS Rounded 1c",-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font); color:var(--ink);
+  background:#fff4e6;
+  background-image:
+    radial-gradient(circle at 12% 8%, #ffe2ec 0 22%, transparent 55%),
+    radial-gradient(circle at 88% 12%, #dcefff 0 24%, transparent 58%),
+    radial-gradient(circle at 50% 100%, #e3fbf1 0 30%, transparent 62%);
+  background-attachment:fixed;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:560px;margin:0 auto;padding:14px 14px 52px}
+
+/* back nav */
+.backnav{text-align:center;margin-bottom:12px}
+.backnav a{
+  display:inline-block;font-size:13px;font-weight:700;color:var(--ink2);
+  text-decoration:none;background:rgba(255,255,255,.72);
+  border:2px solid rgba(255,255,255,.9);border-radius:999px;padding:6px 16px;
+}
+.backnav a:hover{color:var(--ink);background:#fff}
+
+/* screens */
+.screen{display:none;animation:fadeIn .28s ease both}
+.screen.on{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* buttons */
+.btn{
+  font-family:var(--font);font-weight:800;border:none;cursor:pointer;
+  border-radius:999px;color:#fff;background:var(--pink);
+  padding:14px 30px;font-size:17px;
+  box-shadow:0 5px 0 #e04f70;transition:transform .08s ease,box-shadow .08s ease;
+}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #e04f70}
+.btn.big{display:block;width:100%;max-width:300px;margin:0 auto 12px;font-size:19px;padding:17px 30px}
+.btn.ghost{background:#fff;color:var(--ink2);box-shadow:0 4px 0 #ded9e8}
+.btn.ghost:active{box-shadow:0 1px 0 #ded9e8}
+.btn.small{padding:9px 18px;font-size:13px}
+.btn.blue{background:var(--blue);box-shadow:0 5px 0 #2f87d8}
+.btn.blue:active{box-shadow:0 1px 0 #2f87d8}
+
+/* ===== start ===== */
+#scStart{text-align:center;padding-top:6px}
+.tbox{width:min(74%,250px);height:auto;display:block;margin:0 auto -6px}
+.tbox .lid{transform-box:fill-box;transform-origin:0% 50%;animation:lid 3.2s ease-in-out infinite}
+@keyframes lid{0%,100%{transform:rotate(0)}45%{transform:rotate(-17deg)}}
+.tbox .pop1{animation:pop 3.2s ease-in-out infinite}
+.tbox .pop2{animation:pop 3.2s ease-in-out .12s infinite}
+.tbox .pop3{animation:pop 3.2s ease-in-out .24s infinite}
+@keyframes pop{0%,100%{transform:translateY(26px);opacity:0}40%,70%{transform:translateY(0);opacity:1}}
+.title{font-size:clamp(30px,9vw,42px);font-weight:800;letter-spacing:.02em;margin:6px 0 2px;line-height:1.1}
+.title em{font-style:normal;color:var(--pink)}
+.sub{margin:6px 0 20px;font-size:15px;color:var(--ink2);line-height:1.8;font-weight:700}
+.meta{margin-top:16px;font-size:12px;color:var(--ink2)}
+.resume{margin-top:14px;background:rgba(255,255,255,.8);border-radius:18px;padding:12px 14px}
+.resume p{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--ink2)}
+
+/* how */
+.howcard{background:var(--paper);border-radius:var(--r);padding:20px 18px;box-shadow:0 8px 24px rgba(90,70,120,.10)}
+.howcard h2{margin:0 0 12px;font-size:19px}
+.howcard ol{margin:0;padding-left:1.25em;line-height:1.95;font-size:14.5px;color:#43455c}
+.howcard li{margin-bottom:8px}
+.howcard .tip{margin-top:14px;background:#fff6e6;border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.8;color:#7a5b1e;font-weight:700}
+
+/* ===== play ===== */
+.hud{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.qno{font-weight:800;font-size:17px;white-space:nowrap}
+.qno i{font-style:normal;font-size:12px;color:var(--ink2);margin-left:1px}
+.bar{flex:1;height:10px;border-radius:999px;background:rgba(255,255,255,.85);overflow:hidden}
+.bar>div{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--orange),var(--pink));transition:width .3s ease}
+.time{font-size:13px;font-weight:700;color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tierTag{
+  display:inline-block;font-size:11.5px;font-weight:800;color:#fff;
+  padding:4px 12px;border-radius:999px;margin-bottom:8px;background:var(--mint);
+}
+
+/* the puzzle panel — deliberately plain */
+.panel{background:var(--paper);border-radius:var(--r);padding:16px;box-shadow:0 8px 24px rgba(90,70,120,.10)}
+.matrix{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+  max-width:330px;margin:0 auto;
+}
+.mcell{
+  position:relative;aspect-ratio:1/1;background:#fbfbfd;
+  border:1.5px solid var(--line);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.mcell.q{background:#fff6e6;border:2px dashed var(--orange)}
+.mcell .qm{font-size:30px;font-weight:800;color:var(--orange)}
+.mcell.q.filled{background:#eafaf3;border:2px solid var(--ok);animation:pop2 .35s ease}
+@keyframes pop2{0%{transform:scale(.7)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+.fig{width:100%;height:100%;display:block}
+
+.ask{text-align:center;font-weight:800;font-size:14.5px;margin:16px 0 10px;color:var(--ink2)}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.opt{
+  position:relative;aspect-ratio:1/1;padding:5px;cursor:pointer;
+  background:var(--paper);border:2px solid transparent;border-radius:14px;
+  box-shadow:0 4px 0 #e6e1ef;transition:transform .08s ease,box-shadow .08s ease;
+}
+.opt:active{transform:translateY(3px);box-shadow:0 1px 0 #e6e1ef}
+.opt .onum{
+  position:absolute;top:3px;left:5px;font-size:10px;font-weight:800;color:#c9c5d6;
+}
+.opt.ok{border-color:var(--ok);background:#eafaf3;box-shadow:0 4px 0 #9fdcc4;animation:pop2 .35s ease}
+.opt.ng{border-color:var(--ng);background:#fdeef1;box-shadow:0 4px 0 #f3b4c0;animation:shake .35s ease}
+.opt.show{border-color:var(--ok);background:#eafaf3;box-shadow:0 4px 0 #9fdcc4}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.opts.locked .opt{cursor:default}
+
+.ctrl{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+
+/* ===== result ===== */
+.rescard{background:var(--paper);border-radius:var(--r);padding:22px 18px;box-shadow:0 8px 24px rgba(90,70,120,.10);text-align:center}
+.badge{font-size:13px;font-weight:800;color:#fff;background:var(--purple);display:inline-block;padding:6px 18px;border-radius:999px;margin-bottom:14px}
+.bigscore{font-size:clamp(46px,15vw,66px);font-weight:800;line-height:1;color:var(--pink)}
+.bigscore small{font-size:17px;color:var(--ink2);margin-left:4px;font-weight:800}
+.reslabel{font-size:13px;font-weight:800;color:var(--ink2);margin-bottom:4px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0 6px}
+.kpi{background:#f7f6fb;border-radius:14px;padding:11px 6px}
+.kpi .v{font-size:18px;font-weight:800}
+.kpi .k{font-size:10.5px;color:var(--ink2);font-weight:700;margin-top:2px}
+.tiers{margin-top:18px;text-align:left}
+.tiers h3{font-size:13px;margin:0 0 10px;color:var(--ink2)}
+.trow{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.trow .tn{font-size:12px;font-weight:800;width:5.6em;flex:none}
+.trow .tb{flex:1;height:9px;border-radius:999px;background:#eeecf5;overflow:hidden}
+.trow .tb>div{height:100%;border-radius:999px;background:var(--blue)}
+.trow .tv{font-size:11.5px;font-weight:800;color:var(--ink2);width:3.4em;text-align:right;flex:none;font-variant-numeric:tabular-nums}
+.disc{margin-top:18px;font-size:11.5px;line-height:1.75;color:#8d90a6;background:#f7f6fb;border-radius:14px;padding:11px 13px;text-align:left}
+.resbtns{margin-top:18px;display:grid;gap:10px}
+</style>
+</head>
+<body>
+
+<svg id="svgdefs" width="0" height="0" style="position:absolute" aria-hidden="true"><defs></defs></svg>
+
+<div class="wrap">
+  <div class="backnav"><a href="./">← アプリ一覧に戻る</a></div>
+
+  <!-- ========== START ========== -->
+  <section id="scStart" class="screen on">
+    <svg class="tbox" viewBox="0 0 200 172">
+      <circle class="pop1" cx="62" cy="40" r="13" fill="#4aa8ff"/>
+      <path   class="pop2" d="M101,14 L116,42 L86,42 Z" fill="#9b7bff"/>
+      <rect   class="pop3" x="130" y="10" width="24" height="24" rx="6" fill="#3ec9a7"/>
+      <g class="lid"><rect x="28" y="64" width="144" height="20" rx="9" fill="#ff6b8a"/></g>
+      <rect x="36" y="82" width="128" height="76" rx="13" fill="#ffb02e"/>
+      <rect x="94" y="82" width="12" height="76" fill="#ffd27a"/>
+      <rect x="36" y="82" width="128" height="76" rx="13" fill="none" stroke="#e79a12" stroke-width="3"/>
+    </svg>
+    <h1 class="title">TOY BOX <em>IQ</em></h1>
+    <p class="sub">おもちゃ箱をあけて、<br>つぎの「かたち」をあてよう。</p>
+    <button class="btn big" id="btnStart">はじめる</button>
+    <button class="btn ghost small" id="btnHow">あそびかた</button>
+    <div class="resume" id="resume" hidden>
+      <p>とちゅうのゲームがあります（Q<span id="resumeQ">1</span>）</p>
+      <button class="btn blue small" id="btnResume">つづきから</button>
+    </div>
+    <p class="meta">全50問・図形推理／制限時間なし</p>
+  </section>
+
+  <!-- ========== HOW ========== -->
+  <section id="scHow" class="screen">
+    <div class="howcard">
+      <h2>あそびかた</h2>
+      <ol>
+        <li>3×3のマスに、かたちが ならんでいます。</li>
+        <li>たて・よこに かならず「きまり」があります。</li>
+        <li>右下の <b>？</b> に入るかたちを、下の8つから えらびます。</li>
+        <li>きまりは「かたち」「ぬり方」「数」「むき」「色」「大きさ」のどれか、またはその組み合わせ。</li>
+        <li>Q1から だんだん むずかしくなり、Q48〜50は最難関です。</li>
+      </ol>
+      <div class="tip">ヒント：まず「1行目 → 2行目」で何が変わったかを見ると、きまりが見つけやすいです。</div>
+      <div class="resbtns"><button class="btn" id="btnHowBack">とじる</button></div>
+    </div>
+  </section>
+
+  <!-- ========== PLAY ========== -->
+  <section id="scPlay" class="screen">
+    <div class="hud">
+      <div class="qno">Q<span id="qNo">1</span><i>/50</i></div>
+      <div class="bar"><div id="barFill"></div></div>
+      <div class="time" id="time">0:00</div>
+    </div>
+    <div class="tierTag" id="tierTag">やさしい</div>
+    <div class="panel">
+      <div class="matrix" id="matrix"></div>
+    </div>
+    <p class="ask">？ に入るのは どれ？</p>
+    <div class="opts" id="opts"></div>
+    <div class="ctrl">
+      <button class="btn ghost small" id="btnQuit">やめる</button>
+      <button class="btn ghost small" id="btnSound">🔊 音 ON</button>
+    </div>
+  </section>
+
+  <!-- ========== RESULT ========== -->
+  <section id="scResult" class="screen">
+    <div class="rescard">
+      <div class="badge" id="rBadge">みならい</div>
+      <div class="reslabel">スコア</div>
+      <div class="bigscore"><span id="rScore">0</span><small>/ <span id="rMax">182</span></small></div>
+      <div class="kpis">
+        <div class="kpi"><div class="v" id="rCorrect">0/50</div><div class="k">正解数</div></div>
+        <div class="kpi"><div class="v" id="rRate">0%</div><div class="k">正答率</div></div>
+        <div class="kpi"><div class="v" id="rTime">0:00</div><div class="k">かかった時間</div></div>
+      </div>
+      <div class="tiers">
+        <h3>難易度べつの正解</h3>
+        <div id="rTiers"></div>
+      </div>
+      <div class="disc">
+        ※ このスコアはIQ値ではありません。図形推理（マトリックス課題）の正答傾向を、難易度で重みづけして点数化したものです。
+      </div>
+      <div class="resbtns">
+        <button class="btn" id="btnAgain">もう一度（同じ50問）</button>
+        <button class="btn blue" id="btnNewSet">新しい50問に挑戦</button>
+        <button class="btn ghost small" id="btnHome">タイトルへ</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   0. utils
+   ============================================================ */
+function mulberry32(a){
+  return function(){
+    a|=0; a=a+0x6D2B79F5|0;
+    let t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+function sample(rng,arr,n){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}
+  return a.slice(0,n);
+}
+function shuffle(rng,arr){ return sample(rng,arr,arr.length); }
+function pickOne(rng,arr){ return arr[Math.floor(rng()*arr.length)]; }
+function $(id){ return document.getElementById(id); }
+
+/* ============================================================
+   1. figure vocabulary
+   ============================================================ */
+const SHAPES = ['circle','square','triangle','diamond','hexagon','star','cross','arrow'];
+const FILLS  = ['solid','open','half','hatch'];
+const COLORS = ['#2f3142','#3d6fd6','#e0526c'];
+const SIZES  = [0.74,1,1.24];
+const ROTSAFE = [2,7];               // triangle / arrow : rotation is clearly visible
+
+const DOM = {
+  shape:[0,1,2,3,4,5,6,7],
+  fill :[0,1,2,3],
+  color:[0,1,2],
+  size :[0,1,2],
+  rot  :[0,1,2,3],                   // 0/90/180/270 deg
+  count:[1,2,3,4]
+};
+const ATTRS = ['shape','fill','count','rot','color','size'];
+
+/* --- build shared <defs> for half / hatch fills --- */
+(function buildDefs(){
+  const defs = $('svgdefs').firstChild;
+  let s='';
+  COLORS.forEach(function(c,i){
+    s += '<linearGradient id="hg'+i+'" x1="0" y1="0" x2="1" y2="0">'
+       +   '<stop offset="50%" stop-color="'+c+'"/>'
+       +   '<stop offset="50%" stop-color="'+c+'" stop-opacity="0"/>'
+       + '</linearGradient>';
+    s += '<pattern id="hp'+i+'" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
+       +   '<line x1="0" y1="0" x2="0" y2="9" stroke="'+c+'" stroke-width="4"/>'
+       + '</pattern>';
+  });
+  defs.innerHTML = s;
+})();
+
+function ring(cx,cy,r,n,start){
+  const a=[];
+  for(let i=0;i<n;i++){ const t=start+i*2*Math.PI/n; a.push([cx+r*Math.cos(t), cy+r*Math.sin(t)]); }
+  return a;
+}
+function poly(pts){
+  return 'M'+pts.map(function(p){return p[0].toFixed(2)+','+p[1].toFixed(2);}).join('L')+'Z';
+}
+function shapeD(shape,cx,cy,r){
+  const S=-Math.PI/2;
+  switch(shape){
+    case 'circle':  return 'M'+(cx-r)+','+cy+'a'+r+','+r+' 0 1,0 '+(2*r)+',0a'+r+','+r+' 0 1,0 '+(-2*r)+',0Z';
+    case 'square':  { const s=r*0.84; return poly([[cx-s,cy-s],[cx+s,cy-s],[cx+s,cy+s],[cx-s,cy+s]]); }
+    case 'diamond': return poly(ring(cx,cy,r,4,S));
+    case 'triangle':return poly(ring(cx,cy,r*1.05,3,S));
+    case 'hexagon': return poly(ring(cx,cy,r,6,S));
+    case 'star':    { const p=[]; for(let i=0;i<10;i++){ const t=S+i*Math.PI/5, rr=(i%2)?r*0.44:r; p.push([cx+rr*Math.cos(t),cy+rr*Math.sin(t)]); } return poly(p); }
+    case 'cross':   { const a=r*0.33,b=r*0.96; return poly([[cx-a,cy-b],[cx+a,cy-b],[cx+a,cy-a],[cx+b,cy-a],[cx+b,cy+a],[cx+a,cy+a],[cx+a,cy+b],[cx-a,cy+b],[cx-a,cy+a],[cx-b,cy+a],[cx-b,cy-a],[cx-a,cy-a]]); }
+    case 'arrow':   { const w=r*0.38,h=r; return poly([[cx,cy-h],[cx+h*0.84,cy+h*0.14],[cx+w,cy+h*0.14],[cx+w,cy+h],[cx-w,cy+h],[cx-w,cy+h*0.14],[cx-h*0.84,cy+h*0.14]]); }
+  }
+  return '';
+}
+function fillAttrs(fillIdx,colorIdx){
+  const c=COLORS[colorIdx];
+  switch(FILLS[fillIdx]){
+    case 'solid': return 'fill="'+c+'" stroke="none"';
+    case 'open':  return 'fill="none" stroke="'+c+'" stroke-width="7" stroke-linejoin="round"';
+    case 'half':  return 'fill="url(#hg'+colorIdx+')" stroke="'+c+'" stroke-width="5" stroke-linejoin="round"';
+    case 'hatch': return 'fill="url(#hp'+colorIdx+')" stroke="'+c+'" stroke-width="5" stroke-linejoin="round"';
+  }
+  return '';
+}
+const LAYOUT = {
+  1:[[50,50]],
+  2:[[28,50],[72,50]],
+  3:[[50,26],[27,70],[73,70]],
+  4:[[29,29],[71,29],[29,71],[71,71]]
+};
+const BASER = {1:33,2:21,3:21,4:20};
+
+function cellSVG(cell){
+  const pos = LAYOUT[cell.count], r = BASER[cell.count]*SIZES[cell.size];
+  const fa = fillAttrs(cell.fill,cell.color), deg = cell.rot*90;
+  let inner='';
+  for(let i=0;i<pos.length;i++){
+    const x=pos[i][0], y=pos[i][1];
+    inner += '<g transform="rotate('+deg+' '+x+' '+y+')"><path d="'+shapeD(SHAPES[cell.shape],x,y,r)+'" '+fa+'/></g>';
+  }
+  return '<svg class="fig" viewBox="0 0 100 100" aria-hidden="true">'+inner+'</svg>';
+}
+function key(c){ return c.shape+'|'+c.fill+'|'+c.count+'|'+c.rot+'|'+c.color+'|'+c.size; }
+
+/* ============================================================
+   2. rule engine  — every rule returns a 3x3 grid of values
+   ============================================================ */
+function transpose(g){ return [0,1,2].map(function(r){ return [0,1,2].map(function(c){ return g[c][r]; }); }); }
+
+const RULE = {
+  rowConst:function(rng,attr){ const v=sample(rng,DOM[attr],3);
+    return [[v[0],v[0],v[0]],[v[1],v[1],v[1]],[v[2],v[2],v[2]]]; },
+  colConst:function(rng,attr){ const v=sample(rng,DOM[attr],3);
+    return [v.slice(),v.slice(),v.slice()]; },
+  latin:function(rng,attr){ const v=sample(rng,DOM[attr],3);
+    return [0,1,2].map(function(r){ return [0,1,2].map(function(c){ return v[(r+c)%3]; }); }); },
+  latinAnti:function(rng,attr){ const v=sample(rng,DOM[attr],3);
+    return [0,1,2].map(function(r){ return [0,1,2].map(function(c){ return v[(r-c+3)%3]; }); }); },
+  progRow:function(rng,attr){
+    if(attr==='count'){
+      return [0,1,2].map(function(){ const b=1+Math.floor(rng()*2); return [b,b+1,b+2]; });
+    }
+    const d=DOM[attr], n=d.length;
+    return [0,1,2].map(function(){ const b=Math.floor(rng()*n); return [0,1,2].map(function(c){ return d[(b+c)%n]; }); });
+  },
+  progCol:function(rng,attr){ return transpose(RULE.progRow(rng,attr)); },
+  sumRow:function(rng,attr){
+    if(attr==='count'){
+      return [0,1,2].map(function(){ const a=1+Math.floor(rng()*2), b=1+Math.floor(rng()*2); return [a,b,a+b]; });
+    }
+    const d=DOM[attr], n=d.length;
+    return [0,1,2].map(function(){
+      const a=Math.floor(rng()*n), b=Math.floor(rng()*n);
+      return [d[a],d[b],d[(a+b)%n]];
+    });
+  },
+  sumCol:function(rng,attr){ return transpose(RULE.sumRow(rng,attr)); }
+};
+
+/* ============================================================
+   3. the 50-question difficulty ladder
+   ============================================================ */
+const TIERNAME = {1:'やさしい',2:'かんたん',3:'ふつう',4:'むずかしい',5:'とても むずかしい',6:'超難問',7:'最難関'};
+const TIERCOL  = {1:'#3ec9a7',2:'#3ec9a7',3:'#4aa8ff',4:'#9b7bff',5:'#ffb02e',6:'#ff6b8a',7:'#e0304f'};
+
+const PLAN = [
+  { n:3, tier:1, tracks:[['shape',['rowConst','colConst']]] },
+  { n:3, tier:1, tracks:[['fill' ,['rowConst','colConst']]] },
+  { n:4, tier:2, tracks:[['count',['progRow','progCol','rowConst']]] },
+  { n:4, tier:2, tracks:[['shape',['latin','latinAnti']]] },
+  { n:5, tier:3, tracks:[['shape',['rowConst','latin']],['fill',['colConst','latinAnti']]] },
+  { n:5, tier:3, tracks:[['count',['progRow','progCol','latin']],['shape',['rowConst','colConst','latin']]] },
+  { n:5, tier:4, tracks:[['rot'  ,['progRow','progCol','latin']],['fill',['latin','colConst']]] },
+  { n:5, tier:4, tracks:[['color',['latin','rowConst']],['shape',['latin','colConst']],['count',['progRow','rowConst']]] },
+  { n:5, tier:5, tracks:[['shape',['latin']],['fill',['latinAnti']],['count',['progRow','progCol']]] },
+  { n:4, tier:5, tracks:[['count',['sumRow']],['fill',['latin','colConst']],['color',['latinAnti']]] },
+  { n:4, tier:6, tracks:[['rot'  ,['sumRow','progRow']],['fill',['latin']],['size',['progRow','latinAnti']]] },
+  { n:3, tier:7, tracks:[['count',['sumRow']],['rot',['sumRow']],['fill',['latinAnti']],['color',['latin']]] }
+];
+
+function specList(){
+  const out=[];
+  PLAN.forEach(function(p){ for(let i=0;i<p.n;i++) out.push(p); });
+  return out;                      // length 50
+}
+
+/* ============================================================
+   4. question generation
+   ============================================================ */
+function genQuestion(rng, spec){
+  const attrs = spec.tracks.map(function(t){ return t[0]; });
+  const hasRot = attrs.indexOf('rot')>=0;
+
+  // constants for every attribute that is not a varying track
+  const base={};
+  if(attrs.indexOf('shape')<0) base.shape = hasRot ? pickOne(rng,ROTSAFE) : pickOne(rng,DOM.shape);
+  if(attrs.indexOf('fill') <0) base.fill  = pickOne(rng,DOM.fill);
+  if(attrs.indexOf('count')<0) base.count = 1+Math.floor(rng()*2);
+  if(attrs.indexOf('rot')  <0) base.rot   = 0;
+  if(attrs.indexOf('color')<0) base.color = 0;
+  if(attrs.indexOf('size') <0) base.size  = 1;
+
+  // varying tracks
+  const grids={}, usedRule={};
+  spec.tracks.forEach(function(t){
+    const attr=t[0], rule=pickOne(rng,t[1]);
+    usedRule[attr]=rule;
+    grids[attr]=RULE[rule](rng,attr);
+  });
+
+  // assemble 3x3
+  const grid=[];
+  for(let r=0;r<3;r++){
+    const row=[];
+    for(let c=0;c<3;c++){
+      const cell={};
+      ATTRS.forEach(function(a){ cell[a] = (a in grids) ? grids[a][r][c] : base[a]; });
+      // keep multi-element figures readable
+      if(cell.count>=3 && cell.size===2) cell.size=1;
+      row.push(cell);
+    }
+    grid.push(row);
+  }
+
+  const built = buildOptions(rng, grid, attrs, spec.tier);
+  return { grid:grid, opts:built.opts, correct:built.correct, tier:spec.tier, rules:usedRule, varying:attrs };
+}
+
+function buildOptions(rng, grid, varying, tier){
+  const ans = grid[2][2];
+  const seen = {}; seen[key(ans)] = true;
+
+  // near-misses: change exactly one of the ATTRIBUTES THAT FOLLOW A RULE
+  const near=[];
+  varying.forEach(function(a){
+    DOM[a].forEach(function(v){
+      if(v===ans[a]) return;
+      const c={}; ATTRS.forEach(function(k){ c[k]=ans[k]; }); c[a]=v;
+      if(c.count>=3 && c.size===2) c.size=1;
+      near.push(c);
+    });
+  });
+  // plausible neighbours already on the board
+  const neigh=[grid[2][1],grid[1][2],grid[1][1],grid[0][2],grid[2][0]].map(function(c){
+    const o={}; ATTRS.forEach(function(k){ o[k]=c[k]; }); return o;
+  });
+  // fallback: perturb a constant attribute
+  const far=[];
+  ATTRS.forEach(function(a){
+    if(varying.indexOf(a)>=0) return;
+    DOM[a].forEach(function(v){
+      if(v===ans[a]) return;
+      const c={}; ATTRS.forEach(function(k){ c[k]=ans[k]; }); c[a]=v;
+      if(c.count>=3 && c.size===2) c.size=1;
+      far.push(c);
+    });
+  });
+
+  let pool;
+  if(tier>=5){
+    // hard items: every distractor should be a true near-miss
+    pool = shuffle(rng,near).concat(shuffle(rng,neigh), shuffle(rng,far));
+  }else{
+    pool = shuffle(rng,neigh).slice(0,2).concat(shuffle(rng,near), shuffle(rng,far));
+  }
+
+  const out=[];
+  for(let i=0;i<pool.length && out.length<7;i++){
+    const k=key(pool[i]);
+    if(seen[k]) continue;
+    seen[k]=true; out.push(pool[i]);
+  }
+  const opts = shuffle(rng,[ans].concat(out));
+  let correct=-1;
+  for(let i=0;i<opts.length;i++){ if(key(opts[i])===key(ans)){ correct=i; break; } }
+  return { opts:opts, correct:correct };
+}
+
+function buildAll(seed){
+  const rng = mulberry32(seed);
+  const specs = specList();
+  const qs = [];
+  for(let i=0;i<specs.length;i++) qs.push(genQuestion(rng, specs[i]));
+  return qs;
+}
+
+/* ============================================================
+   5. game state
+   ============================================================ */
+const STD_SEED = 20260914;
+const SAVE_KEY = 'toyboxiq_v1';
+const TIER_BANDS = [
+  {name:'やさしい', tiers:[1,2]},
+  {name:'ふつう',   tiers:[3]},
+  {name:'むずかしい',tiers:[4]},
+  {name:'難問',     tiers:[5,6]},
+  {name:'最難関',   tiers:[7]}
+];
+
+let QS=[], idx=0, results=[], locked=false, seed=STD_SEED;
+let t0=0, elapsed=0, timer=null, soundOn=true, audio=null;
+
+function maxScore(){ return QS.reduce(function(s,q){ return s+q.tier; },0); }
+
+/* ---- persistence (degrades silently if storage is unavailable) ---- */
+function save(){
+  try{
+    localStorage.setItem(SAVE_KEY, JSON.stringify({seed:seed, idx:idx, results:results, elapsed:elapsed+(Date.now()-t0)}));
+  }catch(e){}
+}
+function loadSave(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw) return null;
+    const d=JSON.parse(raw);
+    if(typeof d.idx!=='number' || d.idx<=0 || d.idx>=50) return null;
+    return d;
+  }catch(e){ return null; }
+}
+function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
+
+/* ---- sound ---- */
+function beep(ok){
+  if(!soundOn) return;
+  try{
+    if(!audio) audio = new (window.AudioContext||window.webkitAudioContext)();
+    const notes = ok ? [660,990] : [300,220];
+    notes.forEach(function(f,i){
+      const o=audio.createOscillator(), g=audio.createGain();
+      o.type='sine'; o.frequency.value=f;
+      const t=audio.currentTime+i*0.09;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.14,t+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.16);
+      o.connect(g); g.connect(audio.destination);
+      o.start(t); o.stop(t+0.18);
+    });
+  }catch(e){}
+}
+
+/* ---- screens ---- */
+function show(id){
+  ['scStart','scHow','scPlay','scResult'].forEach(function(s){ $(s).classList.toggle('on', s===id); });
+  window.scrollTo(0,0);
+}
+function fmtTime(ms){
+  const s=Math.floor(ms/1000);
+  return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+}
+function tick(){ $('time').textContent = fmtTime(elapsed+(Date.now()-t0)); }
+
+/* ---- render one question ---- */
+function renderQ(){
+  const q=QS[idx];
+  $('qNo').textContent = idx+1;
+  $('barFill').style.width = (idx/QS.length*100)+'%';
+  const tag=$('tierTag');
+  tag.textContent = TIERNAME[q.tier];
+  tag.style.background = TIERCOL[q.tier];
+
+  const m=$('matrix'); m.innerHTML='';
+  for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+    const d=document.createElement('div');
+    if(r===2&&c===2){ d.className='mcell q'; d.id='qCell'; d.innerHTML='<span class="qm">？</span>'; }
+    else { d.className='mcell'; d.innerHTML=cellSVG(q.grid[r][c]); }
+    m.appendChild(d);
+  }
+
+  const o=$('opts'); o.innerHTML=''; o.classList.remove('locked');
+  q.opts.forEach(function(cell,i){
+    const b=document.createElement('button');
+    b.className='opt'; b.type='button';
+    b.setAttribute('aria-label','選択肢 '+(i+1));
+    b.innerHTML=cellSVG(cell)+'<span class="onum">'+(i+1)+'</span>';
+    b.addEventListener('click',function(){ answer(i); });
+    o.appendChild(b);
+  });
+  locked=false;
+}
+
+function answer(i){
+  if(locked) return;
+  locked=true;
+  const q=QS[idx];
+  const ok = (i===q.correct);
+  results[idx]=ok;
+
+  const btns=document.querySelectorAll('.opt');
+  $('opts').classList.add('locked');
+  btns[i].classList.add(ok?'ok':'ng');
+  if(!ok && btns[q.correct]) btns[q.correct].classList.add('show');
+
+  const qc=$('qCell');
+  if(qc){ qc.classList.add('filled'); qc.innerHTML=cellSVG(q.grid[2][2]); }
+
+  beep(ok);
+  save();
+
+  setTimeout(function(){
+    idx++;
+    if(idx>=QS.length) finish();
+    else { renderQ(); save(); }
+  }, ok?640:1050);
+}
+
+/* ---- start / finish ---- */
+function startGame(newSeed, resumeData){
+  seed = newSeed;
+  QS = buildAll(seed);
+  if(resumeData){
+    idx = resumeData.idx;
+    results = resumeData.results || [];
+    elapsed = resumeData.elapsed || 0;
+  }else{
+    idx=0; results=[]; elapsed=0;
+  }
+  t0=Date.now();
+  if(timer) clearInterval(timer);
+  timer=setInterval(tick,500); tick();
+  show('scPlay');
+  renderQ();
+  // unlock the audio context on the first user gesture
+  try{ if(!audio) audio=new (window.AudioContext||window.webkitAudioContext)(); if(audio.state==='suspended') audio.resume(); }catch(e){}
+}
+
+function finish(){
+  if(timer){ clearInterval(timer); timer=null; }
+  const total = elapsed+(Date.now()-t0);
+  clearSave();
+
+  let score=0, correct=0;
+  QS.forEach(function(q,i){ if(results[i]){ score+=q.tier; correct++; } });
+  const max=maxScore();
+  const rate=Math.round(correct/QS.length*100);
+
+  $('rScore').textContent=score;
+  $('rMax').textContent=max;
+  $('rCorrect').textContent=correct+'/'+QS.length;
+  $('rRate').textContent=rate+'%';
+  $('rTime').textContent=fmtTime(total);
+
+  let badge='みならい';
+  if(rate>=95) badge='おもちゃ箱マスター';
+  else if(rate>=85) badge='ゴールドブロック';
+  else if(rate>=70) badge='シルバーギア';
+  else if(rate>=50) badge='ブロンズパーツ';
+  $('rBadge').textContent=badge;
+
+  let html='';
+  TIER_BANDS.forEach(function(band){
+    let n=0,c=0;
+    QS.forEach(function(q,i){
+      if(band.tiers.indexOf(q.tier)<0) return;
+      n++; if(results[i]) c++;
+    });
+    const pct = n? Math.round(c/n*100):0;
+    html += '<div class="trow"><div class="tn">'+band.name+'</div>'
+          + '<div class="tb"><div style="width:'+pct+'%"></div></div>'
+          + '<div class="tv">'+c+'/'+n+'</div></div>';
+  });
+  $('rTiers').innerHTML=html;
+
+  show('scResult');
+}
+
+/* ---- wiring ---- */
+$('btnStart').addEventListener('click',function(){ clearSave(); startGame(STD_SEED,null); });
+$('btnHow').addEventListener('click',function(){ show('scHow'); });
+$('btnHowBack').addEventListener('click',function(){ show('scStart'); });
+$('btnResume').addEventListener('click',function(){
+  const d=loadSave();
+  if(d) startGame(d.seed||STD_SEED,d); else startGame(STD_SEED,null);
+});
+$('btnQuit').addEventListener('click',function(){
+  save();
+  if(timer){ clearInterval(timer); timer=null; }
+  refreshResume(); show('scStart');
+});
+$('btnSound').addEventListener('click',function(){
+  soundOn=!soundOn;
+  this.textContent = soundOn ? '🔊 音 ON' : '🔇 音 OFF';
+});
+$('btnAgain').addEventListener('click',function(){ startGame(seed,null); });
+$('btnNewSet').addEventListener('click',function(){ startGame(Math.floor(Math.random()*1e9),null); });
+$('btnHome').addEventListener('click',function(){ refreshResume(); show('scStart'); });
+
+function refreshResume(){
+  const d=loadSave();
+  if(d){ $('resume').hidden=false; $('resumeQ').textContent=d.idx+1; }
+  else  { $('resume').hidden=true; }
+}
+refreshResume();
+
+/* expose for automated verification */
+window.__TBIQ = { buildAll:buildAll, key:key, specList:specList, STD_SEED:STD_SEED };
+
+})();
+</script>
+</body>
+</html>
