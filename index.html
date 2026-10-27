@@ -50,6 +50,7 @@ const APPS = [
     status: "公開中",
     desc: "宅建士試験の過去問1,361問をスワイプで解く。忘却曲線で自動復習、1セッション10問でスキマ時間に合格力を積み上げる。",
     url:  "https://apps.apple.com/jp/app/%E5%AE%85%E5%BB%BA%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%97/id6791060848",
+    android: "https://play.google.com/store/apps/details?id=com.owa.takken_swipe",
   },
   {
     name: "カバラ・タロット",
@@ -57,6 +58,7 @@ const APPS = [
     status: "公開中",
     desc: "カバラの生命の樹とタロットを組み合わせた本格リーディングアプリ。",
     url:  "",
+    android: "https://play.google.com/store/apps/details?id=com.iwaokai.kabbalahtarot",
   },
   {
     name: "SpeakGreat: Quote Shadowing",
@@ -64,6 +66,7 @@ const APPS = [
     status: "公開中",
     desc: "偉人の名言をシャドーイングし、AIが発音を採点。広告なし・買い切り・オフライン対応の英語発音トレーニング。",
     url:  "https://apps.apple.com/app/speakgreat-quote-shadowing/id6798465012",
+    android: "https://play.google.com/store/apps/details?id=com.iwaokai.speakgreat",
   },
   {
     name: "ブロック崩し",
@@ -78,8 +81,8 @@ const CAREER = [
   { t: "埼玉県立浦和高校 サッカー部 卒業", d: "" },
   { t: "フランス外人部隊(南米ギアナ)", d: "19歳で入隊。国籍も言語も異なる者たちの中で、規律と実行力を身につける。" },
   { t: "宮大工(高野山)",         d: "25歳で入門。高野山の社寺建築の世界で木と向き合い、ものづくりの基礎を叩き込まれる。" },
-  { t: "MENSA会員",              d: "52歳で入会。人口上位2%のIQを持つ者が集う国際団体。" },
-  { t: "AIアプリ開発者",         d: "AIを相棒に企画から開発・リリースまでを一人で行う。開発アプリ4本。" },
+  { t: "MENSA会員",              d: "2026年入会。人口上位2%のIQを持つ者が集う国際団体。" },
+  { t: "AIアプリ開発者",         d: "AIを相棒に企画から開発・リリースまでを一人で行う。開発アプリ6本。" },
 ];
 </script>
 
@@ -120,14 +123,11 @@ nav a:hover { color:var(--gold); }
 .hero { background:var(--sumi); text-align:center; padding:130px 20px 90px; }
 .hero .seal {
   width:56px; height:56px; margin:0 auto 28px; background:var(--shu); border-radius:8px;
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
 }
 .hero .seal .kanji {
   font-family:var(--mincho); font-size:32px; color:var(--washi); font-weight:600;
-  opacity:0; transform:translateY(10px);
-  transition:opacity .5s ease, transform .5s cubic-bezier(.34,1.56,.64,1);
 }
-.hero .seal.revealed .kanji { opacity:1; transform:translateY(0); }
 .hero h1 {
   font-family:var(--mincho); font-size:clamp(38px, 7vw, 64px); font-weight:600;
   letter-spacing:.3em; text-indent:.3em; color:var(--washi);
@@ -187,6 +187,8 @@ nav a:hover { color:var(--gold); }
 }
 .card .btn:hover { background:var(--ink); color:var(--washi); }
 .card .btn.disabled { border-color:#c2b89e; color:#a89d80; pointer-events:none; }
+.card .stores { display:flex; flex-wrap:wrap; gap:10px; }
+.card .stores .btn { padding:10px 20px; }
 a.card.card-link { text-decoration:none; color:inherit; display:block; cursor:pointer; }
 .card .btn.btn-launch { background:var(--shu); border-color:var(--shu); color:#fff; }
 a.card.card-link:hover .btn.btn-launch { background:#8c2f1b; border-color:#8c2f1b; }
@@ -310,11 +312,15 @@ document.getElementById("app-grid").innerHTML = APPS.map(a => {
   var isWebapp = a.kind === "webapp";
   var Tag = (a.url && isWebapp) ? "a" : "div";
   var openAttrs = (a.url && isWebapp) ? ` href="${a.url}"` : "";
-  var btn = a.url
-    ? (isWebapp
-        ? `<span class="btn btn-launch">▶ アプリを開く</span>`
-        : `<a class="btn" href="${a.url}" target="_blank" rel="noopener">ストアで見る</a>`)
-    : `<span class="btn disabled">リンク準備中</span>`;
+  var btn;
+  if (isWebapp) {
+    btn = a.url ? `<span class="btn btn-launch">▶ アプリを開く</span>` : `<span class="btn disabled">リンク準備中</span>`;
+  } else {
+    var stores = [];
+    if (a.url)     stores.push(`<a class="btn" href="${a.url}" target="_blank" rel="noopener">App Store</a>`);
+    if (a.android) stores.push(`<a class="btn" href="${a.android}" target="_blank" rel="noopener">Google Play</a>`);
+    btn = stores.length ? `<div class="stores">${stores.join("")}</div>` : `<span class="btn disabled">リンク準備中</span>`;
+  }
   return `
   <${Tag} class="card${isWebapp && a.url ? ' card-link' : ''}"${openAttrs}>
     <div class="top"><span class="tag">${a.tag}</span><span class="status">${a.status}</span></div>
@@ -326,10 +332,6 @@ document.getElementById("app-grid").innerHTML = APPS.map(a => {
 
 document.getElementById("timeline").innerHTML = CAREER.map(c => `
   <div class="tl-item"><h3>${c.t}</h3>${c.d ? `<p>${c.d}</p>` : ""}</div>`).join("");
-
-document.getElementById("seal").addEventListener("click", function(){
-  this.classList.toggle("revealed");
-});
 </script>
 </body>
 </html>
