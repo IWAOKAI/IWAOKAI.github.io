@@ -176,11 +176,6 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
     <button class="b-next" id="btnNext">＋1年</button>
     <button class="b-reset" id="btnReset">↺ 最初へ</button>
   </div>
-
-  <div class="tsuji">
-    <h3>◆ 減価率のこと（つじ健太郎 案）</h3>
-    <p>ここで使っている「1年に<span id="tsA">20</span>%ずつ減るお金」という設定は、<b>つじ健太郎 案</b>にもとづくものです。半減期にすると約<span id="tsB">3.1</span>年。下のボタンで他の設定とくらべられます。</p>
-  </div>
 </section>
 
 <section class="card">
@@ -280,8 +275,6 @@ function render(){
   $('dv').textContent=Math.round(d*100)+' %';
   $('dHint').innerHTML=`1年に ${Math.round(d*100)}% 減る ＝ 半減期およそ <b>${fmt(hl,1)}年</b>。`
     +`新しく必要な予算は、毎年 <b>${Math.round((1-d)*100)}%</b> の大きさになっていきます。`;
-  $('tsA').textContent=Math.round(d*100);
-  $('tsB').textContent=fmt(hl,1);
   $('ptLast').textContent=shortY(last.neu)+'円';
   $('ptPct').textContent=fmt(last.neu/S*100,1);
 }
