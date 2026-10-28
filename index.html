@@ -79,9 +79,11 @@ const APPS = [
 
 const CAREER = [
   { t: "埼玉県立浦和高校 サッカー部 卒業", d: "" },
-  { t: "フランス外人部隊(フランス領南米ギアナ)", d: "19歳で入隊。国籍も言語も異なる者たちの中で、規律と実行力を身につける。" },
+  { t: "フランス外人部隊(フランス領南米ギアナ)", d: "19歳で入隊。国籍も言語も異なる者たちの中で、規律と実行力を身につける。",
+    img: "./card-legion.jpg", alt: "フランス軍 身分証明書(Carte d'identité militaire) 1993年 オーバーニュ発行" },
   { t: "宮大工(高野山)",         d: "25歳で入門。高野山の社寺建築の世界で木と向き合い、ものづくりの基礎を叩き込まれる。" },
-  { t: "MENSA会員",              d: "2026年入会。人口上位2%のIQを持つ者が集う国際団体。" },
+  { t: "MENSA会員",              d: "2026年入会。人口上位2%のIQを持つ者が集う国際団体。",
+    img: "./card-mensa.jpg", alt: "JAPAN MENSA 会員証" },
   { t: "AIアプリ開発者",         d: "AIを相棒に企画から開発・リリースまでを一人で行う。開発アプリ6本。" },
 ];
 </script>
@@ -205,6 +207,10 @@ a.card.card-link:hover .btn.btn-launch { background:#8c2f1b; border-color:#8c2f1
 }
 .tl-item h3 { font-family:var(--mincho); font-size:21px; font-weight:600; letter-spacing:.12em; color:var(--washi); }
 .tl-item p { font-size:14px; color:#a89f8b; margin-top:6px; }
+.tl-item .card-img {
+  display:block; width:100%; max-width:420px; margin-top:16px;
+  border:1px solid rgba(201,169,97,.35); box-shadow:0 10px 28px rgba(0,0,0,.35);
+}
 
 /* ---- 依頼 ---- */
 #work { background:var(--washi); color:var(--ink); padding:96px 0 110px; text-align:center; }
@@ -331,7 +337,7 @@ document.getElementById("app-grid").innerHTML = APPS.map(a => {
 }).join("");
 
 document.getElementById("timeline").innerHTML = CAREER.map(c => `
-  <div class="tl-item"><h3>${c.t}</h3>${c.d ? `<p>${c.d}</p>` : ""}</div>`).join("");
+  <div class="tl-item"><h3>${c.t}</h3>${c.d ? `<p>${c.d}</p>` : ""}${c.img ? `<img class="card-img" src="${c.img}" alt="${c.alt || ""}" loading="lazy">` : ""}</div>`).join("");
 </script>
 </body>
 </html>
