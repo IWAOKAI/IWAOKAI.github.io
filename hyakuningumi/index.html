@@ -101,6 +101,19 @@ td b.pt{color:var(--shu);font-family:var(--mincho);font-size:17px}
 .wallet .pt{font-family:var(--mincho);font-size:34px;color:var(--gold)}
 .wallet .pt small{font-size:13px;color:var(--paper);opacity:.8;margin-left:4px;font-family:var(--gothic)}
 .wallet .meta{font-size:12px;opacity:.85}
+.xbox{min-width:260px}
+.xbox label{font-size:11px;letter-spacing:.08em;opacity:.8}
+.xrow{display:flex;align-items:center;gap:6px;margin-top:4px}
+.xrow span{font-family:var(--mincho);font-size:18px;color:var(--gold)}
+.xrow input{flex:1;padding:8px 10px;border-radius:8px;border:1px solid rgba(246,241,230,.35);background:rgba(255,255,255,.08);color:#fff;font-size:14px;font-family:var(--gothic)}
+.xrow input::placeholder{color:rgba(246,241,230,.5)}
+.xrow .btn{padding:8px 14px;font-size:13px}
+.xhint{font-size:11px;opacity:.75;margin-top:4px}
+.app .acts{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.btn.x{background:#000;color:#fff;border-color:#000;font-size:12px;padding:8px 14px}
+.btn.x:hover{background:#222}
+.app .xl{font-size:12px;color:var(--ink2)}
+.app .xl a{color:var(--navy);font-weight:700;text-decoration:none}
 .applist{display:grid;gap:12px}
 .app{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
 .app .t{font-weight:700;font-size:15px}
@@ -235,6 +248,11 @@ footer a{color:var(--paper)}
 
   <div class="wallet">
     <div><div class="pt" id="ptNow">0<small>pt</small></div><div class="meta" id="ptMeta">完走 0本 ／ 1年で半分に減ります</div></div>
+    <div class="xbox">
+      <label for="xHandle">自分のXアカウント</label>
+      <div class="xrow"><span>@</span><input id="xHandle" maxlength="15" placeholder="username" autocomplete="off"><button class="btn light" id="xSave" type="button">保存</button></div>
+      <div class="xhint" id="xHint">登録したアプリに表示され、投稿文に自動で入ります</div>
+    </div>
     <div><button class="btn light" id="btnReset" type="button">お試しデータを消す</button></div>
   </div>
 
@@ -249,13 +267,14 @@ footer a{color:var(--paper)}
     <div><label>アプリ名</label><input id="rName" maxlength="40" required placeholder="例：宅建スワイプ"></div>
     <div><label>組</label><select id="rPlat"><option value="ios">iPhone（TestFlight）</option><option value="android">Android（クローズドテスト）</option></select></div>
     <div class="full"><label>参加リンク（任意）</label><input id="rLink" type="url" maxlength="300" placeholder="https://testflight.apple.com/join/… または https://play.google.com/apps/testing/…"></div>
+    <div class="full"><label>開発者のXアカウント（任意・上で保存したものが入ります）</label><input id="rX" maxlength="16" placeholder="@username"></div>
     <div class="full"><button class="btn primary" type="submit">登録する</button> <span class="msg" id="rMsg"></span></div>
   </form>
 
   <div class="share">
     <b>Xで紹介する</b>（任意・ポイント対象外）：
     <a id="shareX" href="#" target="_blank" rel="noopener">百人組を紹介する →</a>
-    <span>— 紹介はいつでも歓迎ですが、リポストやいいねの交換をポイントにすることはありません。</span>
+    <span>— 各アプリの「Xで募集を投稿」「Xで一言投稿」は、文面を自動で用意してXの投稿画面を開くだけです。投稿してもポイントは増えません。リポストやいいねの交換を組織的に行うことは、Xの規約違反になるため扱いません。</span>
   </div>
 </div></section>
 
@@ -285,7 +304,7 @@ const SAMPLE=[
   {id:'and-blocks',p:'android',name:'ブロック崩し',link:'',owner:true},
 ];
 function today(){const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');}
-function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}return {apps:[],stamps:{},done:{},pt:0,ptAt:Date.now(),joined:{}};}
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}return {apps:[],stamps:{},done:{},pt:0,ptAt:Date.now(),joined:{},x:''};}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 let S=load();
 function ptNow(){const d=(Date.now()-(S.ptAt||Date.now()))/864e5;return S.pt*Math.pow(0.5,d/HALF);}
@@ -307,10 +326,26 @@ function render(){
     const running=timers[a.id];
     el.innerHTML='<div>'+(a.mine?'<div class="mine">自分の募集（18枠・18,000pt 預け）</div>':(a.owner?'<div class="mine">運営者のアプリ・公開中</div>':''))+'<div class="t">'+esc(a.name)+'</div>'
       +'<div class="s">'+(isDone?'完走 — +'+REWARD.toLocaleString()+'pt 受け取り済み':'スタンプ '+st.length+'/'+DAYS+'（あと'+Math.max(0,PASS-st.length)+'個で完走）')+(a.link?' ・ <a href="'+esc(a.link)+'" target="_blank" rel="noopener">'+(a.owner?'ストアで開く':'参加リンク')+'</a>':'')+'</div>'
+      +(a.x?'<div class="xl">開発者: <a href="https://x.com/'+esc(a.x)+'" target="_blank" rel="noopener">@'+esc(a.x)+'</a></div>':'')
       +'<div class="stamps">'+stamps+'</div></div>'
-      +'<div>'+(a.mine?'':(isDone?'<span class="badge" style="background:var(--gold)">完走</span>':(todayOn?'<span class="badge" style="background:#8a93a8">今日の勤め 済</span>':(running?'<div class="timer" id="tm-'+a.id+'">30</div>':'<button class="btn primary" type="button" data-go="'+a.id+'">きょうの勤め（30秒）</button>'))))+'</div>';
+      +'<div class="acts">'+(a.mine
+          ? '<a class="btn x" href="'+postRecruit(a)+'" target="_blank" rel="noopener">Xで募集を投稿</a>'
+          : (isDone?'<span class="badge" style="background:var(--gold)">完走</span>':(todayOn?'<span class="badge" style="background:#8a93a8">今日の勤め 済</span>':(running?'<div class="timer" id="tm-'+a.id+'">30</div>':'<button class="btn primary" type="button" data-go="'+a.id+'">きょうの勤め（30秒）</button>')))
+            +'<a class="btn x" href="'+postCheer(a)+'" target="_blank" rel="noopener">Xで一言投稿（任意）</a>')
+      +'</div>';
     list.appendChild(el);
   });
+}
+function cleanX(v){return String(v||'').trim().replace(/^@/,'').replace(/[^A-Za-z0-9_]/g,'').slice(0,15);}
+function xIntent(text){return 'https://twitter.com/intent/tweet?text='+encodeURIComponent(text);}
+function platName(p){return p==='ios'?'iPhone（TestFlight）':'Android（クローズドテスト）';}
+function postRecruit(a){
+  const me=S.x?' by @'+S.x:'';
+  return xIntent('【テスター募集】'+a.name+'（'+platName(a.p)+'）'+me+'\n1日30秒、16日のうち12日開いてくれる方を探しています。\n'+(a.link||location.href.split('#')[0])+'\n#百人組');
+}
+function postCheer(a){
+  const to=a.x?'@'+a.x+' さんの':'';
+  return xIntent(to+a.name+'（'+platName(a.p)+'）を今日もテスト中。 #百人組\n'+location.href.split('#')[0]);
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 
@@ -344,6 +379,7 @@ document.getElementById('regForm').addEventListener('submit',e=>{
   const name=document.getElementById('rName').value.trim();
   const p=document.getElementById('rPlat').value;
   const link=document.getElementById('rLink').value.trim();
+  const x=cleanX(document.getElementById('rX').value)||S.x||'';
   const msg=document.getElementById('rMsg');
   if(!name){ msg.textContent='アプリ名を入れてください'; return; }
   if(link && !/^https:\/\//.test(link)){ msg.textContent='リンクは https:// から始めてください'; return; }
@@ -352,14 +388,24 @@ document.getElementById('regForm').addEventListener('submit',e=>{
   if(ptNow()<SLOT*SLOTS){ msg.textContent='18枠には '+(SLOT*SLOTS).toLocaleString()+'pt 必要です（いま '+Math.floor(ptNow()).toLocaleString()+'pt）'; return; }
   if(S.apps.some(a=>a.mine && !S.closed)){ /* 同時募集1本まで（お試しでは簡略） */ }
   addPt(-SLOT*SLOTS);
-  S.apps.push({id:'u'+Date.now(),p,name,link,mine:true}); save();
+  S.apps.push({id:'u'+Date.now(),p,name,link,x,mine:true}); save();
   msg.textContent='登録しました。'+ (SLOT*SLOTS).toLocaleString()+'pt を預けました（お試し）';
-  e.target.reset(); plat=p;
+  e.target.reset(); document.getElementById('rX').value=S.x?'@'+S.x:''; plat=p;
   document.querySelectorAll('.tab[data-d]').forEach(x=>x.classList.toggle('on',x.dataset.d===p));
   render();
 });
-document.getElementById('btnReset').addEventListener('click',()=>{ S={apps:[],stamps:{},done:{},pt:0,ptAt:Date.now(),joined:{}}; try{localStorage.removeItem(KEY);}catch(e){} timers={}; render(); });
+document.getElementById('btnReset').addEventListener('click',()=>{ S={apps:[],stamps:{},done:{},pt:0,ptAt:Date.now(),joined:{},x:''}; try{localStorage.removeItem(KEY);}catch(e){} timers={}; render(); });
 
+(function(){
+  const inp=document.getElementById('xHandle'), hint=document.getElementById('xHint');
+  inp.value=S.x||''; document.getElementById('rX').value=S.x?'@'+S.x:'';
+  document.getElementById('xSave').addEventListener('click',()=>{
+    S.x=cleanX(inp.value); inp.value=S.x; save();
+    document.getElementById('rX').value=S.x?'@'+S.x:'';
+    hint.textContent=S.x?('保存しました。投稿文に @'+S.x+' が入ります'):'登録したアプリに表示され、投稿文に自動で入ります';
+    render();
+  });
+})();
 document.getElementById('shareX').href='https://twitter.com/intent/tweet?text='+encodeURIComponent('百人組 — 個人開発者どうしでアプリを毎日開き合うテスター相互扶助コミュニティ（準備中）')+'&url='+encodeURIComponent(location.href.split('#')[0]);
 render();
 })();
