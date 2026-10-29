@@ -273,13 +273,16 @@ footer a{color:var(--paper)}
 <script>
 (function(){
 "use strict";
-const KEY='hyakuningumi_demo_v1';
+const KEY='hyakuningumi_demo_v2';
 const HALF=365, DAYS=16, PASS=12, REWARD=1200, SLOT=1000, SLOTS=18;
 const SAMPLE=[
-  {id:'s1',p:'ios',name:'SpeakGreat: Quote Shadowing',link:'',mine:false},
-  {id:'s2',p:'ios',name:'宅建スワイプ',link:'',mine:false},
-  {id:'s3',p:'android',name:'Sushi Toy Box',link:'',mine:false},
-  {id:'s4',p:'android',name:'TOY BOX IQ（Android版・準備中）',link:'',mine:false},
+  // 運営者（甲斐 巌夫）の公開中アプリ。参加リンクは現時点ではストアのページ（TestFlight／クローズドテストのリンクは開設時に差し替え）
+  {id:'ios-takken',p:'ios',name:'宅建スワイプ',link:'https://apps.apple.com/jp/app/%E5%AE%85%E5%BB%BA%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%97/id6791060848',owner:true},
+  {id:'ios-speakgreat',p:'ios',name:'SpeakGreat: Quote Shadowing',link:'https://apps.apple.com/app/speakgreat-quote-shadowing/id6798465012',owner:true},
+  {id:'and-takken',p:'android',name:'宅建スワイプ',link:'https://play.google.com/store/apps/details?id=com.owa.takken_swipe',owner:true},
+  {id:'and-speakgreat',p:'android',name:'SpeakGreat: Quote Shadowing',link:'https://play.google.com/store/apps/details?id=com.iwaokai.speakgreat',owner:true},
+  {id:'and-kabbalah',p:'android',name:'カバラ・タロット',link:'https://play.google.com/store/apps/details?id=com.iwaokai.kabbalahtarot',owner:true},
+  {id:'and-blocks',p:'android',name:'ブロック崩し',link:'',owner:true},
 ];
 function today(){const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');}
 function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r);}catch(e){}return {apps:[],stamps:{},done:{},pt:0,ptAt:Date.now(),joined:{}};}
@@ -302,8 +305,8 @@ function render(){
     const el=document.createElement('div'); el.className='app'+(isDone?' done':'');
     let stamps=''; for(let i=0;i<DAYS;i++){const on=i<st.length; stamps+='<span class="stamp'+(on?' on':'')+(i===st.length&&!todayOn?' today':'')+'">'+(on?'✓':'')+'</span>';}
     const running=timers[a.id];
-    el.innerHTML='<div>'+(a.mine?'<div class="mine">自分の募集（18枠・18,000pt 預け）</div>':'')+'<div class="t">'+esc(a.name)+'</div>'
-      +'<div class="s">'+(isDone?'完走 — +'+REWARD.toLocaleString()+'pt 受け取り済み':'スタンプ '+st.length+'/'+DAYS+'（あと'+Math.max(0,PASS-st.length)+'個で完走）')+(a.link?' ・ <a href="'+esc(a.link)+'" target="_blank" rel="noopener">参加リンク</a>':'')+'</div>'
+    el.innerHTML='<div>'+(a.mine?'<div class="mine">自分の募集（18枠・18,000pt 預け）</div>':(a.owner?'<div class="mine">運営者のアプリ・公開中</div>':''))+'<div class="t">'+esc(a.name)+'</div>'
+      +'<div class="s">'+(isDone?'完走 — +'+REWARD.toLocaleString()+'pt 受け取り済み':'スタンプ '+st.length+'/'+DAYS+'（あと'+Math.max(0,PASS-st.length)+'個で完走）')+(a.link?' ・ <a href="'+esc(a.link)+'" target="_blank" rel="noopener">'+(a.owner?'ストアで開く':'参加リンク')+'</a>':'')+'</div>'
       +'<div class="stamps">'+stamps+'</div></div>'
       +'<div>'+(a.mine?'':(isDone?'<span class="badge" style="background:var(--gold)">完走</span>':(todayOn?'<span class="badge" style="background:#8a93a8">今日の勤め 済</span>':(running?'<div class="timer" id="tm-'+a.id+'">30</div>':'<button class="btn primary" type="button" data-go="'+a.id+'">きょうの勤め（30秒）</button>'))))+'</div>';
     list.appendChild(el);
