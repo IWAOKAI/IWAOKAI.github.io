@@ -113,6 +113,14 @@ input:focus{outline:3px solid var(--soda);outline-offset:1px}
 .tsuji{background:#EEE9FF;border:3px solid #C9B8FF;border-radius:18px;padding:16px 15px;margin-top:18px}
 .tsuji h3{font-size:17px;font-weight:800;color:var(--grape);margin-bottom:7px}
 .tsuji p{font-size:15.5px;font-weight:700;line-height:1.85;color:var(--ink)}
+.book{display:flex;gap:16px;align-items:center;background:#FFF6E6;border:3px solid #FFD58A;border-radius:18px;padding:16px 15px;margin-top:18px;text-decoration:none;color:var(--ink);transition:transform .12s ease}
+.book:hover{transform:translateY(-2px)}
+.book img{width:96px;aspect-ratio:320/522;object-fit:cover;background:#EFE8FF;flex:none;border-radius:6px;box-shadow:0 6px 16px rgba(60,40,0,.22);display:block}
+.book .bt{font-size:12px;font-weight:800;color:#B8781A;letter-spacing:.06em;margin-bottom:4px}
+.book .bn{font-size:16px;font-weight:800;line-height:1.5}
+.book .ba{font-size:14px;font-weight:700;color:var(--ink2);margin-top:4px}
+.book .bb{display:inline-block;margin-top:10px;background:#FF9F1C;color:#fff;font-size:14px;font-weight:800;padding:8px 16px;border-radius:999px;box-shadow:0 4px 0 #D47F0A}
+@media(max-width:420px){.book{gap:12px}.book img{width:80px}.book .bn{font-size:15px}}
 
 .pt{background:#FFF3F8;border:3px dashed #FFB3D2;border-radius:20px;padding:18px 16px}
 .pt h3{font-size:18px;font-weight:800;color:var(--pink);margin-bottom:10px}
@@ -176,6 +184,16 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
     <button class="b-next" id="btnNext">＋1年</button>
     <button class="b-reset" id="btnReset">↺ 最初へ</button>
   </div>
+
+  <a class="book" href="https://www.amazon.co.jp/dp/B0G28Y4NMK" target="_blank" rel="noopener">
+    <img src="https://m.media-amazon.com/images/I/71PbWbXQmwL._SY522_.jpg" alt="書籍『日本人は、もっと国からお金をもらって良いと思う。』表紙" loading="lazy">
+    <div>
+      <div class="bt">この考え方のもとになった本</div>
+      <div class="bn">日本人は、もっと国からお金をもらって良いと思う。</div>
+      <div class="ba">つじ 健太郎（著）／Kindle版</div>
+      <span class="bb">Amazonで見る →</span>
+    </div>
+  </a>
 </section>
 
 <section class="card">
