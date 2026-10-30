@@ -8,7 +8,7 @@
 <meta property="og:title" content="甲斐 巌夫 | AIアプリ開発者">
 <meta property="og:description" content="MENSA会員・宮大工(高野山)・フランス外人部隊(フランス領南米ギアナ)。AIでアプリを作る。">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23a63a22'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23c93a2b'/%3E%3C/svg%3E">
 
 <script>
 /* ============================================================
@@ -53,7 +53,7 @@ const APPS = [
     kind: "webapp",
   },
   {
-    name: "百人組",
+    name: "匠組",
     tag:  "テスター相互扶助",
     status: "開設準備中",
     desc: "個人開発者どうしがアプリを毎日30秒以上開き合い、ポイントでテスターを募集できるコミュニティ（画面見本）。iPhone／Androidの組に分かれています。",
@@ -106,13 +106,13 @@ const CAREER = [
 
 <style>
 :root {
-  --sumi: #211f1a;        /* 墨 */
-  --sumi2: #2b2823;
+  --sumi: #141210;        /* 墨黒 */
+  --sumi2: #1f1c19;
   --washi: #f5f0e3;       /* 和紙 */
   --washi2: #ece5d3;
-  --gold: #c9a961;        /* 金 */
-  --gold-dim: #8a7a55;
-  --shu: #a63a22;         /* 朱 */
+  --gold: #d9472f;        /* 朱（アクセント） */
+  --gold-dim: #9c4a3c;
+  --shu: #c93a2b;         /* 朱 */
   --ink: #262319;
   --ink-soft: #5c543f;
   --mincho: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
@@ -139,13 +139,6 @@ nav a:hover { color:var(--gold); }
 
 /* ---- ヒーロー ---- */
 .hero { background:var(--sumi); text-align:center; padding:130px 20px 90px; }
-.hero .seal {
-  width:56px; height:56px; margin:0 auto 28px; background:var(--shu); border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
-}
-.hero .seal .kanji {
-  font-family:var(--mincho); font-size:32px; color:var(--washi); font-weight:600;
-}
 .hero h1 {
   font-family:var(--mincho); font-size:clamp(38px, 7vw, 64px); font-weight:600;
   letter-spacing:.3em; text-indent:.3em; color:var(--washi);
@@ -264,7 +257,6 @@ footer .f-aff { font-size:10.5px; color:#7a725f; margin:14px auto 0; max-width:6
 <header class="hero">
   <svg class="pat"><rect width="100%" height="100%" fill="url(#asaDark)"/></svg>
   <div class="inner">
-    <div class="seal" id="seal"><span class="kanji">匠</span></div>
     <h1 id="site-name"></h1>
     <div class="romaji" id="site-romaji"></div>
     <div class="role" id="site-title"></div>
