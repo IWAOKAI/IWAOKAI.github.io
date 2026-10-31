@@ -145,20 +145,6 @@ nav {
 }
 nav a { color:var(--washi); text-decoration:none; font-size:13.5px; letter-spacing:.25em; }
 nav a:hover { color:var(--gold); }
-/* ---- 共有ボタン(右上) ---- */
-.share-mark { position:absolute; right:16px; top:50%; transform:translateY(-50%); display:flex; gap:6px; }
-.share-mark a {
-  font-size:11px; letter-spacing:.06em; text-decoration:none; color:var(--washi);
-  padding:5px 11px; border:1px solid rgba(201,169,97,.55); border-radius:999px; line-height:1.4;
-}
-.share-mark a:hover { background:var(--gold); border-color:var(--gold); color:var(--sumi); }
-.share-mark a.line { background:#06c755; border-color:#06c755; color:#fff; }
-.share-mark a.line:hover { background:#05a846; border-color:#05a846; color:#fff; }
-@media (max-width:760px){
-  nav { flex-wrap:wrap; gap:14px 22px; padding:12px 16px 10px; }
-  nav a { font-size:12px; letter-spacing:.1em; }
-  .share-mark { position:static; transform:none; width:100%; justify-content:center; }
-}
 
 /* ---- ヒーロー ---- */
 .hero { background:var(--sumi); text-align:center; padding:130px 20px 90px; }
@@ -275,11 +261,6 @@ footer .f-aff { font-size:10.5px; color:#7a725f; margin:14px auto 0; max-width:6
   <a href="#apps">アプリ</a>
   <a href="#career">来歴</a>
   <a href="#work">制作依頼</a>
-  <div class="share-mark" aria-label="このサイトを共有">
-    <a class="line" id="shareLine" href="#" target="_blank" rel="noopener">LINE</a>
-    <a id="shareX" href="#" target="_blank" rel="noopener">X</a>
-    <a id="shareTh" href="#" target="_blank" rel="noopener">Threads</a>
-  </div>
 </nav>
 
 <header class="hero">
@@ -349,17 +330,6 @@ document.getElementById("f-name").textContent = SITE.name;
 document.getElementById("f-copy").textContent = "© " + new Date().getFullYear() + " " + SITE.romaji + " — built with AI";
 document.getElementById("mail-cta").href = "mailto:" + SITE.email;
 document.title = SITE.name + " | " + SITE.title;
-
-/* ---- 共有ボタン（LINE / X / Threads）: 共有するURLは SHARE_URL ---- */
-(function(){
-  const SHARE_URL = "https://iwaokai.github.io/";
-  const u = encodeURIComponent(SHARE_URL);
-  const t = encodeURIComponent(SITE.name + " | " + SITE.title);
-  document.getElementById("shareLine").href = "https://social-plugins.line.me/lineit/share?url=" + u;
-  document.getElementById("shareX").href = "https://twitter.com/intent/tweet?text=" + t + "&url=" + u;
-  document.getElementById("shareTh").href = "https://www.threads.com/intent/post?text=" + t + "%0A" + u;
-})();
-
 const sub = document.getElementById("sub-contact");
 sub.innerHTML = '<a href="mailto:' + SITE.email + '">' + SITE.email + "</a>" +
   (SITE.x_url ? ' &nbsp;/&nbsp; <a href="' + SITE.x_url + '" target="_blank" rel="noopener">X (Twitter)</a>' : "");
