@@ -121,7 +121,16 @@ input:focus{outline:3px solid var(--soda);outline-offset:1px}
 .book .ba{font-size:14px;font-weight:700;color:var(--ink2);margin-top:4px}
 .book .bb{display:inline-block;margin-top:10px;background:#FF9F1C;color:#fff;font-size:14px;font-weight:800;padding:8px 16px;border-radius:999px;box-shadow:0 4px 0 #D47F0A}
 @media(max-width:420px){.book{gap:12px}.book img{width:80px}.book .bn{font-size:15px}}
-.book.gear{background:#F1F7EA;border-color:#BBD9A0;margin-top:12px}
+.gearbox{margin-top:12px}
+.gtrack{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.gtrack::-webkit-scrollbar{display:none}
+.gtrack .book{flex:0 0 100%;scroll-snap-align:start;margin-top:0}
+.book.gear{background:#F1F7EA;border-color:#BBD9A0}
+.gdots{display:flex;justify-content:center;gap:8px;margin-top:10px}
+.gdots button{flex:0 0 10px;width:10px;height:10px;min-width:0;border-radius:50%;border:0;padding:0;background:#C9DDB6;cursor:pointer;transition:transform .15s}
+.gdots button:active{transform:none}
+.gdots button.on{background:#5E8C3A;transform:scale(1.25)}
+@media(prefers-reduced-motion:reduce){.gtrack{scroll-behavior:auto}}
 .book.gear .bt{color:#4F7A2C}
 .book.gear .bb{background:#5E8C3A;box-shadow:0 4px 0 #3C5C25}
 .book .gimg{width:96px;aspect-ratio:320/522;flex:none;border-radius:6px;background:#DDEBCF;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(40,60,20,.18)}
@@ -200,15 +209,38 @@ footer{font-size:14px;color:var(--ink2);line-height:1.9;font-weight:700;padding:
       <span class="bb">Amazonで見る →</span>
     </div>
   </a>
-  <a class="book gear" href="https://www.amazon.co.jp/dp/B00PTJBGGO?tag=guildjapan08-22" target="_blank" rel="noopener">
-    <span class="gimg" aria-hidden="true"><svg viewBox="0 0 64 64" width="56" height="56"><path d="M32 8 6 54h52L32 8z" fill="#5E8C3A"/><path d="M32 8v46" stroke="#F3F7EE" stroke-width="3"/><path d="M24 54l8-18 8 18" fill="#3C5C25"/><path d="M6 54h52" stroke="#3C5C25" stroke-width="4" stroke-linecap="round"/></svg></span>
-    <div>
-      <div class="bt">イワオの道具箱</div>
-      <div class="bn">FIELDOOR ワンタッチテント 5人用 ヘキサゴンタイプ</div>
-      <div class="ba">紐を引くだけで設営できるドームテント／幅305×奥行260×高さ145cm</div>
-      <span class="bb">Amazonで見る →</span>
+  <div class="gearbox" id="gearbox" aria-label="キャンプ道具のおすすめ（自動で切り替わります）">
+    <div class="gtrack" id="gtrack">
+    <a class="book gear" href="https://www.amazon.co.jp/dp/B00PTJBGGO?tag=guildjapan08-22" target="_blank" rel="noopener">
+      <span class="gimg" aria-hidden="true"><svg viewBox="0 0 64 64" width="56" height="56"><path d="M32 8 6 54h52L32 8z" fill="#5E8C3A"/><path d="M32 8v46" stroke="#F3F7EE" stroke-width="3"/><path d="M24 54l8-18 8 18" fill="#3C5C25"/><path d="M6 54h52" stroke="#3C5C25" stroke-width="4" stroke-linecap="round"/></svg></span>
+      <div>
+        <div class="bt">イワオの道具箱</div>
+        <div class="bn">FIELDOOR ワンタッチテント 5人用 ヘキサゴンタイプ</div>
+        <div class="ba">紐を引くだけで設営できるドームテント／幅305×奥行260×高さ145cm</div>
+        <span class="bb">Amazonで見る →</span>
+      </div>
+    </a>
+    <a class="book gear" href="https://www.amazon.co.jp/dp/B0HH92N2D1?tag=guildjapan08-22" target="_blank" rel="noopener">
+      <span class="gimg" aria-hidden="true"><svg viewBox="0 0 64 64" width="56" height="56"><rect x="6" y="22" width="52" height="22" rx="8" fill="#5E8C3A"/><path d="M14 22v22M24 22v22M34 22v22M44 22v22" stroke="#F3F7EE" stroke-width="2.5" opacity=".7"/><rect x="40" y="16" width="18" height="12" rx="5" fill="#3C5C25"/></svg></span>
+      <div>
+        <div class="bt">イワオの道具箱</div>
+        <div class="bn">ENUOTEK エアーマット 2個セット 10cm厚 R値4.0</div>
+        <div class="ba">足踏み式で30秒膨張、枕一体型・無限連結。1枚750gの軽量マット</div>
+        <span class="bb">Amazonで見る →</span>
+      </div>
+    </a>
+    <a class="book gear" href="https://www.amazon.co.jp/dp/B0H9LGMHCX?tag=guildjapan08-22" target="_blank" rel="noopener">
+      <span class="gimg" aria-hidden="true"><svg viewBox="0 0 64 64" width="56" height="56"><path d="M18 10h28a6 6 0 0 1 6 6v36a6 6 0 0 1-6 6H18a6 6 0 0 1-6-6V16a6 6 0 0 1 6-6z" fill="#5E8C3A"/><rect x="18" y="14" width="28" height="12" rx="4" fill="#3C5C25"/><path d="M32 30v24" stroke="#F3F7EE" stroke-width="3" stroke-dasharray="4 4"/></svg></span>
+      <div>
+        <div class="bt">イワオの道具箱</div>
+        <div class="bn">BISINNA 寝袋 封筒型 軽量 1.1kg／1.5kg</div>
+        <div class="ba">撥水加工・丸洗い可。キャンプにも車中泊にも、防災用の備えにも</div>
+        <span class="bb">Amazonで見る →</span>
+      </div>
+    </a>
     </div>
-  </a>
+    <div class="gdots" id="gdots" role="tablist"></div>
+  </div>
   <p class="disc">※ 当サイトは、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。</p>
 </section>
 
@@ -332,6 +364,25 @@ document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
 }));
 
 build(); render();
+})();
+
+/* ---- 道具箱カルーセル：4秒ごとに自動で横に流れ、最後まで行くと最初へ戻る ---- */
+(function(){
+  const track=document.getElementById('gtrack'), dots=document.getElementById('gdots');
+  if(!track||!dots) return;
+  const cards=[...track.children]; let i=0, timer=null, paused=false;
+  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  cards.forEach((_,k)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',(k+1)+'番目の商品');b.addEventListener('click',()=>{go(k);hold();});dots.appendChild(b);});
+  function paint(){[...dots.children].forEach((b,k)=>b.classList.toggle('on',k===i));}
+  function go(k){i=(k+cards.length)%cards.length;track.scrollTo({left:cards[i].offsetLeft-track.offsetLeft,behavior:reduce?'auto':'smooth'});paint();}
+  function tick(){if(!paused&&!document.hidden) go(i+1);}
+  function start(){if(timer) clearInterval(timer); timer=setInterval(tick,4000);}
+  let holdT=null; function hold(){paused=true;clearTimeout(holdT);holdT=setTimeout(()=>{paused=false;},8000);}
+  track.addEventListener('pointerdown',hold,{passive:true});
+  track.addEventListener('touchstart',hold,{passive:true});
+  track.addEventListener('mouseenter',()=>{paused=true;}); track.addEventListener('mouseleave',()=>{paused=false;});
+  let st=null; track.addEventListener('scroll',()=>{clearTimeout(st);st=setTimeout(()=>{const x=track.scrollLeft;let best=0,d=1e9;cards.forEach((c,k)=>{const dd=Math.abs(c.offsetLeft-track.offsetLeft-x);if(dd<d){d=dd;best=k;}});i=best;paint();},80);},{passive:true});
+  paint(); if(!reduce) start();
 })();
 </script>
 <!-- to-top -->
